@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .pinkTitle {
+    @apply font-roboto text-[42px] font-normal leading-[52px] text-iplanPink;
+  }
+  .card {
+    @apply flex min-h-[540px] max-w-[404px] flex-col self-stretch overflow-hidden rounded-[32px] text-center shadow-md;
+  }
+  .card__redHeader {
+    @apply flex flex-col items-center justify-center gap-3 self-stretch bg-iplanPink px-6 py-[25px] text-center;
+  }
+  .card__blueHeader {
+    @apply flex min-h-[150px] items-center justify-center gap-[20px] self-stretch bg-iplanBlue py-[25px] pl-6 pr-0 text-center;
+  }
+  .card__readHeader__title {
+    @apply font-figtree text-[48px] font-light not-italic leading-[50px] tracking-[-0.48px] text-iplanWhite;
+  }
+  .card__body {
+    @apply flex h-full flex-col items-center gap-4 self-stretch bg-white px-[24px] py-[32px];
+  }
+  .btnDisabled {
+    @apply overflow-hidden rounded-[40px] bg-iplanGrey  px-[10px] py-[5px] font-lato text-2xl font-bold not-italic leading-[25px] text-iplanPink;
+  }
+  .btnActived {
+    @apply transform overflow-hidden rounded-[40px] bg-iplanPink px-[10px] py-[5px] font-lato text-2xl font-bold not-italic leading-[25px] text-iplanWhite transition duration-300 ease-in-out hover:scale-105 active:scale-95;
+  }
+  .packDisabled {
+    @apply flex max-h-[68px] items-center justify-center overflow-hidden rounded-[162px] bg-iplanGrey px-[24px] py-[12px] font-lato text-[20px] font-bold text-iplanBlue;
+  }
+  .packActived {
+    @apply flex max-h-[68px] items-center justify-center overflow-hidden rounded-[162px] border-2 border-iplanBlue bg-iplanGrey px-[24px] py-[12px] font-lato text-[20px] font-bold text-iplanBlue;
+  }
+  .textGrey21Roboto {
+    @apply text-center font-roboto text-[21px] font-semibold not-italic leading-[130%] tracking-tight text-iplanGrey2;
+  }
+  .textBlueOscuro36Lato {
+    @apply font-lato text-[36px] font-medium not-italic leading-[52px] text-iplanBlue2;
+  }
+  .textOrange23Roboto {
+    @apply font-roboto text-[23px] font-semibold not-italic leading-[130%] tracking-tight text-iplanOrange;
+  }
+  .btnNextDisabled {
+    @apply flex h-[36px] w-auto max-w-[150px] items-center justify-center gap-[8px] rounded-[25px] bg-iplanGrey2 px-6 py-2 font-lato text-[17px] font-bold leading-normal text-iplanWhite;
+  }
+  .btnNextActived {
+    @apply flex h-[36px] w-auto max-w-[150px] items-center justify-center gap-[8px] rounded-[25px] bg-iplanPink px-6 py-2 font-lato text-[17px] font-bold leading-normal text-iplanWhite;
+  }
+  .btnSugerenciaDisabled {
+    @apply flex h-[36px] w-[200px] max-w-[200px] items-center justify-center gap-[8px] rounded-[25px] bg-iplanPink px-[10px] py-2 font-lato text-[17px] font-bold leading-normal text-iplanWhite;
+  }
+  .btnSugerenciaActived {
+    @apply flex h-[36px] w-[200px] max-w-[200px] items-center justify-center gap-[8px] rounded-[25px] bg-iplanPink px-[10px] py-2 font-lato text-[17px] font-bold leading-normal text-iplanWhite;
+  }
+}
+
+html {
+  box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+body {
+  width: 100%;
+  margin: 0 auto;
+}
+input:focus {
+  outline: none;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* -------------------------------- FORM MESH ------------------------------- */
+input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.radio-btn {
+  display: inline-block;
+  position: relative;
+  width: 16px;
+  height: 16px;
+  border: 2px solid gray;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+input[type="radio"]:checked + .radio-btn {
+  background-color: #ed1f70;
+}
+label {
+  display: inline-flex;
+  align-items: center;
+}
