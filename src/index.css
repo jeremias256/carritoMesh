@@ -99,3 +99,25 @@ label {
   display: inline-flex;
   align-items: center;
 }
+
+/* --------------------- CALENDARIO --------------------- */
+.fc-today-button {
+  display: none !important;
+}
+.fc-day-other {
+  opacity: 0;
+}
+thead tr {
+  background: var(--general-grey-dark, #7c7b85) !important;
+  width: 33px !important;
+  height: 18px !important;
+}
+tr th {
+  color: var(--general-white, #fff);
+  text-align: center;
+  font-family: Lato;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 900;
+  line-height: 120%;
+}
