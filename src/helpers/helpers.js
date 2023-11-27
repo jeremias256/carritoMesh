@@ -1,14 +1,14 @@
-export function resolverCalcu(m2, m3, m4, m5) {
-    let cantidadMesh = 'No requiere';
+function resolverCalcu(m2, m3, m4, m5) {
+    let cantidadMesh = '1';
     switch (m2) {
         case 1:
-            cantidadMesh = 'No requiere'
+            cantidadMesh = '1'
             break;
         case 2:
             if (m5 == "en L") {
                 cantidadMesh = 1;
             } else {
-                cantidadMesh = 'No requiere';
+                cantidadMesh = '1';
             }
             break;
         case 3:
@@ -56,7 +56,6 @@ export function resolverCalcu(m2, m3, m4, m5) {
                 case 400:
                     cantidadMesh = 4;
                     break;
-                // esto lo inventé yo
                 case 500:
                     cantidadMesh = 4;
                     break;
@@ -86,7 +85,7 @@ export function resolverCalcu(m2, m3, m4, m5) {
                         cantidadMesh = 4;
                     } else if (m4 != 1) {
                         if (m5 != "en L") {
-                            cantidadMesh = "analizar";
+                            cantidadMesh = "4";
                         } else {
                             cantidadMesh = 4;
                         }
@@ -97,15 +96,20 @@ export function resolverCalcu(m2, m3, m4, m5) {
                     if (m4 == 1) {
                         cantidadMesh = 4;
                     } else {
-                        cantidadMesh = "analizar";
+                        cantidadMesh = "4";
                     }
                     break;
             }
             break;
         default:
-            cantidadMesh = "analizar";
+            cantidadMesh = "4";
             break;
     }
 
     return (cantidadMesh);
 }
+function formatearNum(numero) {
+    return '$' + numero.toLocaleString('es-US', { maximumFractionDigits: 0 }).replace(/,/g, '.');
+}
+
+export { resolverCalcu, formatearNum };

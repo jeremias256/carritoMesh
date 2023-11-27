@@ -3,30 +3,24 @@ const CarritoContext = createContext();
 
 const CarritoProvider = ({ children }) => {
   const [step, setStep] = useState(1);
-  const [usuario, setCliente] = useState({
-    nombre: "Bruce",
-    apellido: "Wayne",
-  });
-  const [torres, setTorres] = useState(0);
-
-  const handleSubmitForm = (e) => {
-    e.preventDefault();
-    //AJAXLogin
-    //if(ok)
-    //setCliente({
-    //nombre:nombre,
-    //apellido:apellido
-    //})
-    setStep(step + 1);
-  };
+  /* ------------------------ LOGIN ----------------------- */
+  const [cargando, setCargando] = useState(false);
+  const [cliente, setCliente] = useState({});
+  /* ----------------------- COMPRA ----------------------- */
+  const [mostrarForm, setMostrarForm] = useState(false);
+  const [torres, setTorres] = useState(1);
 
   return (
     <CarritoContext.Provider
       value={{
         step,
         setStep,
-        usuario,
-        handleSubmitForm,
+        cargando,
+        setCargando,
+        cliente,
+        setCliente,
+        mostrarForm,
+        setMostrarForm,
         torres,
         setTorres,
       }}

@@ -1,6 +1,5 @@
 import useCarrito from "../hooks/useCarritoProvider";
-import { Login, Home, Compra, Final } from "./";
-import { Agendamiento } from "./Agendamiento";
+import { Login, Home, Compra, Agendamiento, Final } from "./";
 
 export const AppCarrito = () => {
   const { step } = useCarrito();
@@ -10,6 +9,7 @@ export const AppCarrito = () => {
       {step == 2 && <Home />}
       {step == 3 && <Compra />}
       {step == 4 && <Agendamiento />}
+      {step == 5 && <Final />}
     </>
   );
 };

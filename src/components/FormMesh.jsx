@@ -1,24 +1,31 @@
+/* ------------------------ LIBS ------------------------ */
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronLeft, faXmark } from "@fortawesome/free-solid-svg-icons";
+/* ------------------------ REACT ----------------------- */
 import { useState } from "react";
-
-import imgMesh1 from "../assets/imgs/imgMesh1.jpg";
+/* --------------------- COMPONENTS --------------------- */
+/* ----------------------- HELPERS ---------------------- */
+import { resolverCalcu } from "../helpers/helpers";
+/* ----------------------- ASSETS ----------------------- */
+import imgMesh1 from "../assets/imgs/imgMeshGris1.png";
 import imgMesh2 from "../assets/imgs/imgMesh2.jpg";
 import imgMesh3 from "../assets/imgs/imgMesh3.jpg";
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
-import { resolverCalcu } from "../helpers";
+import useCarrito from "../hooks/useCarritoProvider";
 
 export const FormMesh = () => {
+  const { mostrarForm, setMostrarForm } = useCarrito();
+  const [vistaConResultado, setVistaConResultado] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(1);
   const [selectedOption1, setSelectedOption1] = useState(false);
   const [selectedOption2, setSelectedOption2] = useState(false);
   const [selectedOption3, setSelectedOption3] = useState(false);
   const [selectedOption4, setSelectedOption4] = useState(false);
+  const [respuestasActived, setRespuestasActived] = useState(false);
   const [resultadoForm, setResultadoForm] = useState(false);
-  const handleNetStep = () => {
+  const handleNextStep = () => {
     setCurrentIndex((prevIndex) => prevIndex + 1);
   };
-  const handlePrev = () => {
+  const handlePrevStep = () => {
     setCurrentIndex((prevIndex) => prevIndex - 1);
   };
   const borrarCampos = () => {
@@ -28,6 +35,7 @@ export const FormMesh = () => {
     setSelectedOption3(false);
     setSelectedOption4(false);
     setResultadoForm(false);
+    setRespuestasActived(false);
   };
 
   const pregunta1 = [
@@ -89,242 +97,357 @@ export const FormMesh = () => {
   }
 
   return (
-    <form className="flex w-full flex-col justify-center gap-2 overflow-hidden rounded-[12px] bg-iplanGrey">
-      <div
-        className={`${
-          currentIndex == 1 ? "flex" : "hidden"
-        } flex-col items-center`}
-      >
-        <button
-          className="h-[32px] w-[32px] rounded-full bg-iplanPink font-lato text-2xl font-bold not-italic text-iplanWhite"
-          type="button"
-        >
-          1
-        </button>
-
-        <p className="p-8 text-center text-xl font-semibold leading-6 text-iplanBrown">
-          ¿Cuántos ambientes tiene tu domicilio?
-        </p>
-        <div className="grid grid-cols-2 gap-4">
-          {pregunta1.map((radio, index) => (
-            <label key={index} className="w-16 font-bold text-iplanGrey2">
-              <input
-                checked={selectedOption1 === radio.id}
-                onChange={handleCheckboxChange1}
-                type="radio"
-                value={radio.id}
-              />
-              <span className="radio-btn"></span>
-              {radio.label}
-            </label>
-          ))}
-        </div>
-
-        <div className="mt-4">
-          <img src={imgMesh1} alt="imgMesh" />
-        </div>
-
-        <div className="mt-2 flex items-center justify-center gap-4">
+    <>
+      {!mostrarForm && !vistaConResultado && (
+        <div className="flex flex-col items-center">
+          <p className="font-lato text-lg font-normal not-italic text-iplanGrey2">
+            ¿Cuantos dispositivos necesito?
+          </p>
+          <p className="font-lato text-lg font-normal not-italic text-iplanGrey2">
+            Buscá la mejor opción para tu hogar:
+          </p>
           <button
-            className={!selectedOption1 ? "btnNextDisabled" : "btnNextActived"}
-            disabled={!selectedOption1}
-            onClick={handleNetStep}
-            type="button"
-          >
-            SIGUIENTE
-          </button>
-        </div>
-      </div>
-
-      <div
-        className={`${
-          currentIndex == 2 ? "flex" : "hidden"
-        } mx-4 flex-col items-center rounded-lg px-2 py-2`}
-      >
-        <button
-          className="h-[32px] w-[32px] rounded-full bg-iplanPink font-lato text-2xl font-bold not-italic text-iplanWhite"
-          type="button"
-        >
-          2
-        </button>
-
-        <p className="p-8 text-center text-xl font-semibold leading-6 text-iplanBrown">
-          ¿Cuántos m2 tiene tu domicilio?
-        </p>
-
-        <div className="flex w-full flex-col">
-          {pregunta2.map((radio, index) => (
-            <label
-              key={index}
-              className="my-1 w-full text-left font-bold text-iplanGrey2"
-            >
-              <input
-                checked={selectedOption2 === radio.id}
-                onChange={handleCheckboxChange2}
-                type="radio"
-                value={radio.id}
-              />
-              <span className="radio-btn"></span>
-              {radio.label}
-            </label>
-          ))}
-        </div>
-
-        <div className="mt-2">
-          <img src={imgMesh2} alt="imgMesh" />
-        </div>
-
-        <div className="mt-2 flex items-center justify-center gap-4">
-          <button
-            className="flex h-[36px] w-auto max-w-[90] items-center justify-center rounded-[25px] bg-iplanPink px-6 py-2 font-roboto text-[17px] font-normal text-iplanWhite"
-            onClick={handlePrev}
-            type="button"
-          >
-            <FontAwesomeIcon icon={faChevronLeft} />
-          </button>
-          <button
-            className={!selectedOption2 ? "btnNextDisabled" : "btnNextActived"}
-            disabled={!selectedOption2}
-            onClick={handleNetStep}
-            type="button"
-          >
-            SIGUIENTE
-          </button>
-        </div>
-      </div>
-
-      <div
-        className={`${
-          currentIndex == 3 ? "flex" : "hidden"
-        } mx-4 flex-col items-center rounded-lg px-2 py-2`}
-      >
-        <button
-          className="h-[32px] w-[32px] rounded-full bg-iplanPink font-lato text-2xl font-bold not-italic text-iplanWhite"
-          type="button"
-        >
-          3
-        </button>
-
-        <p className="p-8 text-center text-xl font-semibold leading-6 text-iplanBrown">
-          ¿Cuántas plantas tiene tu domicilio?
-        </p>
-
-        <div className="items-left flex flex-col justify-center">
-          {pregunta3.map((radio, index) => (
-            <label key={index} className="my-2 font-bold text-iplanGrey2">
-              <input
-                checked={selectedOption3 === radio.id}
-                onChange={handleCheckboxChange3}
-                type="radio"
-                value={radio.id}
-              />
-              <span className="radio-btn"></span>
-              {radio.label}
-            </label>
-          ))}
-        </div>
-
-        <div className="mt-4">
-          <img src={imgMesh3} alt="imgMesh" />{" "}
-        </div>
-
-        <div className="mt-2 flex items-center justify-center gap-4">
-          <button
-            className="flex h-[36px] w-auto max-w-[90] items-center justify-center rounded-[25px] bg-iplanPink px-6 py-2 font-roboto text-[17px] font-normal text-iplanWhite"
-            onClick={handlePrev}
-            type="button"
-          >
-            <FontAwesomeIcon icon={faChevronLeft} />
-          </button>
-          <button
-            className={!selectedOption3 ? "btnNextDisabled" : "btnNextActived"}
-            disabled={!selectedOption3}
-            onClick={handleNetStep}
-            type="button"
-          >
-            SIGUIENTE
-          </button>
-        </div>
-      </div>
-
-      <div
-        className={`${
-          currentIndex == 4 ? "flex" : "hidden"
-        } mx-4 flex-col items-center rounded-lg px-2 py-2`}
-      >
-        <button
-          className="h-[32px] w-[32px] rounded-full bg-iplanPink font-lato text-2xl font-bold not-italic text-iplanWhite"
-          type="button"
-        >
-          4
-        </button>
-
-        <p className="p-8 text-center text-xl font-semibold leading-6 text-iplanBrown">
-          ¿Qué distribución tiene tu domicilio?{" "}
-        </p>
-
-        <div className="flex flex-col">
-          {pregunta4.map((radio, index) => (
-            <label key={index} className="my-2 font-bold text-iplanGrey2">
-              <input
-                type="radio"
-                value={radio.id}
-                checked={selectedOption4 === radio.id}
-                onChange={handleCheckboxChange4}
-              />
-              <span className="radio-btn red"></span>
-              {radio.label}
-            </label>
-          ))}
-        </div>
-        <div className="mt-2 flex items-center justify-center gap-4">
-          <button
-            className="flex h-[36px] w-auto max-w-[90] items-center justify-center rounded-[25px] bg-iplanPink px-6 py-2 font-roboto text-[17px] font-normal text-iplanWhite"
-            onClick={handlePrev}
-            type="button"
-          >
-            <FontAwesomeIcon icon={faChevronLeft} />
-          </button>
-          <button
-            disabled={!selectedOption4}
-            className={
-              !selectedOption4
-                ? "btnSugerenciaDisabled"
-                : "btnSugerenciaActived"
-            }
+            className="mt-4 flex h-[36px] w-auto max-w-[90] items-center justify-center rounded-[25px] bg-iplanPink px-6 py-2 font-lato text-[17px] font-bold leading-normal text-iplanWhite"
             onClick={() => {
-              calcularMesh();
+              setMostrarForm(true);
             }}
             type="button"
           >
-            Ver sugerencia
+            HACER TEST
           </button>
         </div>
+      )}
+      {vistaConResultado && !mostrarForm && (
+        <>
+          <p className="font-lato text-[18px] font-normal not-italic leading-normal text-iplanGrey2">
+            Te recomendamos
+            <span className="font-lato text-[18px] not-italic leading-normal text-iplanPink">
+              {" "}
+              {resultadoForm} Torres Power Mesh
+            </span>
+            para tu hogar
+          </p>
+          <button
+            onClick={() => {
+              setMostrarForm(true);
+              setCurrentIndex(1);
+              setSelectedOption1(false);
+              setSelectedOption2(false);
+              setSelectedOption3(false);
+              setSelectedOption4(false);
+              // setResultadoForm(false);
+              setRespuestasActived(false);
+            }}
+            className="btnNextActived mt-2"
+            type="button"
+          >
+            REHACER TEST
+          </button>
+        </>
+      )}
+      {mostrarForm && (
+        <div className="flex h-full max-h-[530px] max-w-[300px] flex-col items-end">
+          {/* X */}
+          <button
+            onClick={(e) => {
+              setMostrarForm(false);
+            }}
+            type="button"
+          >
+            <FontAwesomeIcon
+              icon={faXmark}
+              size="2xl"
+              style={{ color: "#ED1F70" }}
+            />
+          </button>
 
-        {resultadoForm && (
-          <>
-            <div className="mt-8 h-auto max-w-[275px] rounded-lg bg-[#ffff] p-2 text-center">
-              <h2 className="text-3xl font-bold text-iplanPink">
-                Recomendamos
-              </h2>
-              <ul className="text-xl font-semibold text-iplanBrown">
-                <li> WiFi Plus (incluido en servicio Iplan Liv)</li>
-                <li> {resultadoForm} torres Power Mesh</li>
-              </ul>
-            </div>
+          {/* FORM */}
+          <div className="flex flex-col items-center">
+            {!respuestasActived && (
+              <form className="h-[500px] w-full max-w-[300px]">
+                <div
+                  className={`${
+                    currentIndex == 1 ? "flex" : "hidden"
+                  } h-[500px] w-[260px] flex-col items-center justify-between py-3 xl:w-[300px]`}
+                >
+                  <div className="flex flex-col items-center justify-center gap-3 overflow-hidden rounded-[12px]">
+                    <p className="px-4 text-center text-[15px] font-bold not-italic leading-normal text-iplanGrey2">
+                      1/4
+                    </p>
 
-            <div>
-              <button
-                onClick={borrarCampos}
-                className="btnNextActived mt-3"
-                type="button"
-              >
-                Rehacer test
-              </button>
-            </div>
-          </>
-        )}
-      </div>
-    </form>
+                    <p className="px-4 py-2 text-center text-[15px] font-bold leading-normal text-iplanBrown">
+                      ¿Cuántos ambientes tiene tu domicilio?
+                    </p>
+                    <div className="grid grid-cols-2 gap-4">
+                      {pregunta1.map((radio, index) => (
+                        <label
+                          key={index}
+                          className="text-[15px] font-bold not-italic leading-normal text-iplanGrey2"
+                        >
+                          <input
+                            checked={selectedOption1 === radio.id}
+                            onChange={handleCheckboxChange1}
+                            type="radio"
+                            value={radio.id}
+                          />
+                          <span className="radio-btn"></span>
+                          {radio.label}
+                        </label>
+                      ))}
+                    </div>
+
+                    <div className="mt-2">
+                      <img src={imgMesh1} alt="imgMesh" />
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-center gap-4">
+                    <button
+                      className={
+                        !selectedOption1 ? "btnNextDisabled" : "btnNextActived"
+                      }
+                      disabled={!selectedOption1}
+                      onClick={handleNextStep}
+                      type="button"
+                    >
+                      SIGUIENTE
+                    </button>
+                  </div>
+                </div>
+
+                <div
+                  className={`${
+                    currentIndex == 2 ? "flex" : "hidden"
+                  } h-[500px] w-[260px] flex-col items-center justify-between py-3 xl:w-[300px]`}
+                >
+                  <div className="flex flex-col items-center justify-center gap-3 overflow-hidden rounded-[12px]">
+                    <p className="px-4 text-center text-[15px] font-bold not-italic leading-normal text-iplanGrey2">
+                      2/4
+                    </p>
+
+                    <p className="px-4 py-2 text-center text-[15px] font-bold leading-normal text-iplanBrown">
+                      ¿Cuántos m2 tiene tu domicilio?
+                    </p>
+
+                    <div className="grid grid-cols-1 gap-4">
+                      {pregunta2.map((radio, index) => (
+                        <label
+                          key={index}
+                          className="text-[15px] font-bold not-italic leading-normal text-iplanGrey2"
+                        >
+                          <input
+                            checked={selectedOption2 === radio.id}
+                            onChange={handleCheckboxChange2}
+                            type="radio"
+                            value={radio.id}
+                          />
+                          <span className="radio-btn"></span>
+                          {radio.label}
+                        </label>
+                      ))}
+                    </div>
+
+                    <div className="mt-2">
+                      <img src={imgMesh2} alt="imgMesh" />
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-center gap-4">
+                    <button
+                      className="flex h-[36px] w-auto max-w-[90] items-center justify-center rounded-[25px] bg-iplanPink px-6 py-2 font-roboto text-[17px] font-normal text-iplanWhite"
+                      onClick={handlePrevStep}
+                      type="button"
+                    >
+                      <FontAwesomeIcon icon={faChevronLeft} />
+                    </button>
+                    <button
+                      className={
+                        !selectedOption2 ? "btnNextDisabled" : "btnNextActived"
+                      }
+                      disabled={!selectedOption2}
+                      onClick={handleNextStep}
+                      type="button"
+                    >
+                      SIGUIENTE
+                    </button>
+                  </div>
+                </div>
+
+                <div
+                  className={`${
+                    currentIndex == 3 ? "flex" : "hidden"
+                  } h-[500px] w-[260px] flex-col items-center justify-between py-3 xl:w-[300px]`}
+                >
+                  <div className="flex flex-col items-center justify-center gap-3 overflow-hidden rounded-[12px]">
+                    <p className="px-4 text-center text-[15px] font-bold not-italic leading-normal text-iplanGrey2">
+                      3/4
+                    </p>
+
+                    <p className="px-4 py-2 text-center text-[15px] font-bold leading-normal text-iplanBrown">
+                      ¿Cuántas plantas tiene tu domicilio?
+                    </p>
+
+                    <div className="grid grid-cols-1 gap-4">
+                      {pregunta3.map((radio, index) => (
+                        <label
+                          key={index}
+                          className="text-[15px] font-bold not-italic leading-normal text-iplanGrey2"
+                        >
+                          <input
+                            checked={selectedOption3 === radio.id}
+                            onChange={handleCheckboxChange3}
+                            type="radio"
+                            value={radio.id}
+                          />
+                          <span className="radio-btn"></span>
+                          {radio.label}
+                        </label>
+                      ))}
+                    </div>
+
+                    <div className="mt-2">
+                      <img src={imgMesh3} alt="imgMesh" />{" "}
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-center gap-4">
+                    <button
+                      className="flex h-[36px] w-auto max-w-[90] items-center justify-center rounded-[25px] bg-iplanPink px-6 py-2 font-roboto text-[17px] font-normal text-iplanWhite"
+                      onClick={handlePrevStep}
+                      type="button"
+                    >
+                      <FontAwesomeIcon icon={faChevronLeft} />
+                    </button>
+                    <button
+                      className={
+                        !selectedOption3 ? "btnNextDisabled" : "btnNextActived"
+                      }
+                      disabled={!selectedOption3}
+                      onClick={handleNextStep}
+                      type="button"
+                    >
+                      SIGUIENTE
+                    </button>
+                  </div>
+                </div>
+
+                <div
+                  className={`${
+                    currentIndex == 4 ? "flex" : "hidden"
+                  } h-[500px] w-[260px] flex-col items-center justify-between py-3 xl:w-[300px]`}
+                >
+                  <div className="flex flex-col items-center justify-center gap-3 overflow-hidden rounded-[12px]">
+                    <p className="px-4 text-center text-[15px] font-bold not-italic leading-normal text-iplanGrey2">
+                      4/4
+                    </p>
+
+                    <p className="px-4 py-2 text-center text-[15px] font-bold leading-normal text-iplanBrown">
+                      ¿Qué distribución tiene tu domicilio?{" "}
+                    </p>
+
+                    <div className="grid grid-cols-1 gap-4">
+                      {pregunta4.map((radio, index) => (
+                        <label
+                          key={index}
+                          className="text-[15px] font-bold not-italic leading-normal text-iplanGrey2"
+                        >
+                          <input
+                            type="radio"
+                            value={radio.id}
+                            checked={selectedOption4 === radio.id}
+                            onChange={handleCheckboxChange4}
+                          />
+                          <span className="radio-btn red"></span>
+                          {radio.label}
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-center gap-4">
+                    <button
+                      className="flex h-[36px] w-auto max-w-[90] items-center justify-center rounded-[25px] bg-iplanPink px-6 py-2 font-roboto text-[17px] font-normal text-iplanWhite"
+                      onClick={handlePrevStep}
+                      type="button"
+                    >
+                      <FontAwesomeIcon icon={faChevronLeft} />
+                    </button>
+                    <button
+                      disabled={!selectedOption4}
+                      className={
+                        !selectedOption4 ? "btnNextDisabled" : "btnNextActived"
+                      }
+                      onClick={() => {
+                        calcularMesh();
+                        setRespuestasActived(true);
+                        setVistaConResultado(true);
+                      }}
+                      type="button"
+                    >
+                      SIGUIENTE
+                    </button>
+                  </div>
+                </div>
+              </form>
+            )}
+
+            {respuestasActived && (
+              <div className="flex h-[500px] w-full max-w-[300px] flex-col items-center justify-between">
+                <div className="mt-8 h-auto max-w-[275px] text-center">
+                  <ul className="rounded-[12px] bg-iplanGrey px-4 py-8 text-xl font-semibold text-iplanBrown">
+                    <li className="font-lato text-[20px] font-bold not-italic leading-normal text-iplanBrown">
+                      Resultado del test:
+                    </li>
+                    <li className="mt-4  font-lato text-[18px] font-bold not-italic leading-normal text-iplanGrey2">
+                      Según tu selección
+                    </li>
+                    <li className="font-lato text-[18px] font-medium not-italic leading-normal text-iplanGrey2">
+                      {selectedOption1} ambientes
+                    </li>
+                    <li className="font-lato text-[18px] font-medium not-italic leading-normal text-iplanGrey2">
+                      {selectedOption2} m²
+                    </li>
+                    <li className="font-lato text-[18px] font-medium not-italic leading-normal text-iplanGrey2">
+                      {selectedOption3} plantas
+                    </li>
+                    <li className="font-lato text-[18px] font-medium not-italic leading-normal text-iplanGrey2">
+                      Distribución {selectedOption4}
+                    </li>
+                    <li className="mt-8 text-center font-lato text-[18px] font-bold not-italic leading-normal">
+                      Te recomendamos
+                    </li>
+                    <li className="font-lato text-[24px] font-bold not-italic leading-normal text-iplanPink">
+                      {" "}
+                      <button disabled className="btnActived">
+                        {resultadoForm}
+                      </button>{" "}
+                      torres Power Mesh
+                    </li>
+                  </ul>
+                </div>
+
+                <div>
+                  <button
+                    onClick={() => {
+                      setCurrentIndex(1);
+                      setSelectedOption1(false);
+                      setSelectedOption2(false);
+                      setSelectedOption3(false);
+                      setSelectedOption4(false);
+                      setResultadoForm(false);
+                      setRespuestasActived(false);
+                    }}
+                    className="btnNextActived mt-4"
+                    type="button"
+                  >
+                    REHACER TEST
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </>
   );
 };
