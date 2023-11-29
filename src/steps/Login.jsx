@@ -1,19 +1,56 @@
 /* ------------------------ LIBS ------------------------ */
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faQuestion, faPenRuler } from "@fortawesome/free-solid-svg-icons";
+import { faPenRuler } from "@fortawesome/free-solid-svg-icons";
 /* ------------------------ REACT ----------------------- */
-import { useState } from "react";
+import { useEffect } from "react";
 import useCarrito from "../hooks/useCarritoProvider";
+import useAuth from "../hooks/useAuthProvider";
 /* --------------------- COMPONENTS --------------------- */
 import { FormularioLogin, Spinner } from "../components";
 /* ----------------------- HELPERS ---------------------- */
 import { formatearNum } from "../helpers/helpers";
+import { readCookie, setExpireCookie } from "../helpers/cookies";
 /* ----------------------- ASSETS ----------------------- */
 import { MESH } from "../Env";
 import imgMesh from "../assets/imgs/imgMesh.png";
 
 export const Login = () => {
-  const { cargando } = useCarrito();
+  console.log("VERSION 25.x");
+
+  const { setCargando, setAuth, cargando, setCgp, setNum } = useAuth();
+  const { setStep } = useCarrito();
+
+  //TODOX SE PUEDE EVITAR LA PRIMERA VISTA DEL LOGIN ANTES DE CAMBIAR DE STEP ?
+  useEffect(() => {
+    let interv = setInterval(() => {
+      if (readCookie("stepCookie")) {
+        let cookieName = readCookie("userLogged");
+        let cookieCgp = readCookie("carritoCGP");
+        let stepNum = readCookie("stepCookie");
+        console.log(`LEO COOKIE DE STEP VOY A STEP ${stepNum}`);
+        setStep(stepNum);
+        setAuth(cookieName);
+        setCgp(cookieCgp);
+        setNum(String(cookieCgp).slice(0, -1));
+        setCargando(false);
+        clearInterval(interv);
+      } else if (readCookie("carritoCGP") && readCookie("userLogged")) {
+        console.log("LEO COOKIES DE CARRITO Y USERLOGGED VOY A LOGIN");
+        let cookieName = readCookie("userLogged");
+        let cookieCgp = readCookie("carritoCGP");
+        setAuth(cookieName);
+        setCgp(cookieCgp);
+        setCargando(false);
+        setNum(String(cookieCgp).slice(0, -1));
+        setExpireCookie("stepCookie", 3, 24 * 60 * 60000);
+        setStep(3);
+        clearInterval(interv);
+      } else {
+        console.log("si existe la cookie va al step 3 pero no hay cookie");
+      }
+    }, 1000);
+  }, []);
+
   return (
     <>
       <h2 className="pinkTitle mb-8">Comprá tus torres de WiFi Power Mesh</h2>
@@ -76,7 +113,7 @@ export const Login = () => {
             <p className="mt-3 text-[48px] font-bold not-italic leading-[50px] tracking-[-0.48px] text-iplanGrey2">
               {formatearNum(parseInt(MESH))}
             </p>
-            <p className="flex gap-[8px] text-center font-lato text-[15px] font-bold not-italic text-iplanGrey2">
+            <p className="mt-2 flex gap-[8px] text-center font-lato text-[15px] font-bold not-italic text-iplanGrey2">
               En tu factura - Imp incluidos
             </p>
           </div>

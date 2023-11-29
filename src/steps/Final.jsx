@@ -1,4 +1,19 @@
+import { Spinner } from "../components";
+import useCarrito from "../hooks/useCarritoProvider";
+import { readCookie } from "../helpers/cookies";
+
 export const Final = () => {
+  const { agendamiento, setAgendamiento } = useCarrito();
+  console.log("🚀 - file: Final.jsx:8 - Final - agendamiento:", agendamiento);
+
+  if (readCookie("agendamientoID")) {
+    setAgendamiento({
+      fecha: readCookie("agendamientoFecha"),
+      horario: readCookie("agendamientoHorario"),
+      id: readCookie("agendamientoID"),
+    });
+  }
+  if (!agendamiento) return <Spinner />;
   return (
     <div className="flex w-full max-w-[900px] flex-col items-center">
       <div className="shadow-[1px_1px_2px_0px_rgba(0,0,0,0.15) flex min-h-[140px] w-full flex-col items-center justify-center overflow-hidden rounded-[24px] bg-iplanPink px-6 py-8 text-center text-iplanWhite">
@@ -19,14 +34,16 @@ export const Final = () => {
           <p className="font-lato text-[16px] font-[900] not-italic leading-normal text-[#5B5151]">
             <span>Turno asignado:</span>
             <span className="ml-[8px] font-lato text-[16px] font-[900] leading-normal text-iplanPink">
-              09/12/2023 de 8 a 13 HS
+              {agendamiento.fecha} Turno{" "}
+              {agendamiento.horario == "MA" ? "Mañana" : "Tarde"} de{" "}
+              {agendamiento.horario == "MA" ? "8hs a 13hs" : "13hs a 17hs"}
             </span>
           </p>
         </div>
 
-        <button className="flex h-[36px] w-auto max-w-[90] items-center justify-center gap-[8px] rounded-[25px] bg-iplanPink px-6 py-2 font-lato text-[17px] font-bold leading-normal text-iplanWhite">
+        {/* <button className="flex h-[36px] w-auto max-w-[90] items-center justify-center gap-[8px] rounded-[25px] bg-iplanPink px-6 py-2 font-lato text-[17px] font-bold leading-normal text-iplanWhite outline-none focus:outline-none">
           TERMINAR
-        </button>
+        </button> */}
       </div>
     </div>
   );

@@ -13,7 +13,7 @@ import imgMesh3 from "../assets/imgs/imgMesh3.jpg";
 import useCarrito from "../hooks/useCarritoProvider";
 
 export const FormMesh = () => {
-  const { mostrarForm, setMostrarForm } = useCarrito();
+  const { setTorres, mostrarForm, setMostrarForm } = useCarrito();
   const [vistaConResultado, setVistaConResultado] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(1);
   const [selectedOption1, setSelectedOption1] = useState(false);
@@ -87,6 +87,14 @@ export const FormMesh = () => {
 
   function calcularMesh() {
     setResultadoForm(
+      resolverCalcu(
+        selectedOption1,
+        selectedOption2,
+        selectedOption3,
+        selectedOption4,
+      ),
+    );
+    setTorres(
       resolverCalcu(
         selectedOption1,
         selectedOption2,
@@ -171,7 +179,7 @@ export const FormMesh = () => {
                   } h-[500px] w-[260px] flex-col items-center justify-between py-3 xl:w-[300px]`}
                 >
                   <div className="flex flex-col items-center justify-center gap-3 overflow-hidden rounded-[12px]">
-                    <p className="px-4 text-center text-[15px] font-bold not-italic leading-normal text-iplanGrey2">
+                    <p className="px-4 text-center text-[18px] font-bold not-italic leading-normal text-iplanGrey2">
                       1/4
                     </p>
 
@@ -221,7 +229,7 @@ export const FormMesh = () => {
                   } h-[500px] w-[260px] flex-col items-center justify-between py-3 xl:w-[300px]`}
                 >
                   <div className="flex flex-col items-center justify-center gap-3 overflow-hidden rounded-[12px]">
-                    <p className="px-4 text-center text-[15px] font-bold not-italic leading-normal text-iplanGrey2">
+                    <p className="px-4 text-center text-[18px] font-bold not-italic leading-normal text-iplanGrey2">
                       2/4
                     </p>
 
@@ -279,7 +287,7 @@ export const FormMesh = () => {
                   } h-[500px] w-[260px] flex-col items-center justify-between py-3 xl:w-[300px]`}
                 >
                   <div className="flex flex-col items-center justify-center gap-3 overflow-hidden rounded-[12px]">
-                    <p className="px-4 text-center text-[15px] font-bold not-italic leading-normal text-iplanGrey2">
+                    <p className="px-4 text-center text-[18px] font-bold not-italic leading-normal text-iplanGrey2">
                       3/4
                     </p>
 
@@ -337,7 +345,7 @@ export const FormMesh = () => {
                   } h-[500px] w-[260px] flex-col items-center justify-between py-3 xl:w-[300px]`}
                 >
                   <div className="flex flex-col items-center justify-center gap-3 overflow-hidden rounded-[12px]">
-                    <p className="px-4 text-center text-[15px] font-bold not-italic leading-normal text-iplanGrey2">
+                    <p className="px-4 text-center text-[18px] font-bold not-italic leading-normal text-iplanGrey2">
                       4/4
                     </p>
 

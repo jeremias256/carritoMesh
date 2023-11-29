@@ -1,7 +1,8 @@
 /* ------------------------ LIBS ------------------------ */
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenRuler, faCartShopping } from "@fortawesome/free-solid-svg-icons";
+import { faPenRuler } from "@fortawesome/free-solid-svg-icons";
 /* ------------------------ REACT ----------------------- */
+import { useState } from "react";
 import useCarrito from "../hooks/useCarritoProvider";
 /* --------------------- COMPONENTS --------------------- */
 /* ----------------------- HELPERS ---------------------- */
@@ -11,7 +12,8 @@ import { MESH } from "../Env";
 import imgMesh from "../assets/imgs/imgMesh.png";
 
 export const Home = () => {
-  const { setStep, cliente } = useCarrito();
+  const { setStep } = useCarrito();
+  const [cliente, setCliente] = useState({ name: "TESTEO" });
   return (
     <>
       <h2 className="pinkTitle mb-8">Comprá tus torres de WiFi Power Mesh</h2>

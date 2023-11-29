@@ -2,27 +2,24 @@ import { createContext, useState } from "react";
 const CarritoContext = createContext();
 
 const CarritoProvider = ({ children }) => {
+  //INFX 3 PARA USAR LOCAL 1 PARA PROD
   const [step, setStep] = useState(1);
-  /* ------------------------ LOGIN ----------------------- */
-  const [cargando, setCargando] = useState(false);
-  const [cliente, setCliente] = useState({});
   /* ----------------------- COMPRA ----------------------- */
   const [mostrarForm, setMostrarForm] = useState(false);
   const [torres, setTorres] = useState(1);
+  const [agendamiento, setAgendamiento] = useState({});
 
   return (
     <CarritoContext.Provider
       value={{
         step,
         setStep,
-        cargando,
-        setCargando,
-        cliente,
-        setCliente,
         mostrarForm,
         setMostrarForm,
         torres,
         setTorres,
+        setAgendamiento,
+        agendamiento,
       }}
     >
       {children}

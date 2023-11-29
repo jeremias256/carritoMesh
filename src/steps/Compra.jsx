@@ -6,26 +6,101 @@ import {
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 /* ------------------------ REACT ----------------------- */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useCarrito from "../hooks/useCarritoProvider";
+import useAuth from "../hooks/useAuthProvider";
 /* --------------------- COMPONENTS --------------------- */
 import { FormMesh } from "../components/FormMesh";
+import { Spinner } from "../components";
 /* ----------------------- HELPERS ---------------------- */
 import { formatearNum } from "../helpers/helpers";
+import { setExpireCookie, readCookie } from "../helpers/cookies";
 /* ----------------------- ASSETS ----------------------- */
 import { MESH } from "../Env";
 import imgStep from "../assets/imgs/step1.png";
 import imgMesh from "../assets/imgs/imgMesh.png";
 
 export const Compra = () => {
-  const { step, setStep, cliente, torres, setTorres, mostrarForm } =
-    useCarrito();
-  const { domicilios = 0 } = cliente;
+  const { setStep, torres, setTorres, mostrarForm } = useCarrito();
+  const { num, site, setSite } = useAuth();
+
+  /* ------------------- ESTADOS LOCALES ------------------ */
+  const [resultado, setResultado] = useState([]);
   const [mostrarButtonComprar, setMostrarButtonComprar] = useState(0);
   const handleChangeDIR = (e) => {
     let value = e.target.value;
     setMostrarButtonComprar(value);
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      console.log("DIRS POR FETCH");
+
+      try {
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        var raw = JSON.stringify({
+          service: "consulta",
+          id_cliente: num, //num
+          data: {
+            Codigo: "AC",
+            Agrupador: "",
+          },
+        });
+        var requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: raw,
+          redirect: "follow",
+        };
+
+        const response = await fetch(
+          "https://portal2-des.iplan.com.ar/login_unificado/main/Calls/Tenfold/giveSubscription.php",
+          requestOptions,
+        );
+        const result = await response.text();
+
+        let internetLivs = JSON.parse(result).filter((servicio) => {
+          if (servicio.Servicio.Servicio === "Internet Liv") {
+            return servicio;
+          }
+        });
+        setExpireCookie(
+          "internetLivDir",
+          JSON.stringify(internetLivs),
+          24 * 60 * 60000,
+        );
+        setResultado(internetLivs);
+      } catch (error) {
+        console.log("Error:", error);
+      }
+    };
+
+    if (num != 0 && readCookie("internetLivDir") == null) {
+      fetchData();
+    } else {
+      if (readCookie("internetLivDir")) {
+        console.log("DIRS POR COOKIE");
+        let valueCookie = readCookie("internetLivDir");
+        setResultado(JSON.parse(valueCookie));
+      }
+    }
+  }, [num]);
+
+  // useEffect(() => {
+  //INFX ESTE USEEFFECT ESTARA SOLO DE FORMA LOCAL
+  //   let TEXTO2SUBS = `[{"Site":"JORGE NEWBERY_2410_1_F","SiteID":"1696449058","Servicio":{"Servicio":"Internet Liv","Subscripcion":"1594951","Numero":"190210232187","Cargo":"1802.210000","Fecha":"2017\/08\/17","Agrupador":"IL","PlanID":"7201","PaqueteID":"55466","SubscriptionID":"1594949"}},{"Site":"JORGE NEWBERY_2410_1_F","SiteID":"1696449058","Servicio":{"Servicio":"Wi-Fi Liv","Subscripcion":"1594950","Numero":"99999999211","Cargo":"0.000000","Fecha":"2017\/08\/17","Agrupador":"WL","PlanID":"7201","PaqueteID":"55466","SubscriptionID":"1594948"}},{"Site":"JORGE NEWBERY_2410_11_A","SiteID":"1696449406","Servicio":{"Servicio":"Internet Liv","Subscripcion":"1596198","Numero":"190210232198","Cargo":"1802.210000","Fecha":"2017\/08\/25","Agrupador":"IL","PlanID":"7283","PaqueteID":"55631","SubscriptionID":"1596196"}},{"Site":"JORGE NEWBERY_2410_11_A","SiteID":"1696449406","Servicio":{"Servicio":"Wi-Fi Liv","Subscripcion":"1596199","Numero":"90000001275","Cargo":"0.000000","Fecha":"2017\/08\/25","Agrupador":"WL","PlanID":"7283","PaqueteID":"55631","SubscriptionID":"1596197"}}]`;
+  //   let TEXTO1SUB = `[{"Site":"CIUDAD DE LA PAZ_1951_2_11","SiteID":"1696445110","Servicio":{"Servicio":"Internet Liv","Subscripcion":"1574013","Numero":"90000518765","Cargo":"462.840000","Fecha":"2017\/05\/24","Agrupador":"IL","PlanID":"6414","PaqueteID":"53591","SubscriptionID":"1574011"}},{"Site":"CIUDAD DE LA PAZ_1951_2_11","SiteID":"1696445110","Servicio":{"Servicio":"Wi-Fi Liv","Subscripcion":"1574012","Numero":"90000094589","Cargo":"0.000000","Fecha":"2017\/05\/24","Agrupador":"WL","PlanID":"6414","PaqueteID":"53591","SubscriptionID":"1574010"}}]`;
+  //   let internetLivs = JSON.parse(TEXTO1SUB).filter((servicio) => {
+  //     if (servicio.Servicio.Servicio === "Internet Liv") {
+  //       return servicio;
+  //     }
+  //   });
+  //   setResultado(internetLivs);
+  // }, [num]);
+
+  if (resultado.length == 0) return <Spinner />;
+
   return (
     <>
       {/* STEPS */}
@@ -42,7 +117,7 @@ export const Compra = () => {
         <div className="ml-[20px] flex items-center gap-2 pl-[20px]">
           <div className="grid grid-cols-[1fr,1fr,1fr] items-center justify-items-center gap-0">
             <button
-              className="pointer h-[32px] w-[32px] rounded-full bg-iplanPink font-lato text-2xl font-bold not-italic text-iplanWhite"
+              className="pointer h-[32px] w-[32px] rounded-full bg-iplanPink font-lato text-2xl font-bold not-italic text-iplanWhite outline-none focus:outline-none"
               type="button"
               value="1"
             >
@@ -50,14 +125,14 @@ export const Compra = () => {
             </button>
             <img className="" src={imgStep}></img>
             <button
-              className="pointer h-[32px] w-[32px] rounded-full bg-iplanWhite font-lato text-2xl font-bold not-italic text-iplanGrey2"
+              className="pointer h-[32px] w-[32px] rounded-full bg-iplanWhite font-lato text-2xl font-bold not-italic text-iplanGrey2 outline-none focus:outline-none"
               disabled
               type="button"
               value="2"
             >
               2
             </button>
-            <p className="max-w-[60px] text-center font-lato text-[14px] font-[400] not-italic text-iplanPink">
+            <p className="max-w-[60px] text-center font-lato text-[14px] font-[400] not-italic text-iplanPink outline-none focus:outline-none">
               Configurar compra
             </p>
             <p className=""></p>
@@ -72,9 +147,9 @@ export const Compra = () => {
       <div className="flex w-full flex-col items-center gap-6 lg:flex-row lg:items-start">
         {/* SELECTOR/MENU */}
         <div className="w-full lg:w-[65%]">
-          <p className="mb-[16px] text-center font-lato text-[28px] font-medium not-italic leading-normal text-iplanBrown">
+          <h3 className="mb-[16px] text-center font-lato text-[28px] font-medium not-italic leading-normal text-iplanBrown">
             ¿Cuántas torres Power Mesh querés para tu hogar?
-          </p>
+          </h3>
 
           <div
             className={`${
@@ -87,9 +162,9 @@ export const Compra = () => {
               <div className="flex h-full w-full flex-col justify-center">
                 <div className="flex">
                   <div className="items-left flex w-1/2 flex-col">
-                    <p className="px-2 font-figtree text-[24px] font-bold not-italic leading-normal text-iplanPink">
+                    <span className="flex px-[12px] py-2 text-left font-figtree text-[20px] font-[900] not-italic leading-[25px] text-iplanPink">
                       WiFi Power Mesh
-                    </p>
+                    </span>
                     <p className="px-2 font-lato text-[18px] font-medium not-italic leading-normal text-iplanPink">
                       Máxima potencia
                     </p>
@@ -163,9 +238,9 @@ export const Compra = () => {
 
         {/* TICKET */}
         <div className="flex w-full max-w-[390px] flex-col lg:w-[35%]">
-          <p className="mb-[16px] text-center font-lato text-[28px] font-medium not-italic leading-normal text-[#5b5151]">
+          <h3 className="mb-[16px] text-center font-lato text-[28px] font-medium not-italic leading-normal text-iplanBrown">
             Vas a agregar a tu plan :
-          </p>
+          </h3>
 
           <div className="shadow-[1px_1px_2px_0px_rgba(0,0,0,0.15) flex w-full flex-col items-end gap-[12px] overflow-hidden rounded-[24px] bg-iplanWhite p-[18px]">
             <div className="w-full rounded-[16px] bg-iplanPink p-[12px]">
@@ -188,47 +263,55 @@ export const Compra = () => {
             </div>
 
             <div className="flex w-full flex-col border-y-[1px] border-y-[#B8B8B8] py-3">
-              <p className="mb-4 font-lato text-[17px] font-normal not-italic text-iplanBrown">
+              <span className="mb-3 flex font-lato text-[17px] font-normal not-italic text-iplanBrown">
                 Tu dirección de entrega actual es:
-              </p>
+              </span>
               <div className="relative w-full">
                 <label className="absolute left-4 top-[-10px] z-20 bg-iplanWhite px-2 text-[14px] font-bold italic text-iplanGrey2">
                   Enviar a:
                 </label>
-                <select
-                  className="z-10 h-[48px] w-full rounded-[30px] border-2 border-none bg-iplanGrey pl-4 pr-[10px] text-[16px] font-bold not-italic leading-normal text-iplanPink focus:outline-none"
-                  disabled={domicilios.length > 1 ? false : true}
-                  id="formulario_cgp"
-                  onChange={handleChangeDIR}
-                >
-                  {domicilios.length > 1 ? (
-                    <>
-                      <option
-                        className="text-4 h-[48px] w-full rounded-[30px] border-2 bg-iplanGrey pl-4 pr-[10px] font-bold not-italic text-iplanPink"
-                        value="0"
-                      >
-                        Seleccioná domiclio de entrega ...
-                      </option>
-                      {domicilios.map((opcion, index) => (
+                {resultado && resultado.length > 0 ? (
+                  <>
+                    <select
+                      className="z-10 h-[48px] w-full rounded-[30px] border-2 border-none bg-iplanGrey pl-4 pr-[10px] text-[16px] font-bold not-italic leading-normal text-iplanPink focus:outline-none"
+                      disabled={resultado.length > 1 ? false : true}
+                      id="formulario_cgp"
+                      onChange={(e) => {
+                        handleChangeDIR(e);
+                        setSite(e.target.value);
+                      }}
+                    >
+                      {resultado.length > 1 ? (
+                        <>
+                          <option
+                            className="text-4 h-[48px] w-full rounded-[30px] border-2 bg-iplanGrey pl-4 pr-[10px] font-bold not-italic text-iplanPink"
+                            value="0"
+                          >
+                            Seleccioná domiclio de entrega ...
+                          </option>
+                          {resultado.map((opcion, index) => (
+                            <option
+                              className="text-4 h-[48px] w-full rounded-[30px] border-2 bg-iplanGrey pl-4 pr-[10px] font-bold not-italic text-iplanBrown"
+                              key={index}
+                              value={opcion.SiteID}
+                            >
+                              {opcion.Site}
+                            </option>
+                          ))}
+                        </>
+                      ) : (
                         <option
                           className="text-4 h-[48px] w-full rounded-[30px] border-2 bg-iplanGrey pl-4 pr-[10px] font-bold not-italic text-iplanBrown"
-                          key={index}
-                          value={opcion}
+                          key={resultado[0].Site}
+                          value={resultado[0].SiteID}
                         >
-                          {opcion}
+                          {resultado[0].Site}
+                          {setSite(resultado[0].SiteID)}
                         </option>
-                      ))}
-                    </>
-                  ) : (
-                    <option
-                      className="text-4 h-[48px] w-full rounded-[30px] border-2 bg-iplanGrey pl-4 pr-[10px] font-bold not-italic text-iplanBrown"
-                      key={domicilios[0]}
-                      value={domicilios[0]}
-                    >
-                      {domicilios[0]}
-                    </option>
-                  )}
-                </select>
+                      )}
+                    </select>
+                  </>
+                ) : null}
               </div>
             </div>
 
@@ -240,11 +323,13 @@ export const Compra = () => {
                 {formatearNum(parseInt(torres) * MESH)}
               </p>
             </div>
-            {(domicilios.length == 1 || mostrarButtonComprar != 0) && (
+            {(resultado.length == 1 || mostrarButtonComprar != 0) && (
               <button
-                className="mt-2 flex h-[36px] w-auto max-w-[90] items-center gap-[8px] rounded-[25px] bg-iplanPink px-6 py-2 font-lato text-[17px] font-bold leading-normal text-iplanWhite"
+                className="mt-2 flex h-[36px] w-auto max-w-[90] items-center gap-[8px] rounded-[25px] bg-iplanPink px-6 py-2 font-lato text-[17px] font-bold leading-normal text-iplanWhite outline-none focus:outline-none"
                 onClick={(e) => {
-                  setStep(step + 1);
+                  setExpireCookie("stepCookie", 4, 24 * 60 * 60000);
+                  setExpireCookie("siteIDAInstalar", site, 24 * 60 * 60000);
+                  setStep(readCookie("stepCookie"));
                 }}
                 type="button"
               >

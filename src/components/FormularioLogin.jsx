@@ -4,14 +4,17 @@ import { faQuestion } from "@fortawesome/free-solid-svg-icons";
 import * as Yup from "yup";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 /* ------------------------ REACT ----------------------- */
+import { useEffect } from "react";
 import useCarrito from "../hooks/useCarritoProvider";
+import useAuth from "../hooks/useAuthProvider";
 /* --------------------- COMPONENTS --------------------- */
 /* ----------------------- HELPERS ---------------------- */
+import { delete_cookie, readCookie } from "../helpers/cookies";
 /* ----------------------- ASSETS ----------------------- */
-import { USUARIOS } from "../constants";
+// import { USUARIOS } from "../constants"; ya no se usa
 
 export const FormularioLogin = () => {
-  const { setStep, setCargando, setCliente } = useCarrito();
+  const { setCargando } = useAuth();
   const SignupSchema = Yup.object().shape({
     username: Yup.string()
       .min(6, "El cgp cuenta con al menos 7 caracteres")
@@ -23,39 +26,59 @@ export const FormularioLogin = () => {
     try {
       setCargando(true);
 
-      const response = await new Promise((resolve) =>
-        setTimeout(() => {
-          const usuarioEncontrado = USUARIOS.find(
-            (usuario) =>
-              usuario.username == data.username &&
-              usuario.password == data.password,
-          );
-          if (usuarioEncontrado) {
-            resolve({
-              ok: true,
-              message: `Simulación exitosa para el usuario ${data.username}`,
-              cliente: usuarioEncontrado,
-            });
-          } else {
-            resolve({
-              ok: false,
-              message: "Credenciales incorrectas",
-            });
-          }
-        }, 4000),
-      );
+      var myHeaders = new Headers();
+      var formdata = new FormData();
+      formdata.append("username", data.username);
+      formdata.append("password", data.password);
 
+      var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: formdata,
+        redirect: "follow",
+      };
+      const response = await fetch(
+        "https://portal2-des.iplan.com.ar/login_carrito/redirectcarrito.php",
+        requestOptions,
+      );
       if (!response.ok) {
         throw new Error(`Error en la solicitud: ${response.status}`);
       }
-      setCliente(response.cliente);
-      setStep(3);
+      const result = await response.text();
+      console.log(
+        "🚀 - file: FormularioLogin.jsx:48 - handleSubmitLogin - result:",
+        result,
+      );
+      /* --------------------- FAKE LOGIN --------------------- */
+      // const usuarioEncontrado = USUARIOS.find(
+      //   (usuario) =>
+      //     usuario.username == data.username &&
+      //     usuario.password == data.password
+      // );
+      // if (usuarioEncontrado) {
+      //   setCliente(usuarioEncontrado);
+      //   setStep(3);
+      // } else {
+      //   throw new Error("Credenciales incorrectas");
+      // }
     } catch (error) {
       console.error("Error al realizar la solicitud:", error.message);
-    } finally {
-      setCargando(false);
     }
   };
+
+  // useEffect(() => {
+  //   let interv = setInterval(() => {
+  //     if (readCookie("userLogged")) {
+  //       setCargando(false);
+  //       setCliente(readCookie("userLogged"));
+  //       setStep(3);
+
+  //       clearInterval(interv);
+  //     } else {
+  //       console.log("No logeo");
+  //     }
+  //   }, 1000);
+  // }, []);
 
   return (
     <Formik
@@ -100,6 +123,7 @@ export const FormularioLogin = () => {
         >
           INGRESAR
         </button>
+        {/* TODOX A DONDE ME DIRIGE ?? */}
         <a
           className="mt-4 font-roboto text-[17px] font-bold not-italic leading-[135%] tracking-[-0.187px] text-iplanPink"
           href="#"

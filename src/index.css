@@ -22,10 +22,10 @@
     @apply flex h-full flex-col items-center gap-4 self-stretch bg-white px-[24px] py-[32px];
   }
   .btnDisabled {
-    @apply overflow-hidden rounded-[40px] bg-iplanGrey  px-[10px] py-[5px] font-lato text-2xl font-bold not-italic leading-[25px] text-iplanPink;
+    @apply overflow-hidden rounded-[40px] bg-iplanGrey px-[10px] py-[5px]  font-lato text-2xl font-bold not-italic leading-[25px] text-iplanPink outline-none focus:outline-none;
   }
   .btnActived {
-    @apply transform overflow-hidden rounded-[40px] bg-iplanPink px-[10px] py-[5px] font-lato text-2xl font-bold not-italic leading-[25px] text-iplanWhite transition duration-300 ease-in-out hover:scale-105 active:scale-95;
+    @apply transform overflow-hidden rounded-[40px] bg-iplanPink px-[10px] py-[5px] font-lato text-2xl font-bold not-italic leading-[25px] text-iplanWhite outline-none transition duration-300 ease-in-out hover:scale-105 focus:outline-none active:scale-95;
   }
   .packDisabled {
     @apply flex max-h-[68px] items-center justify-center overflow-hidden rounded-[162px] bg-iplanGrey px-[24px] py-[12px] font-lato text-[20px] font-bold text-iplanBlue;
