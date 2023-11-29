@@ -26,12 +26,14 @@ export const Compra = () => {
 
   /* ------------------- ESTADOS LOCALES ------------------ */
   const [resultado, setResultado] = useState([]);
+  const [statusMesh, setStatusMesh] = useState({});
   const [mostrarButtonComprar, setMostrarButtonComprar] = useState(0);
   const handleChangeDIR = (e) => {
     let value = e.target.value;
     setMostrarButtonComprar(value);
   };
 
+  //INFX ESTE USEEFFECT ES PARA DESA
   useEffect(() => {
     const fetchData = async () => {
       console.log("DIRS POR FETCH");
@@ -65,10 +67,21 @@ export const Compra = () => {
             return servicio;
           }
         });
+        let internetMesh = JSON.parse(result).find((servicio) => {
+          return servicio.Servicio.Servicio === "Wi-Fi Power Mesh";
+        });
+
+        if (internetMesh) {
+          setExpireCookie(
+            "internetMesh",
+            JSON.stringify(internetMesh),
+            24 * 60 * 60,
+          );
+        }
         setExpireCookie(
           "internetLivDir",
           JSON.stringify(internetLivs),
-          24 * 60 * 60000,
+          24 * 60 * 60,
         );
         setResultado(internetLivs);
       } catch (error) {
@@ -87,15 +100,25 @@ export const Compra = () => {
     }
   }, [num]);
 
+  //INFX ESTE ES PARA USO LOCAL
   // useEffect(() => {
-  //INFX ESTE USEEFFECT ESTARA SOLO DE FORMA LOCAL
-  //   let TEXTO2SUBS = `[{"Site":"JORGE NEWBERY_2410_1_F","SiteID":"1696449058","Servicio":{"Servicio":"Internet Liv","Subscripcion":"1594951","Numero":"190210232187","Cargo":"1802.210000","Fecha":"2017\/08\/17","Agrupador":"IL","PlanID":"7201","PaqueteID":"55466","SubscriptionID":"1594949"}},{"Site":"JORGE NEWBERY_2410_1_F","SiteID":"1696449058","Servicio":{"Servicio":"Wi-Fi Liv","Subscripcion":"1594950","Numero":"99999999211","Cargo":"0.000000","Fecha":"2017\/08\/17","Agrupador":"WL","PlanID":"7201","PaqueteID":"55466","SubscriptionID":"1594948"}},{"Site":"JORGE NEWBERY_2410_11_A","SiteID":"1696449406","Servicio":{"Servicio":"Internet Liv","Subscripcion":"1596198","Numero":"190210232198","Cargo":"1802.210000","Fecha":"2017\/08\/25","Agrupador":"IL","PlanID":"7283","PaqueteID":"55631","SubscriptionID":"1596196"}},{"Site":"JORGE NEWBERY_2410_11_A","SiteID":"1696449406","Servicio":{"Servicio":"Wi-Fi Liv","Subscripcion":"1596199","Numero":"90000001275","Cargo":"0.000000","Fecha":"2017\/08\/25","Agrupador":"WL","PlanID":"7283","PaqueteID":"55631","SubscriptionID":"1596197"}}]`;
   //   let TEXTO1SUB = `[{"Site":"CIUDAD DE LA PAZ_1951_2_11","SiteID":"1696445110","Servicio":{"Servicio":"Internet Liv","Subscripcion":"1574013","Numero":"90000518765","Cargo":"462.840000","Fecha":"2017\/05\/24","Agrupador":"IL","PlanID":"6414","PaqueteID":"53591","SubscriptionID":"1574011"}},{"Site":"CIUDAD DE LA PAZ_1951_2_11","SiteID":"1696445110","Servicio":{"Servicio":"Wi-Fi Liv","Subscripcion":"1574012","Numero":"90000094589","Cargo":"0.000000","Fecha":"2017\/05\/24","Agrupador":"WL","PlanID":"6414","PaqueteID":"53591","SubscriptionID":"1574010"}}]`;
-  //   let internetLivs = JSON.parse(TEXTO1SUB).filter((servicio) => {
+  //   let TEXTO2SUBS = `[{"Site":"JORGE NEWBERY_2410_1_F","SiteID":"1696449058","Servicio":{"Servicio":"Internet Liv","Subscripcion":"1594951","Numero":"190210232187","Cargo":"1802.210000","Fecha":"2017\/08\/17","Agrupador":"IL","PlanID":"7201","PaqueteID":"55466","SubscriptionID":"1594949"}},{"Site":"JORGE NEWBERY_2410_1_F","SiteID":"1696449058","Servicio":{"Servicio":"Wi-Fi Liv","Subscripcion":"1594950","Numero":"99999999211","Cargo":"0.000000","Fecha":"2017\/08\/17","Agrupador":"WL","PlanID":"7201","PaqueteID":"55466","SubscriptionID":"1594948"}},{"Site":"JORGE NEWBERY_2410_11_A","SiteID":"1696449406","Servicio":{"Servicio":"Internet Liv","Subscripcion":"1596198","Numero":"190210232198","Cargo":"1802.210000","Fecha":"2017\/08\/25","Agrupador":"IL","PlanID":"7283","PaqueteID":"55631","SubscriptionID":"1596196"}},{"Site":"JORGE NEWBERY_2410_11_A","SiteID":"1696449406","Servicio":{"Servicio":"Wi-Fi Liv","Subscripcion":"1596199","Numero":"90000001275","Cargo":"0.000000","Fecha":"2017\/08\/25","Agrupador":"WL","PlanID":"7283","PaqueteID":"55631","SubscriptionID":"1596197"}}]`;
+  //   let TEXTOSUBCONMESH = `[{"Site":"JOSE DE AMENABAR_1551_3_D","SiteID":"1696570853","Servicio":{"Servicio":"DGO","Subscripcion":"2126972","Numero":"90000007885","Cargo":"1503.310000","Fecha":"2022\/01\/17","Agrupador":"DT","PlanID":"40129","PaqueteID":[],"SubscriptionID":"2126971"}},{"Site":"JOSE DE AMENABAR_1551_3_D","SiteID":"1696570853","Servicio":{"Servicio":"Internet Liv","Subscripcion":"1958995","Numero":"90000519988","Cargo":"0.000000","Fecha":"2020\/09\/11","Agrupador":"IL","PlanID":"33526","PaqueteID":"114907","SubscriptionID":"1958993"}},{"Site":"JOSE DE AMENABAR_1551_3_D","SiteID":"1696570853","Servicio":{"Servicio":"Wi-Fi Liv","Subscripcion":"1958996","Numero":"90000573025","Cargo":"0.000000","Fecha":"2020\/09\/11","Agrupador":"WL","PlanID":"33526","PaqueteID":"114907","SubscriptionID":"1958994"}},{"Site":"JOSE DE AMENABAR_1551_3_D","SiteID":"1696570853","Servicio":{"Servicio":"Wi-Fi Power Mesh","Subscripcion":"1997108","Numero":"90000439575","Cargo":"0.000000","Fecha":"2020\/11\/27","Agrupador":"WM","PlanID":"34758","PaqueteID":"114907","SubscriptionID":"1997107"}}]`;
+  //   let internetLivs = JSON.parse(TEXTOSUBCONMESH).filter((servicio) => {
   //     if (servicio.Servicio.Servicio === "Internet Liv") {
   //       return servicio;
   //     }
   //   });
+
+  //   let internetMesh = JSON.parse(TEXTOSUBCONMESH).find((servicio) => {
+  //     return servicio.Servicio.Servicio === "Wi-Fi Power Mesh";
+  //   });
+  //   console.log(
+  //     "🚀 - file: Compra.jsx:108 - internetMesh - internetMesh:",
+  //     internetMesh,
+  //   );
+
   //   setResultado(internetLivs);
   // }, [num]);
 
@@ -327,8 +350,8 @@ export const Compra = () => {
               <button
                 className="mt-2 flex h-[36px] w-auto max-w-[90] items-center gap-[8px] rounded-[25px] bg-iplanPink px-6 py-2 font-lato text-[17px] font-bold leading-normal text-iplanWhite outline-none focus:outline-none"
                 onClick={(e) => {
-                  setExpireCookie("stepCookie", 4, 24 * 60 * 60000);
-                  setExpireCookie("siteIDAInstalar", site, 24 * 60 * 60000);
+                  setExpireCookie("stepCookie", 4, 24 * 60 * 60);
+                  setExpireCookie("siteIDAInstalar", site, 24 * 60 * 60);
                   setStep(readCookie("stepCookie"));
                 }}
                 type="button"

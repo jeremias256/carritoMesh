@@ -65,21 +65,6 @@ export const FormularioLogin = () => {
       console.error("Error al realizar la solicitud:", error.message);
     }
   };
-
-  // useEffect(() => {
-  //   let interv = setInterval(() => {
-  //     if (readCookie("userLogged")) {
-  //       setCargando(false);
-  //       setCliente(readCookie("userLogged"));
-  //       setStep(3);
-
-  //       clearInterval(interv);
-  //     } else {
-  //       console.log("No logeo");
-  //     }
-  //   }, 1000);
-  // }, []);
-
   return (
     <Formik
       initialValues={{ username: "", password: "" }}

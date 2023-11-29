@@ -14,6 +14,7 @@ export default {
         iplanOrange: '#FF8200',
         iplanForm: '#E0E0E0',
         iplanBrown: '#5B5151',
+        iplanGreen: '#42E781'
       },
       fontFamily: {
         'roboto': ['Roboto', 'sans-serif'],

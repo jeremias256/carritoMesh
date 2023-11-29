@@ -32,18 +32,14 @@ export const Agendamiento = () => {
           id: fechaEntrega.id,
         });
 
-        setExpireCookie(
-          "agendamientoFecha",
-          fechaEntrega.fecha,
-          24 * 60 * 60000,
-        );
+        setExpireCookie("agendamientoFecha", fechaEntrega.fecha, 24 * 60 * 60);
         setExpireCookie(
           "agendamientoHorario",
           fechaEntrega.horario,
-          24 * 60 * 60000,
+          24 * 60 * 60,
         );
-        setExpireCookie("agendamientoID", fechaEntrega.id, 24 * 60 * 60000);
-        setExpireCookie("stepCookie", 5, 24 * 60 * 60000);
+        setExpireCookie("agendamientoID", fechaEntrega.id, 24 * 60 * 60);
+        setExpireCookie("stepCookie", 5, 24 * 60 * 60);
         setStep(readCookie("stepCookie"));
         clearInterval(interv);
       } else {

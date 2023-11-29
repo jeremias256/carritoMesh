@@ -22,18 +22,22 @@ export const Login = () => {
 
   //TODOX SE PUEDE EVITAR LA PRIMERA VISTA DEL LOGIN ANTES DE CAMBIAR DE STEP ?
   useEffect(() => {
-    let interv = setInterval(() => {
-      if (readCookie("stepCookie")) {
+    let interv = setInterval(async () => {
+      if (readCookie("internetMesh")) {
+        console.log("TIENE MESH POR LA COOKIE");
+        setStep(6);
+      } else if (readCookie("stepCookie")) {
         let cookieName = readCookie("userLogged");
         let cookieCgp = readCookie("carritoCGP");
         let stepNum = readCookie("stepCookie");
         console.log(`LEO COOKIE DE STEP VOY A STEP ${stepNum}`);
-        setStep(stepNum);
+
         setAuth(cookieName);
         setCgp(cookieCgp);
         setNum(String(cookieCgp).slice(0, -1));
         setCargando(false);
         clearInterval(interv);
+        setStep(stepNum);
       } else if (readCookie("carritoCGP") && readCookie("userLogged")) {
         console.log("LEO COOKIES DE CARRITO Y USERLOGGED VOY A LOGIN");
         let cookieName = readCookie("userLogged");
@@ -42,14 +46,63 @@ export const Login = () => {
         setCgp(cookieCgp);
         setCargando(false);
         setNum(String(cookieCgp).slice(0, -1));
-        setExpireCookie("stepCookie", 3, 24 * 60 * 60000);
-        setStep(3);
+        setExpireCookie("stepCookie", 3, 24 * 60 * 60);
         clearInterval(interv);
+
+        /* --------- FETCH PARA VERIFICAR SI TIENE MESH --------- */
+        let tieneMesh = await fetchData(String(cookieCgp).slice(0, -1));
+        console.log("🚀 - file: Login.jsx:53 - interv - tieneMesh:", tieneMesh);
+        /* --------- FETCH PARA VERIFICAR SI TIENE MESH --------- */
+        if (tieneMesh) {
+          setExpireCookie(
+            "internetMesh",
+            JSON.stringify(tieneMesh),
+            24 * 60 * 60,
+          );
+          setStep(6);
+        } else {
+          setStep(3);
+        }
       } else {
         console.log("si existe la cookie va al step 3 pero no hay cookie");
       }
     }, 1000);
   }, []);
+
+  const fetchData = async (numero) => {
+    console.log("FETCH PARA SABER SI YA TIENE MESH");
+    try {
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      var raw = JSON.stringify({
+        service: "consulta",
+        id_cliente: numero, //num
+        data: {
+          Codigo: "AC",
+          Agrupador: "",
+        },
+      });
+      var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow",
+      };
+
+      const response = await fetch(
+        "https://portal2-des.iplan.com.ar/login_unificado/main/Calls/Tenfold/giveSubscription.php",
+        requestOptions,
+      );
+      const result = await response.text();
+
+      let internetMesh = JSON.parse(result).find((servicio) => {
+        return servicio.Servicio.Servicio === "Wi-Fi Power Mesh";
+      });
+      return internetMesh;
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  };
 
   return (
     <>

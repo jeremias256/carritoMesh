@@ -12,6 +12,7 @@ export const AppCarrito = () => {
       {step == 4 && <Agendamiento />}
       {step == 5 && <Final />}
       {step == 6 && <TieneMesh />}
+      {/* <TieneMesh /> */}
     </>
   );
 };
