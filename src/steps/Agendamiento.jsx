@@ -13,42 +13,93 @@ import { delete_cookie, readCookie, setExpireCookie } from "../helpers/cookies";
 import imgStep from "../assets/imgs/step2.png";
 
 export const Agendamiento = () => {
-  const { site, setSite } = useAuth();
-  const { agendamiento, setAgendamiento, setStep } = useCarrito();
-  useEffect(() => {
-    delete_cookie("FechaAgendada");
-    delete_cookie("TurnoAgendado");
-    delete_cookie("CupoAgendado");
-    let interv = setInterval(() => {
-      if (readCookie("FechaAgendada")) {
-        let fechaEntrega = {};
-        fechaEntrega.fecha = readCookie("FechaAgendada");
-        fechaEntrega.horario = readCookie("TurnoAgendado");
-        fechaEntrega.id = readCookie("CupoAgendado");
+  const { num } = useAuth();
+  const {
+    direcciones,
+    setDirecciones,
+    torres,
+    setTorres,
+    setStep,
+    site,
+    setSite,
+    setMensaje,
+  } = useCarrito();
 
-        setAgendamiento({
-          fecha: fechaEntrega.fecha,
-          horario: fechaEntrega.horario,
-          id: fechaEntrega.id,
+  useEffect(() => {
+    console.log("RENDERIZO USEEFFECT AGENDAMIENTO");
+    delete_cookie("carritoAgendamientoFecha");
+    delete_cookie("carritoAgendamientoHorario");
+    delete_cookie("carritoAgendamientoCupo");
+    if (readCookie("carritoCookieDirs"))
+      setDirecciones(JSON.parse(readCookie("carritoCookieDirs")));
+    if (readCookie("carritoCookieTorre"))
+      setTorres(readCookie("carritoCookieTorre"));
+    if (readCookie("carritoCookieSite"))
+      setSite(readCookie("carritoCookieSite"));
+
+    const agendamientoFetch = async (fechaEntrega) => {
+      console.log("ENCONTRO COOKIE DE AGENDA, SIGUE FETCH DE AGENDAMIENTO");
+      try {
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        let internetLiv = direcciones.find((obj) => obj.SiteID == site);
+
+        const raw = JSON.stringify({
+          id_cliente: num,
+          site_id: site,
+          agenda_cupo: fechaEntrega.id,
+          sub_id: internetLiv.Servicio.SubscriptionID,
+          cantidad: torres,
         });
 
-        setExpireCookie("agendamientoFecha", fechaEntrega.fecha, 24 * 60 * 60);
-        setExpireCookie(
-          "agendamientoHorario",
-          fechaEntrega.horario,
-          24 * 60 * 60,
+        const requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: raw,
+          redirect: "follow",
+        };
+
+        const response = await fetch(
+          "https://portal2-des.iplan.com.ar/login_unificado/main/Calls/ServiceCarritoMesh.php",
+          requestOptions,
         );
-        setExpireCookie("agendamientoID", fechaEntrega.id, 24 * 60 * 60);
-        setExpireCookie("stepCookie", 5, 24 * 60 * 60);
-        setStep(readCookie("stepCookie"));
+        const result = await response.text();
+
+        if (
+          result == "ERROR AGENDA [5] : agendamiento existente" ||
+          result == "ERROR AGENDA [E]"
+        ) {
+          setExpireCookie("carritoMensaje", "error", 24 * 60 * 60000);
+          setMensaje(readCookie("carritoMensaje"));
+          setExpireCookie("carritoCookieStep", 5, 24 * 60 * 60000);
+          setStep(readCookie("carritoCookieStep"));
+        } else {
+          setExpireCookie("carritoMensaje", "OK", 24 * 60 * 60000);
+          setMensaje(readCookie("carritoMensaje"));
+          setExpireCookie("carritoCookieStep", 5, 24 * 60 * 60000);
+          setStep(readCookie("carritoCookieStep"));
+        }
+      } catch (error) {
+        console.log("error", error);
+      }
+    };
+
+    let interv = setInterval(() => {
+      if (readCookie("carritoAgendamientoFecha")) {
+        let fechaEntrega = {};
+        fechaEntrega.fecha = readCookie("carritoAgendamientoFecha");
+        fechaEntrega.horario = readCookie("carritoAgendamientoHorario");
+        fechaEntrega.id = readCookie("carritoAgendamientoCupo");
+
         clearInterval(interv);
+        if (site != 0) agendamientoFetch(fechaEntrega);
       } else {
-        console.log("no hay fecha agendadaaaa");
+        console.log("no hay fecha agendada");
       }
     }, 1000);
-  }, []);
+  }, [site]);
 
-  if (readCookie("siteIDAInstalar")) setSite(readCookie("siteIDAInstalar"));
   if (!site) return <Spinner />;
 
   return (

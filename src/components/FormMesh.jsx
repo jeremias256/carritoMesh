@@ -115,7 +115,7 @@ export const FormMesh = () => {
             Buscá la mejor opción para tu hogar:
           </p>
           <button
-            className="mt-4 flex h-[36px] w-auto max-w-[90] items-center justify-center rounded-[25px] bg-iplanPink px-6 py-2 font-lato text-[17px] font-bold leading-normal text-iplanWhite"
+            className="mt-4 flex h-[36px] w-auto max-w-[90] items-center justify-center rounded-[25px] bg-iplanPink px-6 py-2 font-lato text-[17px] font-bold leading-normal text-iplanWhite outline-none focus:outline-none"
             onClick={() => {
               setMostrarForm(true);
             }}
@@ -128,12 +128,10 @@ export const FormMesh = () => {
       {vistaConResultado && !mostrarForm && (
         <>
           <p className="font-lato text-[18px] font-normal not-italic leading-normal text-iplanGrey2">
-            Te recomendamos
-            <span className="font-lato text-[18px] not-italic leading-normal text-iplanPink">
-              {" "}
-              {resultadoForm} Torres Power Mesh
-            </span>
-            para tu hogar
+            Te recomendamos para tu hogar
+          </p>
+          <p className="font-lato text-[18px] not-italic leading-normal text-iplanPink">
+            {resultadoForm} Torres Power Mesh
           </p>
           <button
             onClick={() => {
@@ -146,7 +144,7 @@ export const FormMesh = () => {
               // setResultadoForm(false);
               setRespuestasActived(false);
             }}
-            className="btnNextActived mt-2"
+            className="mt-2 flex h-[36px] w-auto max-w-[180px] items-center justify-center gap-[6px] rounded-[25px] bg-iplanGrey2 px-6 py-2 font-lato text-[17px] font-bold leading-normal text-iplanWhite outline-none focus:outline-none"
             type="button"
           >
             REHACER TEST
@@ -157,6 +155,7 @@ export const FormMesh = () => {
         <div className="flex h-full max-h-[530px] max-w-[300px] flex-col items-end">
           {/* X */}
           <button
+            className="outline-none focus:outline-none"
             onClick={(e) => {
               setMostrarForm(false);
             }}
@@ -237,7 +236,7 @@ export const FormMesh = () => {
                       ¿Cuántos m2 tiene tu domicilio?
                     </p>
 
-                    <div className="grid grid-cols-1 gap-4">
+                    <div className="grid grid-cols-1 gap-2">
                       {pregunta2.map((radio, index) => (
                         <label
                           key={index}
@@ -295,7 +294,7 @@ export const FormMesh = () => {
                       ¿Cuántas plantas tiene tu domicilio?
                     </p>
 
-                    <div className="grid grid-cols-1 gap-4">
+                    <div className="grid grid-cols-1 gap-2">
                       {pregunta3.map((radio, index) => (
                         <label
                           key={index}
@@ -318,7 +317,7 @@ export const FormMesh = () => {
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-center gap-4">
+                  <div className="flex items-center justify-center gap-2">
                     <button
                       className="flex h-[36px] w-auto max-w-[90] items-center justify-center rounded-[25px] bg-iplanPink px-6 py-2 font-roboto text-[17px] font-normal text-iplanWhite"
                       onClick={handlePrevStep}
@@ -429,12 +428,14 @@ export const FormMesh = () => {
                       <button disabled className="btnActived">
                         {resultadoForm}
                       </button>{" "}
-                      torres Power Mesh
+                      {resultadoForm == 1
+                        ? "torre Power Mesh"
+                        : "torres Power Mesh"}
                     </li>
                   </ul>
                 </div>
 
-                <div>
+                {/* <div>
                   <button
                     onClick={() => {
                       setCurrentIndex(1);
@@ -450,7 +451,7 @@ export const FormMesh = () => {
                   >
                     REHACER TEST
                   </button>
-                </div>
+                </div> */}
               </div>
             )}
           </div>

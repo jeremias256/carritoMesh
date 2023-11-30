@@ -21,12 +21,19 @@ import imgStep from "../assets/imgs/step1.png";
 import imgMesh from "../assets/imgs/imgMesh.png";
 
 export const Compra = () => {
-  const { setStep, torres, setTorres, mostrarForm } = useCarrito();
-  const { num, site, setSite } = useAuth();
+  const {
+    direcciones,
+    setDirecciones,
+    setStep,
+    torres,
+    setTorres,
+    mostrarForm,
+    site,
+    setSite,
+  } = useCarrito();
+  const { num } = useAuth();
 
   /* ------------------- ESTADOS LOCALES ------------------ */
-  const [resultado, setResultado] = useState([]);
-  const [statusMesh, setStatusMesh] = useState({});
   const [mostrarButtonComprar, setMostrarButtonComprar] = useState(0);
   const handleChangeDIR = (e) => {
     let value = e.target.value;
@@ -72,30 +79,33 @@ export const Compra = () => {
         });
 
         if (internetMesh) {
+          console.log("CLIENTE TIENE MESH GUARDO EN COOKIE");
           setExpireCookie(
-            "internetMesh",
+            "carritoCookieMesh",
             JSON.stringify(internetMesh),
-            24 * 60 * 60,
+            24 * 60 * 60000,
           );
         }
         setExpireCookie(
-          "internetLivDir",
+          "carritoCookieDirs",
           JSON.stringify(internetLivs),
-          24 * 60 * 60,
+          24 * 60 * 60000,
         );
-        setResultado(internetLivs);
+        setDirecciones(internetLivs);
       } catch (error) {
         console.log("Error:", error);
       }
     };
 
-    if (num != 0 && readCookie("internetLivDir") == null) {
+    if (num != 0 && readCookie("carritoCookieDirs") == null) {
+      //SI NO EXISTE LA COOKIE DE DIRS HACE FETCH
       fetchData();
     } else {
-      if (readCookie("internetLivDir")) {
+      //DIRS POR COOKIE
+      if (readCookie("carritoCookieDirs")) {
         console.log("DIRS POR COOKIE");
-        let valueCookie = readCookie("internetLivDir");
-        setResultado(JSON.parse(valueCookie));
+        let valueCookie = readCookie("carritoCookieDirs");
+        setDirecciones(JSON.parse(valueCookie));
       }
     }
   }, [num]);
@@ -119,10 +129,10 @@ export const Compra = () => {
   //     internetMesh,
   //   );
 
-  //   setResultado(internetLivs);
+  //   setDirecciones(internetLivs);
   // }, [num]);
 
-  if (resultado.length == 0) return <Spinner />;
+  // if (direcciones.length == 0) return <Spinner />;
 
   return (
     <>
@@ -184,8 +194,8 @@ export const Compra = () => {
             <div className="items-left flex w-full lg:w-[60%] lg:items-start lg:border-r-2 lg:border-iplanPink">
               <div className="flex h-full w-full flex-col justify-center">
                 <div className="flex">
-                  <div className="items-left flex w-1/2 flex-col">
-                    <span className="flex px-[12px] py-2 text-left font-figtree text-[20px] font-[900] not-italic leading-[25px] text-iplanPink">
+                  <div className="flex w-1/2 flex-col items-start">
+                    <span className="flex px-2 py-2 text-left font-figtree text-[20px] font-[900] not-italic leading-[25px] text-iplanPink">
                       WiFi Power Mesh
                     </span>
                     <p className="px-2 font-lato text-[18px] font-medium not-italic leading-normal text-iplanPink">
@@ -268,7 +278,7 @@ export const Compra = () => {
           <div className="shadow-[1px_1px_2px_0px_rgba(0,0,0,0.15) flex w-full flex-col items-end gap-[12px] overflow-hidden rounded-[24px] bg-iplanWhite p-[18px]">
             <div className="w-full rounded-[16px] bg-iplanPink p-[12px]">
               <div className="overflow-hidden rounded-[12px] bg-iplanWhite">
-                <p className="px-[12px] py-2 font-figtree text-[20px] font-[900] not-italic leading-[25px] text-iplanPink">
+                <p className="px-2 py-2 text-left font-figtree text-[20px] font-[900] not-italic leading-[25px] text-iplanPink">
                   WiFi Power Mesh
                 </p>
 
@@ -276,7 +286,12 @@ export const Compra = () => {
 
                 <div className="flex justify-between px-[12px] py-2">
                   <p className="font-lato text-[16px] font-[400] not-italic leading-normal text-iplanPink">
-                    Torres x <span className="font-[900]"> {torres} </span>
+                    <span className="font-[900]">
+                      {" "}
+                      {torres == 1
+                        ? `Torre x ${torres}`
+                        : `Torres x ${torres}`}{" "}
+                    </span>
                   </p>
                   <p className="font-figtree text-[18px] font-[900] not-italic leading-normal text-iplanPink">
                     <span> {formatearNum(parseInt(torres) * MESH)} </span>
@@ -293,18 +308,18 @@ export const Compra = () => {
                 <label className="absolute left-4 top-[-10px] z-20 bg-iplanWhite px-2 text-[14px] font-bold italic text-iplanGrey2">
                   Enviar a:
                 </label>
-                {resultado && resultado.length > 0 ? (
+                {direcciones && direcciones.length > 0 ? (
                   <>
                     <select
                       className="z-10 h-[48px] w-full rounded-[30px] border-2 border-none bg-iplanGrey pl-4 pr-[10px] text-[16px] font-bold not-italic leading-normal text-iplanPink focus:outline-none"
-                      disabled={resultado.length > 1 ? false : true}
+                      disabled={direcciones.length > 1 ? false : true}
                       id="formulario_cgp"
                       onChange={(e) => {
                         handleChangeDIR(e);
                         setSite(e.target.value);
                       }}
                     >
-                      {resultado.length > 1 ? (
+                      {direcciones.length > 1 ? (
                         <>
                           <option
                             className="text-4 h-[48px] w-full rounded-[30px] border-2 bg-iplanGrey pl-4 pr-[10px] font-bold not-italic text-iplanPink"
@@ -312,7 +327,7 @@ export const Compra = () => {
                           >
                             Seleccioná domiclio de entrega ...
                           </option>
-                          {resultado.map((opcion, index) => (
+                          {direcciones.map((opcion, index) => (
                             <option
                               className="text-4 h-[48px] w-full rounded-[30px] border-2 bg-iplanGrey pl-4 pr-[10px] font-bold not-italic text-iplanBrown"
                               key={index}
@@ -325,11 +340,11 @@ export const Compra = () => {
                       ) : (
                         <option
                           className="text-4 h-[48px] w-full rounded-[30px] border-2 bg-iplanGrey pl-4 pr-[10px] font-bold not-italic text-iplanBrown"
-                          key={resultado[0].Site}
-                          value={resultado[0].SiteID}
+                          key={direcciones[0].Site}
+                          value={direcciones[0].SiteID}
                         >
-                          {resultado[0].Site}
-                          {setSite(resultado[0].SiteID)}
+                          {direcciones[0].Site}
+                          {setSite(direcciones[0].SiteID)}
                         </option>
                       )}
                     </select>
@@ -346,13 +361,18 @@ export const Compra = () => {
                 {formatearNum(parseInt(torres) * MESH)}
               </p>
             </div>
-            {(resultado.length == 1 || mostrarButtonComprar != 0) && (
+            {(direcciones.length == 1 || mostrarButtonComprar != 0) && (
               <button
                 className="mt-2 flex h-[36px] w-auto max-w-[90] items-center gap-[8px] rounded-[25px] bg-iplanPink px-6 py-2 font-lato text-[17px] font-bold leading-normal text-iplanWhite outline-none focus:outline-none"
                 onClick={(e) => {
-                  setExpireCookie("stepCookie", 4, 24 * 60 * 60);
-                  setExpireCookie("siteIDAInstalar", site, 24 * 60 * 60);
-                  setStep(readCookie("stepCookie"));
+                  setExpireCookie("carritoCookieStep", 4, 24 * 60 * 60000);
+                  setExpireCookie("carritoCookieSite", site, 24 * 60 * 60000);
+                  setExpireCookie(
+                    "carritoCookieTorre",
+                    torres,
+                    24 * 60 * 60000,
+                  );
+                  setStep(readCookie("carritoCookieStep"));
                 }}
                 type="button"
               >

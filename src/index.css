@@ -46,10 +46,10 @@
     @apply font-lato text-[20px] font-medium not-italic leading-normal text-iplanBrown;
   }
   .btnNextDisabled {
-    @apply flex h-[36px] w-auto max-w-[150px] items-center justify-center gap-[8px] rounded-[25px] bg-iplanGrey2 px-6 py-2 font-lato text-[17px] font-bold leading-normal text-iplanWhite;
+    @apply flex h-[36px] w-auto max-w-[150px] items-center justify-center gap-[8px] rounded-[25px] bg-iplanGrey2 px-6 py-2 font-lato text-[17px] font-bold leading-normal text-iplanWhite outline-none focus:outline-none;
   }
   .btnNextActived {
-    @apply flex h-[36px] w-auto max-w-[180px] items-center justify-center gap-[6px] rounded-[25px] bg-iplanPink px-6 py-2 font-lato text-[17px] font-bold leading-normal text-iplanWhite;
+    @apply flex h-[36px] w-auto max-w-[180px] items-center justify-center gap-[6px] rounded-[25px] bg-iplanPink px-6 py-2 font-lato text-[17px] font-bold leading-normal text-iplanWhite outline-none focus:outline-none;
   }
   .btnSugerenciaDisabled {
     @apply flex h-[36px] w-[200px] max-w-[200px] items-center justify-center gap-[8px] rounded-[25px] bg-iplanPink px-[10px] py-2 font-lato text-[17px] font-bold leading-normal text-iplanWhite;
@@ -78,6 +78,11 @@ input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+select[disabled] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
 /* -------------------------------- FORM MESH ------------------------------- */

@@ -1,3 +1,4 @@
+import { Error } from "../components/Error";
 import useCarrito from "../hooks/useCarritoProvider";
 import { Login, Home, Compra, Agendamiento, Final, TieneMesh } from "./";
 
@@ -12,7 +13,7 @@ export const AppCarrito = () => {
       {step == 4 && <Agendamiento />}
       {step == 5 && <Final />}
       {step == 6 && <TieneMesh />}
-      {/* <TieneMesh /> */}
+      {/* <Error /> */}
     </>
   );
 };
