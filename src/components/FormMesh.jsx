@@ -108,11 +108,8 @@ export const FormMesh = () => {
     <>
       {!mostrarForm && !vistaConResultado && (
         <div className="flex flex-col items-center">
-          <p className="font-lato text-lg font-normal not-italic text-iplanGrey2">
+          <p className="w-full px-4 text-center font-lato text-lg font-normal not-italic text-iplanGrey2">
             ¿Cuantos dispositivos necesito?
-          </p>
-          <p className="font-lato text-lg font-normal not-italic text-iplanGrey2">
-            Buscá la mejor opción para tu hogar:
           </p>
           <button
             className="mt-4 flex h-[36px] w-auto max-w-[90] items-center justify-center rounded-[25px] bg-iplanPink px-6 py-2 font-lato text-[17px] font-bold leading-normal text-iplanWhite outline-none focus:outline-none"
@@ -169,7 +166,7 @@ export const FormMesh = () => {
           </button>
 
           {/* FORM */}
-          <div className="flex flex-col items-center">
+          <div className="mb-4 flex flex-col items-center">
             {!respuestasActived && (
               <form className="h-[500px] w-full max-w-[300px]">
                 <div

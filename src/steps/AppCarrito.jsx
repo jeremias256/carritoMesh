@@ -1,6 +1,19 @@
-import { Error } from "../components/Error";
+/* ------------------------ LIBS ------------------------ */
+/* ------------------------ REACT ----------------------- */
 import useCarrito from "../hooks/useCarritoProvider";
-import { Login, Home, Compra, Agendamiento, Final, TieneMesh } from "./";
+/* --------------------- COMPONENTS --------------------- */
+import {
+  Login,
+  Home,
+  Compra,
+  Agendamiento,
+  Final,
+  TieneMesh,
+  FinalAgendamiento,
+} from "./";
+import { Error } from "../components/Error";
+/* ----------------------- HELPERS ---------------------- */
+/* ----------------------- ASSETS ----------------------- */
 
 export const AppCarrito = () => {
   const { step } = useCarrito();
@@ -13,7 +26,7 @@ export const AppCarrito = () => {
       {step == 4 && <Agendamiento />}
       {step == 5 && <Final />}
       {step == 6 && <TieneMesh />}
-      {/* <Error /> */}
+      {step == 7 && <FinalAgendamiento />}
     </>
   );
 };

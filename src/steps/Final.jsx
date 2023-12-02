@@ -3,13 +3,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import { Spinner } from "../components";
 import useCarrito from "../hooks/useCarritoProvider";
-import { readCookie } from "../helpers/cookies";
+import { delete_cookie, readCookie } from "../helpers/cookies";
 import { useEffect, useState } from "react";
 import useAuth from "../hooks/useAuthProvider";
 import { Error } from "../components/Error";
 
 export const Final = () => {
-  const { mensaje, setMensaje } = useCarrito();
+  const { mensaje, setMensaje, agendamientoInfo } = useCarrito();
   const [agendamiento, setAgendamiento] = useState({});
 
   useEffect(() => {
@@ -27,12 +27,20 @@ export const Final = () => {
     if (readCookie("carritoMensaje")) {
       setMensaje(readCookie("carritoMensaje"));
     }
+
+    // delete_cookie("userLogged");
+    // delete_cookie("carritoCGP");
+    delete_cookie("carritoCookieStep");
+    delete_cookie("carritoCookieDirs");
+    delete_cookie("carritoCookieSite");
+    delete_cookie("carritoCookieTorre");
   }, [mensaje]);
 
   if (!agendamiento) return <Spinner />;
   if (mensaje == "error") return <Error />;
+
   return (
-    <div className="flex w-full max-w-[900px] flex-col items-center">
+    <div className="mt-16 flex w-full max-w-[900px] flex-col items-center lg:mt-0">
       <div className="shadow-[1px_1px_2px_0px_rgba(0,0,0,0.15) flex min-h-[140px] w-full flex-col items-center justify-center overflow-hidden rounded-[24px] bg-iplanPink px-6 py-8 text-center text-iplanWhite">
         <h2 className="flex items-center font-lato text-[32px] font-bold not-italic leading-normal">
           ¡Felicitaciones ya contás con WiFi Power Mesh
@@ -58,7 +66,7 @@ export const Final = () => {
           </p>
         </div>
 
-        <div className="flex flex-col items-center justify-center">
+        {/* <div className="flex flex-col items-center justify-center">
           <span className="mt-2 flex items-center gap-4 px-4 text-center font-lato text-[20px] font-bold leading-normal">
             Contactate por Whatsapp con un asesor de IPLAN:{" "}
             <div className="hover:text-iplanGreen">
@@ -75,7 +83,7 @@ export const Final = () => {
               </a>
             </div>
           </span>
-        </div>
+        </div> */}
 
         {/* <button className="flex h-[36px] w-auto max-w-[90] items-center justify-center gap-[8px] rounded-[25px] bg-iplanPink px-6 py-2 font-lato text-[17px] font-bold leading-normal text-iplanWhite outline-none focus:outline-none">
           TERMINAR

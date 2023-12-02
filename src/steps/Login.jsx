@@ -16,18 +16,17 @@ import imgMesh from "../assets/imgs/imgMesh.png";
 
 export const Login = () => {
   const { setCargando, setAuth, cargando, setCgp, setNum } = useAuth();
-  const { setStep } = useCarrito();
+  const { setStep, setAgendamientoInfo } = useCarrito();
 
   //TODOX SE PUEDE EVITAR LA PRIMERA VISTA DEL LOGIN ANTES DE CAMBIAR DE STEP ?
   useEffect(() => {
-    const fetchData = async (numero) => {
+    const fetchServicios = async () => {
       console.log("FETCH PARA SABER SI YA TIENE MESH");
       try {
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
         var raw = JSON.stringify({
           service: "consulta",
-          id_cliente: numero, //num
           data: {
             Codigo: "AC",
             Agrupador: "",
@@ -46,36 +45,83 @@ export const Login = () => {
         );
         const result = await response.text();
 
-        let carritoCookieMesh = JSON.parse(result).find((servicio) => {
-          return servicio.Servicio.Servicio === "Wi-Fi Power Mesh";
+        let internetLivs = JSON.parse(result).filter((servicio) => {
+          if (servicio.Servicio.Servicio == "Internet Liv") {
+            return servicio;
+          }
         });
-        return carritoCookieMesh;
+        console.log(
+          "🚀 - file: Login.jsx:53 - internetLivs - internetLivs:",
+          internetLivs,
+        );
+
+        let clienteConMesh = JSON.parse(result).filter((servicio) => {
+          return servicio.Servicio.Servicio == "Wi-Fi Power Mesh";
+        });
+
+        // if (internetLivs.length > 1) clienteConMesh = false;
+
+        return clienteConMesh;
       } catch (error) {
         console.log("Error:", error);
+      }
+    };
+    const fetchAgendamientoPendiente = async () => {
+      try {
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Cookie", "PHPSESSID=976786n46u8pk6q3pcn6vhm9uh");
+
+        const raw = JSON.stringify({
+          service: "obtener_estado_cliente",
+          data: {},
+        });
+
+        const requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: raw,
+          redirect: "follow",
+        };
+
+        const response = await fetch(
+          "https://portal2-des.iplan.com.ar/login_unificado/main/Calls/Tenfold/giveAgendamiento.php",
+          requestOptions,
+        );
+
+        if (!response.ok) {
+          throw new Error("Error en la solicitud");
+        }
+
+        const result = await response.text();
+
+        return result;
+        // Aquí puedes manejar el resultado de la llamada fetch
+      } catch (error) {
+        // Manejar errores
+        console.error("Error al obtener datos:", error);
       }
     };
 
     let interv = setInterval(async () => {
       if (
-        //BUSCO SI TIENE MESH, ESTA LOGEADO VA A VISTA MESH
-        readCookie("carritoCookieMesh") == "MESH" &&
-        readCookie("userLogged") &&
-        readCookie("carritoCGP")
-      ) {
-        console.log("TIENE MESH VA A STEP 6 POR LA COOKIE");
-        setExpireCookie("carritoCookieStep", 6, 24 * 60 * 60000);
-        setStep(6);
-        clearInterval(interv);
-      } else if (
         //ESTA LOGEADO VA AL STEP CORRESPONDIENTE
-        readCookie("carritoCookieStep") &&
+        (readCookie("carritoCookieStep") == 3 ||
+          readCookie("carritoCookieStep") == 4) &&
         readCookie("userLogged") &&
         readCookie("carritoCGP")
       ) {
         let cookieName = readCookie("userLogged");
         let cookieCgp = readCookie("carritoCGP");
         let stepNum = readCookie("carritoCookieStep");
-        console.log(`LEO COOKIE DE STEP VOY A STEP ${stepNum}`);
+        console.log("LEO COOKIE DE STEP VOY A STEP 3 o 4");
+
+        // let tieneAgendamiento = fetchAgendamientoPendiente();
+        // console.log(
+        //   "🚀 - file: Login.jsx:126 - interv - tieneAgendamiento:",
+        //   tieneAgendamiento,
+        // );
+        // setAgendamientoInfo(tieneAgendamiento);
 
         setAuth(cookieName);
         setCgp(cookieCgp);
@@ -88,33 +134,46 @@ export const Login = () => {
         readCookie("carritoCGP") &&
         readCookie("userLogged")
       ) {
-        console.log("LEO COOKIES DE CARRITO Y USERLOGGED VOY A COMPRA");
+        let cgp = readCookie("carritoCGP");
+        setExpireCookie("carritoLogin", cgp, 24 * 60 * 60000);
         let cookieName = readCookie("userLogged");
         let cookieCgp = readCookie("carritoCGP");
         setAuth(cookieName);
         setCgp(cookieCgp);
         setNum(String(cookieCgp).slice(0, -1));
-        setExpireCookie("carritoCookieStep", 3, 24 * 60 * 60000);
         clearInterval(interv);
 
         /* --------- BUSCO COOKIE MESH SINO FETCH PARA VERIFICAR SI TIENE MESH --------- */
-        if (readCookie("carritoCookieMesh") == "NOMESH") {
-          setExpireCookie("carritoCookieStep", 3, 24 * 60 * 60000);
-          setStep(3);
-        } else {
-          let tieneMesh = await fetchData(String(cookieCgp).slice(0, -1));
+        setCargando(false);
 
-          setCargando(false);
-          if (tieneMesh) {
-            setExpireCookie("carritoCookieMesh", "MESH", 24 * 60 * 60000);
-            setExpireCookie("carritoCookieStep", 6, 24 * 60 * 60000);
-            setStep(6);
-          } else {
-            setExpireCookie("carritoCookieMesh", "NOMESH", 24 * 60 * 60000);
-            setExpireCookie("carritoCookieStep", 3, 24 * 60 * 60000);
-            setStep(3);
-          }
+        let tieneAgendamiento = await fetchAgendamientoPendiente();
+        tieneAgendamiento = JSON.parse(tieneAgendamiento);
+        console.log(
+          "🚀 - file: Login.jsx:151 - interv - tieneAgendamiento:",
+          tieneAgendamiento,
+        );
+        let tieneMesh = await fetchServicios(String().slice(0, -1));
+        console.log(
+          "🚀 - file: Login.jsx:157 - interv - tieneMesh:",
+          tieneMesh,
+        );
+
+        if (tieneAgendamiento.Codigo == 0) {
+          console.log(
+            "🚀 - file: Login.jsx:155 - interv - tieneAgendamiento:",
+            tieneAgendamiento,
+          );
+          setAgendamientoInfo(tieneAgendamiento);
+          console.log("VA AL STEP 5 TIENE AGENDAMIENTO PENDIENTE");
+          setStep(7);
+        } else if (tieneMesh.length > 0) {
+          console.log("TIENE MESH VA A STEP 6");
+          setStep(6);
+        } else {
+          console.log("NO TIENE MESH NI AGENDMAIENTO VA A COMPRA STEP 3");
+          setStep(3);
         }
+
         /* --------- BUSCO COOKIE MESH SINO FETCH PARA VERIFICAR SI TIENE MESH --------- */
       } else {
         console.log("si existe la cookie va al step 3 pero no hay cookie");
@@ -124,7 +183,9 @@ export const Login = () => {
 
   return (
     <>
-      <h2 className="pinkTitle mb-8">Comprá tus torres de WiFi Power Mesh</h2>
+      <h2 className="pinkTitle mb-8 mt-16 lg:mt-0">
+        Comprá tus torres de WiFi Power Mesh
+      </h2>
 
       <div className="grid h-full grid-cols-1 gap-3 lg:grid-cols-2 xl:gap-6">
         <div className="card">

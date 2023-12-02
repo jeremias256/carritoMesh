@@ -14,7 +14,7 @@ import { FormMesh } from "../components/FormMesh";
 import { Spinner } from "../components";
 /* ----------------------- HELPERS ---------------------- */
 import { formatearNum } from "../helpers/helpers";
-import { setExpireCookie, readCookie } from "../helpers/cookies";
+import { setExpireCookie, readCookie, delete_cookie } from "../helpers/cookies";
 /* ----------------------- ASSETS ----------------------- */
 import { MESH } from "../Env";
 import imgStep from "../assets/imgs/step1.png";
@@ -32,9 +32,12 @@ export const Compra = () => {
     setSite,
   } = useCarrito();
   const { num } = useAuth();
+  // //NO OLVIDAR CAMBIAR ANTES DE PASAR A PROD
+  const url = "https://portal2-des.iplan.com.ar/Liv";
 
   /* ------------------- ESTADOS LOCALES ------------------ */
   const [mostrarButtonComprar, setMostrarButtonComprar] = useState(0);
+  const [tieneMesh, setTieneMesh] = useState(false);
   const handleChangeDIR = (e) => {
     let value = e.target.value;
     setMostrarButtonComprar(value);
@@ -50,7 +53,6 @@ export const Compra = () => {
         myHeaders.append("Content-Type", "application/json");
         var raw = JSON.stringify({
           service: "consulta",
-          id_cliente: num, //num
           data: {
             Codigo: "AC",
             Agrupador: "",
@@ -74,18 +76,11 @@ export const Compra = () => {
             return servicio;
           }
         });
-        let internetMesh = JSON.parse(result).find((servicio) => {
-          return servicio.Servicio.Servicio === "Wi-Fi Power Mesh";
+        let tieneMesh = JSON.parse(result).filter((servicio) => {
+          if (servicio.Servicio.Servicio === "Wi-Fi Power Mesh");
+          return servicio;
         });
 
-        if (internetMesh) {
-          console.log("CLIENTE TIENE MESH GUARDO EN COOKIE");
-          setExpireCookie(
-            "carritoCookieMesh",
-            JSON.stringify(internetMesh),
-            24 * 60 * 60000,
-          );
-        }
         setExpireCookie(
           "carritoCookieDirs",
           JSON.stringify(internetLivs),
@@ -97,17 +92,7 @@ export const Compra = () => {
       }
     };
 
-    if (num != 0 && readCookie("carritoCookieDirs") == null) {
-      //SI NO EXISTE LA COOKIE DE DIRS HACE FETCH
-      fetchData();
-    } else {
-      //DIRS POR COOKIE
-      if (readCookie("carritoCookieDirs")) {
-        console.log("DIRS POR COOKIE");
-        let valueCookie = readCookie("carritoCookieDirs");
-        setDirecciones(JSON.parse(valueCookie));
-      }
-    }
+    if (num != 0) fetchData();
   }, [num]);
 
   //INFX ESTE ES PARA USO LOCAL
@@ -121,12 +106,12 @@ export const Compra = () => {
   //     }
   //   });
 
-  //   let internetMesh = JSON.parse(TEXTOSUBCONMESH).find((servicio) => {
+  //   let tieneMesh = JSON.parse(TEXTOSUBCONMESH).find((servicio) => {
   //     return servicio.Servicio.Servicio === "Wi-Fi Power Mesh";
   //   });
   //   console.log(
-  //     "🚀 - file: Compra.jsx:108 - internetMesh - internetMesh:",
-  //     internetMesh,
+  //     "🚀 - file: Compra.jsx:108 - tieneMesh - tieneMesh:",
+  //     tieneMesh,
   //   );
 
   //   setDirecciones(internetLivs);
@@ -137,7 +122,7 @@ export const Compra = () => {
   return (
     <>
       {/* STEPS */}
-      <div className="relative mb-8 flex items-center">
+      <div className="relative mb-8 mt-16 flex items-center lg:mt-0">
         <div className="absolute right-[200px] top-0 border-r-[1px] border-[#b8b8b8] pr-6">
           <FontAwesomeIcon
             icon={faHouse}
@@ -198,19 +183,19 @@ export const Compra = () => {
                     <span className="flex px-2 py-2 text-left font-figtree text-[20px] font-[900] not-italic leading-[25px] text-iplanPink">
                       WiFi Power Mesh
                     </span>
-                    <p className="px-2 font-lato text-[18px] font-medium not-italic leading-normal text-iplanPink">
+                    <span className="px-2 text-left font-lato text-[18px] font-medium not-italic leading-normal text-iplanPink">
                       Máxima potencia
-                    </p>
-                    <p className="px-2 font-lato text-[18px] font-medium not-italic leading-normal text-iplanPink">
+                    </span>
+                    <span className="px-2 text-left font-lato text-[18px] font-medium not-italic leading-normal text-iplanPink">
                       en cada ríncon de tu hogar
-                    </p>
+                    </span>
                   </div>
 
-                  <div className="flex w-1/2 flex-col items-center">
+                  <div className="mt-2 flex w-1/2 flex-col items-center">
                     <p className="mb-3 font-lato text-[18px] font-normal not-italic leading-normal text-iplanGrey2">
                       Cantidad de torres:
                     </p>
-                    <div className="flex gap-2">
+                    <div className="mt-2 flex gap-2">
                       <button
                         className={torres == 1 ? "btnActived" : "btnDisabled"}
                         onClick={(e) => {
@@ -372,7 +357,7 @@ export const Compra = () => {
                     torres,
                     24 * 60 * 60000,
                   );
-                  setStep(readCookie("carritoCookieStep"));
+                  setStep(4);
                 }}
                 type="button"
               >

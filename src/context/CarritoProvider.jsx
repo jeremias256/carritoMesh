@@ -9,6 +9,7 @@ const CarritoProvider = ({ children }) => {
   const [mostrarForm, setMostrarForm] = useState(false);
   const [torres, setTorres] = useState(1);
   const [agendamiento, setAgendamiento] = useState({});
+  const [agendamientoInfo, setAgendamientoInfo] = useState({});
   const [site, setSite] = useState(0);
   const [mensaje, setMensaje] = useState("");
 
@@ -29,6 +30,8 @@ const CarritoProvider = ({ children }) => {
         setSite,
         mensaje,
         setMensaje,
+        agendamientoInfo,
+        setAgendamientoInfo,
       }}
     >
       {children}

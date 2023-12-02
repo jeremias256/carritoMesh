@@ -57,6 +57,9 @@
   .btnSugerenciaActived {
     @apply flex h-[36px] w-[200px] max-w-[200px] items-center justify-center gap-[8px] rounded-[25px] bg-iplanPink px-[10px] py-2 font-lato text-[17px] font-bold leading-normal text-iplanWhite;
   }
+  .buttonCerrarSesion {
+    @apply absolute right-4 top-0 mt-2 flex h-[36px] w-auto max-w-[90] items-center gap-[8px] rounded-[25px] bg-iplanGrey2 px-6 py-2 pr-4 font-lato text-[17px] font-bold leading-normal !text-iplanWhite outline-none focus:outline-none;
+  }
 }
 
 html {
@@ -84,7 +87,6 @@ select[disabled] {
   -moz-appearance: none;
   appearance: none;
 }
-
 /* -------------------------------- FORM MESH ------------------------------- */
 input[type="radio"] {
   position: absolute;
@@ -107,7 +109,6 @@ label {
   display: inline-flex;
   align-items: center;
 }
-
 /* --------------------- CALENDARIO --------------------- */
 .fc-today-button {
   display: none !important;
@@ -129,7 +130,6 @@ tr th {
   font-weight: 900;
   line-height: 120%;
 }
-
 /* ----------------------- LOADER ----------------------- */
 .sk-fading-circle {
   margin: 100px auto;
