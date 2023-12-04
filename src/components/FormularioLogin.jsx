@@ -89,7 +89,7 @@ export const FormularioLogin = () => {
         onClick={() => {
           updateLog("Login", "Click en login va a compra");
         }}
-        type="submit"
+        type="button"
       >
         INGRESAR
       </button>

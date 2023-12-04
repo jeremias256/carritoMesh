@@ -3,9 +3,10 @@ import { useEffect, useState } from "react";
 import useCarrito from "../hooks/useCarritoProvider";
 /* --------------------- COMPONENTS --------------------- */
 import { Spinner } from "../components";
-import { Error } from "../components/Error";
 /* ----------------------- HELPERS ---------------------- */
 import { delete_cookie, readCookie } from "../helpers/cookies";
+import { ErrorConAgenda } from "../components/ErrorConAgenda";
+import { Error } from "../components/Error";
 
 export const AgendamientoOK = () => {
   const { mensaje, setMensaje } = useCarrito();
@@ -20,6 +21,7 @@ export const AgendamientoOK = () => {
       let infoInstalacion = {
         horario: readCookie("carritoAgendamientoHorario"),
         fecha: readCookie("carritoAgendamientoFecha"),
+        cupo: readCookie("carritoAgendamientoCupo"),
       };
       setAgendamiento(infoInstalacion);
     }
@@ -35,6 +37,7 @@ export const AgendamientoOK = () => {
 
   if (!agendamiento) return <Spinner />;
   if (mensaje == "error") return <Error />;
+  if (mensaje == "sinAgenda") return <ErrorConAgenda />;
 
   return (
     <div className="mt-16 flex w-full max-w-[900px] flex-col items-center lg:mt-0">
@@ -54,11 +57,15 @@ export const AgendamientoOK = () => {
 
         <div className="flex justify-center gap-3 self-stretch overflow-hidden rounded-[12px] bg-iplanGrey py-3">
           <p className="font-lato text-[16px] font-[900] not-italic leading-normal text-[#5B5151]">
-            <span>Turno asignado:</span>
+            <span>Turno asignado: </span>
             <span className="ml-[8px] font-lato text-[16px] font-[900] leading-normal text-iplanPink">
-              {agendamiento.fecha} Turno{" "}
-              {agendamiento.horario == "MA" ? "Mañana" : "Tarde"} de{" "}
-              {agendamiento.horario == "MA" ? "8hs a 13hs" : "13hs a 17hs"}
+              {agendamiento.Fecha}
+              {"  "}
+              <span className="text-[#5B5151]">Turno: </span>
+              {agendamiento.Horario}
+              {"  "}
+              <span className="text-[#5B5151]">Orden: </span>
+              {agendamiento.Orden}
             </span>
           </p>
         </div>

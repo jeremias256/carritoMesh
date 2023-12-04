@@ -11,7 +11,6 @@ import {
   TieneMesh,
   AgendamientoPendiente,
 } from "./";
-import { Error } from "../components/Error";
 /* ----------------------- HELPERS ---------------------- */
 /* ----------------------- ASSETS ----------------------- */
 

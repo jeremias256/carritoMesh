@@ -88,7 +88,7 @@ const CarritoProvider = ({ children }) => {
   // ];
   const [direcciones, setDirecciones] = useState(0);
   const [mostrarForm, setMostrarForm] = useState(null);
-  const [torres, setTorres] = useState(1);
+  const [torres, setTorres] = useState(2);
   const [agendamiento, setAgendamiento] = useState(null);
   const [agendamientoInfo, setAgendamientoInfo] = useState(null);
   const [site, setSite] = useState(null);

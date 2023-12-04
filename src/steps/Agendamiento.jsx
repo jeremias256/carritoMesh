@@ -70,15 +70,20 @@ export const Agendamiento = () => {
           result,
         );
         // ("ERROR AGENDA [5] / agendamiento existente / ERROR AGENDA [E] / ERROR AGENDA [34]");
-        if (result == "OK") {
-          setExpireCookie("carritoMensaje", "OK", 24 * 60 * 60000);
+        if (result.codigo == 0) {
+          setExpireCookie("carritoMensaje", "OK", 24 * 60 * 6000);
           setMensaje(readCookie("carritoMensaje"));
-          setExpireCookie("carritoCookieStep", 5, 24 * 60 * 60000);
+          setExpireCookie("carritoCookieStep", 5, 24 * 60 * 6000);
+          setStep(5);
+        } else if (result.codigo == 1) {
+          setExpireCookie("carritoMensaje", "sinAgenda", 24 * 60 * 6000);
+          setMensaje(readCookie("carritoMensaje"));
+          setExpireCookie("carritoCookieStep", 5, 24 * 60 * 6000);
           setStep(5);
         } else {
-          setExpireCookie("carritoMensaje", "error", 24 * 60 * 60000);
+          setExpireCookie("carritoMensaje", "error", 24 * 60 * 6000);
           setMensaje(readCookie("carritoMensaje"));
-          setExpireCookie("carritoCookieStep", 5, 24 * 60 * 60000);
+          setExpireCookie("carritoCookieStep", 5, 24 * 60 * 6000);
           setStep(5);
         }
       } catch (error) {

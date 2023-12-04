@@ -11,6 +11,7 @@ import imgMesh1 from "../assets/imgs/imgMeshGris1.png";
 import imgMesh2 from "../assets/imgs/imgMesh2.jpg";
 import imgMesh3 from "../assets/imgs/imgMesh3.jpg";
 import useCarrito from "../hooks/useCarritoProvider";
+import { updateLog } from "../services/logeo";
 
 export const FormMesh = () => {
   const { setTorres, mostrarForm, setMostrarForm } = useCarrito();

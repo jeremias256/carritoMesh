@@ -73,7 +73,7 @@ export const Compra = () => {
         setExpireCookie(
           "carritoCookieDirs",
           JSON.stringify(internetLivs),
-          24 * 60 * 60000,
+          24 * 60 * 6000,
         );
         setDirecciones(internetLivs);
       } catch (error) {
@@ -334,13 +334,9 @@ export const Compra = () => {
               <button
                 className="mt-2 flex h-[36px] w-auto max-w-[90] items-center gap-[8px] rounded-[25px] bg-iplanPink px-6 py-2 font-lato text-[17px] font-bold leading-normal text-iplanWhite outline-none focus:outline-none"
                 onClick={(e) => {
-                  setExpireCookie("carritoCookieStep", 4, 24 * 60 * 60000);
-                  setExpireCookie("carritoCookieSite", site, 24 * 60 * 60000);
-                  setExpireCookie(
-                    "carritoCookieTorre",
-                    torres,
-                    24 * 60 * 60000,
-                  );
+                  setExpireCookie("carritoCookieStep", 4, 24 * 60 * 6000);
+                  setExpireCookie("carritoCookieSite", site, 24 * 60 * 6000);
+                  setExpireCookie("carritoCookieTorre", torres, 24 * 60 * 6000);
                   setStep(4);
                   updateLog("Formulario MESH", "Click en boton contratar");
                 }}
