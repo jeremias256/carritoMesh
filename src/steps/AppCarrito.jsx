@@ -7,9 +7,9 @@ import {
   Home,
   Compra,
   Agendamiento,
-  Final,
+  AgendamientoOK,
   TieneMesh,
-  FinalAgendamiento,
+  AgendamientoPendiente,
 } from "./";
 import { Error } from "../components/Error";
 /* ----------------------- HELPERS ---------------------- */
@@ -24,9 +24,9 @@ export const AppCarrito = () => {
       {step == 2 && <Home />}
       {step == 3 && <Compra />}
       {step == 4 && <Agendamiento />}
-      {step == 5 && <Final />}
+      {step == 5 && <AgendamientoOK />}
       {step == 6 && <TieneMesh />}
-      {step == 7 && <FinalAgendamiento />}
+      {step == 7 && <AgendamientoPendiente />}
     </>
   );
 };

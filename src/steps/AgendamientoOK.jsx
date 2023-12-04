@@ -1,15 +1,14 @@
-/* ------------------------ LIBS ------------------------ */
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
-import { Spinner } from "../components";
-import useCarrito from "../hooks/useCarritoProvider";
-import { delete_cookie, readCookie } from "../helpers/cookies";
+/* ------------------------ REACT ----------------------- */
 import { useEffect, useState } from "react";
-import useAuth from "../hooks/useAuthProvider";
+import useCarrito from "../hooks/useCarritoProvider";
+/* --------------------- COMPONENTS --------------------- */
+import { Spinner } from "../components";
 import { Error } from "../components/Error";
+/* ----------------------- HELPERS ---------------------- */
+import { delete_cookie, readCookie } from "../helpers/cookies";
 
-export const Final = () => {
-  const { mensaje, setMensaje, agendamientoInfo } = useCarrito();
+export const AgendamientoOK = () => {
+  const { mensaje, setMensaje } = useCarrito();
   const [agendamiento, setAgendamiento] = useState({});
 
   useEffect(() => {
@@ -28,8 +27,6 @@ export const Final = () => {
       setMensaje(readCookie("carritoMensaje"));
     }
 
-    // delete_cookie("userLogged");
-    // delete_cookie("carritoCGP");
     delete_cookie("carritoCookieStep");
     delete_cookie("carritoCookieDirs");
     delete_cookie("carritoCookieSite");
@@ -65,25 +62,6 @@ export const Final = () => {
             </span>
           </p>
         </div>
-
-        {/* <div className="flex flex-col items-center justify-center">
-          <span className="mt-2 flex items-center gap-4 px-4 text-center font-lato text-[20px] font-bold leading-normal">
-            Contactate por Whatsapp con un asesor de IPLAN:{" "}
-            <div className="hover:text-iplanGreen">
-              <a
-                className="hover:text-iplanGreen"
-                href="https://wa.me/541150320000"
-                target="_blank"
-              >
-                <FontAwesomeIcon
-                  icon={faWhatsapp}
-                  size="2xl"
-                  style={{ color: "#f2f2f2" }}
-                />
-              </a>
-            </div>
-          </span>
-        </div> */}
 
         {/* <button className="flex h-[36px] w-auto max-w-[90] items-center justify-center gap-[8px] rounded-[25px] bg-iplanPink px-6 py-2 font-lato text-[17px] font-bold leading-normal text-iplanWhite outline-none focus:outline-none">
           TERMINAR

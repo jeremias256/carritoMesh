@@ -115,6 +115,7 @@ export const FormMesh = () => {
             className="mt-4 flex h-[36px] w-auto max-w-[90] items-center justify-center rounded-[25px] bg-iplanPink px-6 py-2 font-lato text-[17px] font-bold leading-normal text-iplanWhite outline-none focus:outline-none"
             onClick={() => {
               setMostrarForm(true);
+              updateLog("Formulario MESH", "Click en boton hacer test");
             }}
             type="button"
           >
@@ -140,6 +141,7 @@ export const FormMesh = () => {
               setSelectedOption4(false);
               // setResultadoForm(false);
               setRespuestasActived(false);
+              updateLog("Formulario MESH", "Click en boton hacer rehacer test");
             }}
             className="mt-2 flex h-[36px] w-auto max-w-[180px] items-center justify-center gap-[6px] rounded-[25px] bg-iplanGrey2 px-6 py-2 font-lato text-[17px] font-bold leading-normal text-iplanWhite outline-none focus:outline-none"
             type="button"
@@ -155,6 +157,7 @@ export const FormMesh = () => {
             className="outline-none focus:outline-none"
             onClick={(e) => {
               setMostrarForm(false);
+              updateLog("Formulario MESH", "Cerrar formulario");
             }}
             type="button"
           >
@@ -431,24 +434,6 @@ export const FormMesh = () => {
                     </li>
                   </ul>
                 </div>
-
-                {/* <div>
-                  <button
-                    onClick={() => {
-                      setCurrentIndex(1);
-                      setSelectedOption1(false);
-                      setSelectedOption2(false);
-                      setSelectedOption3(false);
-                      setSelectedOption4(false);
-                      setResultadoForm(false);
-                      setRespuestasActived(false);
-                    }}
-                    className="btnNextActived mt-4"
-                    type="button"
-                  >
-                    REHACER TEST
-                  </button>
-                </div> */}
               </div>
             )}
           </div>

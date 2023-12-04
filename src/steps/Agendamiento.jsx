@@ -2,7 +2,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouse } from "@fortawesome/free-solid-svg-icons";
 /* ------------------------ REACT ----------------------- */
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useCarrito from "../hooks/useCarritoProvider";
 import useAuth from "../hooks/useAuthProvider";
 /* --------------------- COMPONENTS --------------------- */
@@ -11,10 +11,8 @@ import { Spinner } from "../components";
 import { delete_cookie, readCookie, setExpireCookie } from "../helpers/cookies";
 /* ----------------------- ASSETS ----------------------- */
 import imgStep from "../assets/imgs/step2.png";
-import { useState } from "react";
 
 export const Agendamiento = () => {
-  const [spinner, setSpinner] = useState(false);
   const { num } = useAuth();
   const {
     direcciones,
@@ -26,9 +24,8 @@ export const Agendamiento = () => {
     setSite,
     setMensaje,
   } = useCarrito();
-
-  // //NO OLVIDAR CAMBIAR ANTES DE PASAR A PROD
-  const url = "https://portal2-des.iplan.com.ar/Liv";
+  /* ------------------- ESTADOS LOCALES ------------------ */
+  const [spinner, setSpinner] = useState(false);
 
   useEffect(() => {
     console.log("RENDERIZO USEEFFECT AGENDAMIENTO");
@@ -50,7 +47,6 @@ export const Agendamiento = () => {
         myHeaders.append("Content-Type", "application/json");
 
         let internetLiv = direcciones.find((obj) => obj.SiteID == site);
-
         const raw = JSON.stringify({
           id_cliente: num,
           site_id: site,
@@ -58,14 +54,12 @@ export const Agendamiento = () => {
           sub_id: internetLiv.Servicio.Subscripcion,
           cantidad: torres,
         });
-
         const requestOptions = {
           method: "POST",
           headers: myHeaders,
           body: raw,
           redirect: "follow",
         };
-
         const response = await fetch(
           "https://portal2-des.iplan.com.ar/login_unificado/main/Calls/ServiceCarritoMesh.php",
           requestOptions,
@@ -106,7 +100,7 @@ export const Agendamiento = () => {
     }, 1000);
   }, [site]);
 
-  // if (!site) return <Spinner />;
+  if (!site) return <Spinner />;
 
   return (
     <>
@@ -172,7 +166,7 @@ export const Agendamiento = () => {
                 <div className="flex w-full flex-col items-start lg:flex-row">
                   <iframe
                     className="w-full shadow-none hover:shadow-none"
-                    height="450"
+                    height="500"
                     //INFX AGREGAR EN DESA Y LOCAL &tipo=EE&developer=1
                     src={`https://portal2-des.iplan.com.ar/agendamientoCarrito/calendar/?site=${site}&tur=2&tipo=EE`}
                     title="Agendamiento"

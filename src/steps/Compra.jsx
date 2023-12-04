@@ -19,6 +19,7 @@ import { setExpireCookie, readCookie, delete_cookie } from "../helpers/cookies";
 import { MESH } from "../Env";
 import imgStep from "../assets/imgs/step1.png";
 import imgMesh from "../assets/imgs/imgMesh.png";
+import { updateLog } from "../services/logeo";
 
 export const Compra = () => {
   const {
@@ -32,22 +33,15 @@ export const Compra = () => {
     setSite,
   } = useCarrito();
   const { num } = useAuth();
-  // //NO OLVIDAR CAMBIAR ANTES DE PASAR A PROD
-  const url = "https://portal2-des.iplan.com.ar/Liv";
-
   /* ------------------- ESTADOS LOCALES ------------------ */
   const [mostrarButtonComprar, setMostrarButtonComprar] = useState(0);
-  const [tieneMesh, setTieneMesh] = useState(false);
   const handleChangeDIR = (e) => {
     let value = e.target.value;
     setMostrarButtonComprar(value);
   };
 
-  //INFX ESTE USEEFFECT ES PARA DESA
   useEffect(() => {
     const fetchData = async () => {
-      console.log("DIRS POR FETCH");
-
       try {
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -64,7 +58,6 @@ export const Compra = () => {
           body: raw,
           redirect: "follow",
         };
-
         const response = await fetch(
           "https://portal2-des.iplan.com.ar/login_unificado/main/Calls/Tenfold/giveSubscription.php",
           requestOptions,
@@ -75,10 +68,6 @@ export const Compra = () => {
           if (servicio.Servicio.Servicio === "Internet Liv") {
             return servicio;
           }
-        });
-        let tieneMesh = JSON.parse(result).filter((servicio) => {
-          if (servicio.Servicio.Servicio === "Wi-Fi Power Mesh");
-          return servicio;
         });
 
         setExpireCookie(
@@ -92,32 +81,10 @@ export const Compra = () => {
       }
     };
 
-    if (num != 0) fetchData();
+    if (num) fetchData();
   }, [num]);
 
-  //INFX ESTE ES PARA USO LOCAL
-  // useEffect(() => {
-  //   let TEXTO1SUB = `[{"Site":"CIUDAD DE LA PAZ_1951_2_11","SiteID":"1696445110","Servicio":{"Servicio":"Internet Liv","Subscripcion":"1574013","Numero":"90000518765","Cargo":"462.840000","Fecha":"2017\/05\/24","Agrupador":"IL","PlanID":"6414","PaqueteID":"53591","SubscriptionID":"1574011"}},{"Site":"CIUDAD DE LA PAZ_1951_2_11","SiteID":"1696445110","Servicio":{"Servicio":"Wi-Fi Liv","Subscripcion":"1574012","Numero":"90000094589","Cargo":"0.000000","Fecha":"2017\/05\/24","Agrupador":"WL","PlanID":"6414","PaqueteID":"53591","SubscriptionID":"1574010"}}]`;
-  //   let TEXTO2SUBS = `[{"Site":"JORGE NEWBERY_2410_1_F","SiteID":"1696449058","Servicio":{"Servicio":"Internet Liv","Subscripcion":"1594951","Numero":"190210232187","Cargo":"1802.210000","Fecha":"2017\/08\/17","Agrupador":"IL","PlanID":"7201","PaqueteID":"55466","SubscriptionID":"1594949"}},{"Site":"JORGE NEWBERY_2410_1_F","SiteID":"1696449058","Servicio":{"Servicio":"Wi-Fi Liv","Subscripcion":"1594950","Numero":"99999999211","Cargo":"0.000000","Fecha":"2017\/08\/17","Agrupador":"WL","PlanID":"7201","PaqueteID":"55466","SubscriptionID":"1594948"}},{"Site":"JORGE NEWBERY_2410_11_A","SiteID":"1696449406","Servicio":{"Servicio":"Internet Liv","Subscripcion":"1596198","Numero":"190210232198","Cargo":"1802.210000","Fecha":"2017\/08\/25","Agrupador":"IL","PlanID":"7283","PaqueteID":"55631","SubscriptionID":"1596196"}},{"Site":"JORGE NEWBERY_2410_11_A","SiteID":"1696449406","Servicio":{"Servicio":"Wi-Fi Liv","Subscripcion":"1596199","Numero":"90000001275","Cargo":"0.000000","Fecha":"2017\/08\/25","Agrupador":"WL","PlanID":"7283","PaqueteID":"55631","SubscriptionID":"1596197"}}]`;
-  //   let TEXTOSUBCONMESH = `[{"Site":"JOSE DE AMENABAR_1551_3_D","SiteID":"1696570853","Servicio":{"Servicio":"DGO","Subscripcion":"2126972","Numero":"90000007885","Cargo":"1503.310000","Fecha":"2022\/01\/17","Agrupador":"DT","PlanID":"40129","PaqueteID":[],"SubscriptionID":"2126971"}},{"Site":"JOSE DE AMENABAR_1551_3_D","SiteID":"1696570853","Servicio":{"Servicio":"Internet Liv","Subscripcion":"1958995","Numero":"90000519988","Cargo":"0.000000","Fecha":"2020\/09\/11","Agrupador":"IL","PlanID":"33526","PaqueteID":"114907","SubscriptionID":"1958993"}},{"Site":"JOSE DE AMENABAR_1551_3_D","SiteID":"1696570853","Servicio":{"Servicio":"Wi-Fi Liv","Subscripcion":"1958996","Numero":"90000573025","Cargo":"0.000000","Fecha":"2020\/09\/11","Agrupador":"WL","PlanID":"33526","PaqueteID":"114907","SubscriptionID":"1958994"}},{"Site":"JOSE DE AMENABAR_1551_3_D","SiteID":"1696570853","Servicio":{"Servicio":"Wi-Fi Power Mesh","Subscripcion":"1997108","Numero":"90000439575","Cargo":"0.000000","Fecha":"2020\/11\/27","Agrupador":"WM","PlanID":"34758","PaqueteID":"114907","SubscriptionID":"1997107"}}]`;
-  //   let internetLivs = JSON.parse(TEXTOSUBCONMESH).filter((servicio) => {
-  //     if (servicio.Servicio.Servicio === "Internet Liv") {
-  //       return servicio;
-  //     }
-  //   });
-
-  //   let tieneMesh = JSON.parse(TEXTOSUBCONMESH).find((servicio) => {
-  //     return servicio.Servicio.Servicio === "Wi-Fi Power Mesh";
-  //   });
-  //   console.log(
-  //     "🚀 - file: Compra.jsx:108 - tieneMesh - tieneMesh:",
-  //     tieneMesh,
-  //   );
-
-  //   setDirecciones(internetLivs);
-  // }, [num]);
-
-  // if (direcciones.length == 0) return <Spinner />;
+  if (direcciones.length == 0) return <Spinner />;
 
   return (
     <>
@@ -200,6 +167,10 @@ export const Compra = () => {
                         className={torres == 1 ? "btnActived" : "btnDisabled"}
                         onClick={(e) => {
                           setTorres(1);
+                          updateLog(
+                            "Componente de compra",
+                            "Click en boton 1 torre",
+                          );
                         }}
                         type="button"
                         value="1"
@@ -210,6 +181,10 @@ export const Compra = () => {
                         className={torres == 2 ? "btnActived" : "btnDisabled"}
                         onClick={(e) => {
                           setTorres(2);
+                          updateLog(
+                            "Componente de compra",
+                            "Click en boton 2 torres",
+                          );
                         }}
                         type="button"
                         value="2"
@@ -220,6 +195,10 @@ export const Compra = () => {
                         className={torres == 3 ? "btnActived" : "btnDisabled"}
                         onClick={(e) => {
                           setTorres(3);
+                          updateLog(
+                            "Componente de compra",
+                            "Click en boton 3 torres",
+                          );
                         }}
                         type="button"
                         value="3"
@@ -230,6 +209,10 @@ export const Compra = () => {
                         className={torres == 4 ? "btnActived" : "btnDisabled"}
                         onClick={(e) => {
                           setTorres(4);
+                          updateLog(
+                            "Componente de compra",
+                            "Click en boton 4 torres",
+                          );
                         }}
                         type="button"
                         value="4"
@@ -290,11 +273,11 @@ export const Compra = () => {
                 Tu dirección de entrega actual es:
               </span>
               <div className="relative w-full">
-                <label className="absolute left-4 top-[-10px] z-20 bg-iplanWhite px-2 text-[14px] font-bold italic text-iplanGrey2">
-                  Enviar a:
-                </label>
-                {direcciones && direcciones.length > 0 ? (
+                {direcciones ? (
                   <>
+                    <label className="absolute left-4 top-[-10px] z-20 bg-iplanWhite px-2 text-[14px] font-bold italic text-iplanGrey2">
+                      Enviar a:
+                    </label>
                     <select
                       className="z-10 h-[48px] w-full rounded-[30px] border-2 border-none bg-iplanGrey pl-4 pr-[10px] text-[16px] font-bold not-italic leading-normal text-iplanPink focus:outline-none"
                       disabled={direcciones.length > 1 ? false : true}
@@ -308,6 +291,7 @@ export const Compra = () => {
                         <>
                           <option
                             className="text-4 h-[48px] w-full rounded-[30px] border-2 bg-iplanGrey pl-4 pr-[10px] font-bold not-italic text-iplanPink"
+                            selected
                             value="0"
                           >
                             Seleccioná domiclio de entrega ...
@@ -358,6 +342,7 @@ export const Compra = () => {
                     24 * 60 * 60000,
                   );
                   setStep(4);
+                  updateLog("Formulario MESH", "Click en boton contratar");
                 }}
                 type="button"
               >

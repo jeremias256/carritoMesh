@@ -1,41 +1,17 @@
 /* ------------------------ LIBS ------------------------ */
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faQuestion } from "@fortawesome/free-solid-svg-icons";
-// import * as Yup from "yup";
-// import { ErrorMessage, Field, Form, Formik } from "formik";
+import * as Yup from "yup";
+import { ErrorMessage, Field, Form, Formik } from "formik";
 /* ------------------------ REACT ----------------------- */
 import { useEffect } from "react";
 import useCarrito from "../hooks/useCarritoProvider";
 import useAuth from "../hooks/useAuthProvider";
-/* --------------------- COMPONENTS --------------------- */
-/* ----------------------- HELPERS ---------------------- */
-import { delete_cookie, readCookie } from "../helpers/cookies";
-/* ----------------------- ASSETS ----------------------- */
-// import { USUARIOS } from "../constants"; ya no se usa
+/* ---------------------- SERVICES ---------------------- */
+import { updateLog } from "../services/logeo";
 
 export const FormularioLogin = () => {
   const { setCargando } = useAuth();
-
-  function updateLog(Estado, Observaciones) {
-    if (Observaciones == undefined || Observaciones == null) {
-      Observaciones == "";
-    }
-    $.ajax({
-      url: "/cobertura/update_logMesh.php",
-      type: "post",
-      data: { Estado: Estado, Observaciones: Observaciones },
-      success: function (response) {
-        if (response.indexOf("OK") != -1) {
-          return "OK";
-        } else {
-          return "ERROR1";
-        }
-      },
-      fail: function (x) {
-        return "ERROR2";
-      },
-    });
-  }
 
   // const SignupSchema = Yup.object().shape({
   //   username: Yup.string()
@@ -44,44 +20,40 @@ export const FormularioLogin = () => {
   //     .required("Ingrese un CGP"),
   //   password: Yup.string().required("Ingrese una contraseña"),
   // });
+
   // const handleSubmitLogin = async (data) => {
+  //   const url = "/login_carrito/redirectcarrito.php";
+
+  //   let formData = new FormData();
+  //   formData.append("username", data.username);
+  //   formData.append("password", data.password);
+
   //   try {
-  //     //data.username, data.password
-  //     setCargando(true);
-
-  //     var myHeaders = new Headers();
-  //     myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-
-  //     var formdata = new FormData();
-  //     formdata.append("username", data.username);
-  //     formdata.append("password", data.password);
-
-  //     var requestOptions = {
+  //     const response = await fetch(url, {
   //       method: "POST",
-  //       headers: myHeaders,
-  //       body: formdata,
-  //       redirect: "follow",
-  //     };
-  //     const response = await fetch(
-  //       "https://portal2-des.iplan.com.ar/login_carrito/redirectcarrito.php",
-  //       requestOptions,
-  //     );
+  //       body: formData,
+  //     });
+
   //     if (!response.ok) {
   //       throw new Error(`Error en la solicitud: ${response.status}`);
   //     }
   //     const result = await response.text();
   //     console.log(
-  //       "🚀 - file: FormularioLogin.jsx:48 - handleSubmitLogin - result:",
+  //       "🚀 - file: FormularioLogin.jsx:93 - handleSubmitLogin - result:",
   //       result,
   //     );
   //   } catch (error) {
-  //     console.error("Error al realizar la solicitud:", error.message);
+  //     console.log(
+  //       "🚀 - file: FormularioLogin.jsx:94 - handleSubmitLogin - error:",
+  //       error,
+  //     );
   //   }
   // };
+
   return (
     // <Formik
     //   initialValues={{ username: "", password: "" }}
-    //   onSubmit={handleSubmitLogin}
+    //    onSubmit={handleSubmitLogin}
     //   validationSchema={SignupSchema}
     // >
     <form
@@ -101,9 +73,9 @@ export const FormularioLogin = () => {
         <p className="text-[16px] font-medium not-italic leading-normal text-iplanPink">
           {/* <ErrorMessage name="username" /> */}
         </p>
-        <div className="absolute right-8 top-[14px] flex h-[25px] w-6 items-center justify-center rounded-full border-2 border-iplanGrey2 text-iplanGrey2">
+        {/* <div className="absolute right-8 top-[14px] flex h-[25px] w-6 items-center justify-center rounded-full border-2 border-iplanGrey2 text-iplanGrey2">
           <FontAwesomeIcon icon={faQuestion} />
-        </div>
+        </div> */}
       </div>
 
       <div className="relative mt-4 w-full">
@@ -123,15 +95,15 @@ export const FormularioLogin = () => {
         className="mt-4 flex h-[36px] w-auto max-w-[90] items-center justify-center rounded-[25px] bg-iplanPink px-6 py-2 font-lato text-[17px] font-bold leading-normal text-iplanWhite focus:outline-none"
         onClick={() => {
           updateLog("Login", "Click en login va a compra");
+          
         }}
         type="submit"
       >
         INGRESAR
       </button>
-      {/* TODOX A DONDE ME DIRIGE ?? */}
       <a
         className="mt-4 font-roboto text-[17px] font-bold not-italic leading-[135%] tracking-[-0.187px] text-iplanPink"
-        href="#"
+        href="https://www.iplan.com.ar/Liv"
       >
         <u>No soy cliente</u>
       </a>

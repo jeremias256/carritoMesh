@@ -1,6 +1,7 @@
 /* ------------------------ LIBS ------------------------ */
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
+/* ------------------------ REACT ----------------------- */
 import React from "react";
 
 export const Error = () => {

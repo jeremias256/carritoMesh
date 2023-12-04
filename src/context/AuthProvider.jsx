@@ -1,11 +1,12 @@
+/* ------------------------ REACT ----------------------- */
 import { createContext, useState } from "react";
-const AuthContext = createContext();
 
+const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
-  const [auth, setAuth] = useState("CLIENTE SIN NOMBRE");
-  const [cargando, setCargando] = useState(false);
-  const [cgp, setCgp] = useState(0);
-  const [num, setNum] = useState(0);
+  const [auth, setAuth] = useState("CLIENTE");
+  const [cargando, setCargando] = useState(null);
+  const [cgp, setCgp] = useState(null);
+  const [num, setNum] = useState(null);
 
   return (
     <AuthContext.Provider

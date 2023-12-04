@@ -20,47 +20,36 @@ export const Login = () => {
 
   //TODOX SE PUEDE EVITAR LA PRIMERA VISTA DEL LOGIN ANTES DE CAMBIAR DE STEP ?
   useEffect(() => {
-    const fetchServicios = async () => {
-      console.log("FETCH PARA SABER SI YA TIENE MESH");
+    const fetchMesh = async () => {
       try {
-        var myHeaders = new Headers();
+        const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-        var raw = JSON.stringify({
+        const raw = JSON.stringify({
           service: "consulta",
           data: {
             Codigo: "AC",
             Agrupador: "",
           },
         });
-        var requestOptions = {
+        const requestOptions = {
           method: "POST",
           headers: myHeaders,
           body: raw,
           redirect: "follow",
         };
-
         const response = await fetch(
           "https://portal2-des.iplan.com.ar/login_unificado/main/Calls/Tenfold/giveSubscription.php",
           requestOptions,
         );
-        const result = await response.text();
-
-        let internetLivs = JSON.parse(result).filter((servicio) => {
-          if (servicio.Servicio.Servicio == "Internet Liv") {
-            return servicio;
-          }
-        });
         console.log(
-          "🚀 - file: Login.jsx:53 - internetLivs - internetLivs:",
-          internetLivs,
+          "🚀 - file: Login.jsx:45 - fetchMesh - response:",
+          response,
         );
+        const result = await response.text();
 
         let clienteConMesh = JSON.parse(result).filter((servicio) => {
           return servicio.Servicio.Servicio == "Wi-Fi Power Mesh";
         });
-
-        // if (internetLivs.length > 1) clienteConMesh = false;
-
         return clienteConMesh;
       } catch (error) {
         console.log("Error:", error);
@@ -71,112 +60,78 @@ export const Login = () => {
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
         myHeaders.append("Cookie", "PHPSESSID=976786n46u8pk6q3pcn6vhm9uh");
-
         const raw = JSON.stringify({
           service: "obtener_estado_cliente",
           data: {},
         });
-
         const requestOptions = {
           method: "POST",
           headers: myHeaders,
           body: raw,
           redirect: "follow",
         };
-
         const response = await fetch(
           "https://portal2-des.iplan.com.ar/login_unificado/main/Calls/Tenfold/giveAgendamiento.php",
           requestOptions,
         );
-
-        if (!response.ok) {
-          throw new Error("Error en la solicitud");
-        }
-
+        console.log(
+          "🚀 - file: Login.jsx:74 - fetchAgendamientoPendiente - response:",
+          response,
+        );
         const result = await response.text();
 
         return result;
-        // Aquí puedes manejar el resultado de la llamada fetch
       } catch (error) {
-        // Manejar errores
         console.error("Error al obtener datos:", error);
       }
     };
 
     let interv = setInterval(async () => {
       if (
-        //ESTA LOGEADO VA AL STEP CORRESPONDIENTE
+        //ESTA LOGEADO VA AL STEP CORRESPONDIENTE (3 o 4)
         (readCookie("carritoCookieStep") == 3 ||
           readCookie("carritoCookieStep") == 4) &&
         readCookie("userLogged") &&
         readCookie("carritoCGP")
       ) {
+        //ENTRARA EN ESTA PARTE SI AUN ESTA EN EL STEP 3 O 4
+        clearInterval(interv);
         let cookieName = readCookie("userLogged");
         let cookieCgp = readCookie("carritoCGP");
         let stepNum = readCookie("carritoCookieStep");
-        console.log("LEO COOKIE DE STEP VOY A STEP 3 o 4");
-
-        // let tieneAgendamiento = fetchAgendamientoPendiente();
-        // console.log(
-        //   "🚀 - file: Login.jsx:126 - interv - tieneAgendamiento:",
-        //   tieneAgendamiento,
-        // );
-        // setAgendamientoInfo(tieneAgendamiento);
 
         setAuth(cookieName);
         setCgp(cookieCgp);
         setNum(String(cookieCgp).slice(0, -1));
-        setCargando(false);
         setStep(stepNum);
-        clearInterval(interv);
+        setCargando(false);
       } else if (
         //LOGEO PRIMERA VEZ
         readCookie("carritoCGP") &&
         readCookie("userLogged")
       ) {
-        let cgp = readCookie("carritoCGP");
-        setExpireCookie("carritoLogin", cgp, 24 * 60 * 60000);
+        clearInterval(interv);
         let cookieName = readCookie("userLogged");
         let cookieCgp = readCookie("carritoCGP");
         setAuth(cookieName);
         setCgp(cookieCgp);
         setNum(String(cookieCgp).slice(0, -1));
-        clearInterval(interv);
-
-        /* --------- BUSCO COOKIE MESH SINO FETCH PARA VERIFICAR SI TIENE MESH --------- */
         setCargando(false);
 
+        let tieneMesh = await fetchMesh();
         let tieneAgendamiento = await fetchAgendamientoPendiente();
         tieneAgendamiento = JSON.parse(tieneAgendamiento);
-        console.log(
-          "🚀 - file: Login.jsx:151 - interv - tieneAgendamiento:",
-          tieneAgendamiento,
-        );
-        let tieneMesh = await fetchServicios(String().slice(0, -1));
-        console.log(
-          "🚀 - file: Login.jsx:157 - interv - tieneMesh:",
-          tieneMesh,
-        );
-
         if (tieneAgendamiento.Codigo == 0) {
-          console.log(
-            "🚀 - file: Login.jsx:155 - interv - tieneAgendamiento:",
-            tieneAgendamiento,
-          );
           setAgendamientoInfo(tieneAgendamiento);
-          console.log("VA AL STEP 5 TIENE AGENDAMIENTO PENDIENTE");
           setStep(7);
         } else if (tieneMesh.length > 0) {
-          console.log("TIENE MESH VA A STEP 6");
           setStep(6);
         } else {
           console.log("NO TIENE MESH NI AGENDMAIENTO VA A COMPRA STEP 3");
           setStep(3);
         }
-
-        /* --------- BUSCO COOKIE MESH SINO FETCH PARA VERIFICAR SI TIENE MESH --------- */
       } else {
-        console.log("si existe la cookie va al step 3 pero no hay cookie");
+        console.log("sin logeo");
       }
     }, 1000);
   }, []);
