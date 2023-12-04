@@ -1,61 +1,47 @@
-/* ------------------------ LIBS ------------------------ */
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faQuestion } from "@fortawesome/free-solid-svg-icons";
-import * as Yup from "yup";
-import { ErrorMessage, Field, Form, Formik } from "formik";
 /* ------------------------ REACT ----------------------- */
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import useCarrito from "../hooks/useCarritoProvider";
 import useAuth from "../hooks/useAuthProvider";
 /* ---------------------- SERVICES ---------------------- */
 import { updateLog } from "../services/logeo";
+import { readCookie } from "../helpers/cookies";
 
 export const FormularioLogin = () => {
   const { setCargando } = useAuth();
+  /* ------------------- ESTADOS LOCALES ------------------ */
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorLogin, setErrorLogin] = useState(false);
+  const [isFormValid, setIsFormValid] = useState(false);
 
-  // const SignupSchema = Yup.object().shape({
-  //   username: Yup.string()
-  //     .min(6, "El cgp cuenta con al menos 7 caracteres")
-  //     .max(7, "")
-  //     .required("Ingrese un CGP"),
-  //   password: Yup.string().required("Ingrese una contraseña"),
-  // });
+  const validateUsername = (e) => {
+    const value = e.target.value.replace(/\D/g, "").slice(0, 7); // Filtrar solo dígitos y limitar a 7 caracteres
+    setUsername(value);
 
-  // const handleSubmitLogin = async (data) => {
-  //   const url = "/login_carrito/redirectcarrito.php";
+    const regex = /^\d{7}$/;
+    const isValid = regex.test(value);
+    setIsFormValid(isValid && password.trim() !== "");
+  };
+  const validatePassword = (e) => {
+    let value = e.target.value;
+    setPassword(value);
+    const regex = /^\d{7}$/;
+    setIsFormValid(regex.test(username) && value !== "");
+  };
 
-  //   let formData = new FormData();
-  //   formData.append("username", data.username);
-  //   formData.append("password", data.password);
+  useEffect(() => {
+    const url = window.location.href;
+    if (url.includes("?error_validation")) {
+      setErrorLogin(true);
+    } else {
+      setErrorLogin(false);
+    }
 
-  //   try {
-  //     const response = await fetch(url, {
-  //       method: "POST",
-  //       body: formData,
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error(`Error en la solicitud: ${response.status}`);
-  //     }
-  //     const result = await response.text();
-  //     console.log(
-  //       "🚀 - file: FormularioLogin.jsx:93 - handleSubmitLogin - result:",
-  //       result,
-  //     );
-  //   } catch (error) {
-  //     console.log(
-  //       "🚀 - file: FormularioLogin.jsx:94 - handleSubmitLogin - error:",
-  //       error,
-  //     );
-  //   }
-  // };
+    if (readCookie("userLogged")) setCargando(true);
+    else setCargando(false);
+  }, []);
 
   return (
-    // <Formik
-    //   initialValues={{ username: "", password: "" }}
-    //    onSubmit={handleSubmitLogin}
-    //   validationSchema={SignupSchema}
-    // >
     <form
       className="flex w-full flex-col items-center"
       method="POST"
@@ -67,15 +53,17 @@ export const FormularioLogin = () => {
         </label>
         <input
           className="h-[48px] w-full rounded-[30px] border-2 pl-4 pr-[10px] text-[16px] font-bold not-italic leading-normal text-iplanPink"
+          maxLength={7}
           name="username"
-          type="number"
+          value={username}
+          onInput={validateUsername}
+          type="text"
         />
-        <p className="text-[16px] font-medium not-italic leading-normal text-iplanPink">
-          {/* <ErrorMessage name="username" /> */}
-        </p>
-        {/* <div className="absolute right-8 top-[14px] flex h-[25px] w-6 items-center justify-center rounded-full border-2 border-iplanGrey2 text-iplanGrey2">
-          <FontAwesomeIcon icon={faQuestion} />
-        </div> */}
+        {username.length !== 7 && username.length != 0 && (
+          <p className="text-[16px] font-medium not-italic leading-normal text-iplanPink">
+            Un CGP cuenta con 7 números
+          </p>
+        )}
       </div>
 
       <div className="relative mt-4 w-full">
@@ -84,18 +72,22 @@ export const FormularioLogin = () => {
         </label>
         <input
           className="h-[48px] w-full rounded-[30px] border-2 pl-4 pr-[10px] text-[16px] font-bold not-italic leading-normal text-iplanPink"
+          onInput={validatePassword}
+          value={password}
           name="password"
           type="password"
         />
-        <p className="text-[16px] font-medium not-italic leading-normal text-iplanPink">
-          {/* <ErrorMessage name="password" /> */}
-        </p>
+        {errorLogin && (
+          <p className="text-[16px] font-medium not-italic leading-normal text-iplanPink">
+            CGP o clave es incorrecta
+          </p>
+        )}
       </div>
       <button
-        className="mt-4 flex h-[36px] w-auto max-w-[90] items-center justify-center rounded-[25px] bg-iplanPink px-6 py-2 font-lato text-[17px] font-bold leading-normal text-iplanWhite focus:outline-none"
+        className="mt-4 flex h-[36px] w-auto max-w-[90] cursor-pointer items-center justify-center rounded-[25px] bg-iplanPink px-6 py-2 font-lato text-[17px] font-bold leading-normal text-iplanWhite focus:outline-none"
+        disabled={!isFormValid}
         onClick={() => {
           updateLog("Login", "Click en login va a compra");
-          
         }}
         type="submit"
       >
@@ -108,6 +100,5 @@ export const FormularioLogin = () => {
         <u>No soy cliente</u>
       </a>
     </form>
-    // </Formik>
   );
 };

@@ -91,8 +91,7 @@ export const Login = () => {
         //ESTA LOGEADO VA AL STEP CORRESPONDIENTE (3 o 4)
         (readCookie("carritoCookieStep") == 3 ||
           readCookie("carritoCookieStep") == 4) &&
-        readCookie("userLogged") &&
-        readCookie("carritoCGP")
+        readCookie("userLogged")
       ) {
         //ENTRARA EN ESTA PARTE SI AUN ESTA EN EL STEP 3 O 4
         clearInterval(interv);
@@ -107,7 +106,6 @@ export const Login = () => {
         setCargando(false);
       } else if (
         //LOGEO PRIMERA VEZ
-        readCookie("carritoCGP") &&
         readCookie("userLogged")
       ) {
         clearInterval(interv);

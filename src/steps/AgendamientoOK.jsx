@@ -63,9 +63,20 @@ export const AgendamientoOK = () => {
           </p>
         </div>
 
-        {/* <button className="flex h-[36px] w-auto max-w-[90] items-center justify-center gap-[8px] rounded-[25px] bg-iplanPink px-6 py-2 font-lato text-[17px] font-bold leading-normal text-iplanWhite outline-none focus:outline-none">
+        <a
+          className="mt-2 flex h-[36px] w-auto max-w-[90] items-center gap-[8px] rounded-[25px] bg-iplanPink px-6 py-2 font-lato text-[17px] font-bold leading-normal text-iplanWhite outline-none focus:outline-none"
+          onClick={() => {
+            delete_cookie("userLogged");
+            delete_cookie("carritoCGP");
+            delete_cookie("carritoLogin");
+            delete_cookie("carritoCookieStep");
+            delete_cookie("carritoCookieTorre");
+            delete_cookie("carritoCookieDirs");
+          }}
+          href="https://portal2-des.iplan.com.ar/node/1875"
+        >
           TERMINAR
-        </button> */}
+        </a>
       </div>
     </div>
   );

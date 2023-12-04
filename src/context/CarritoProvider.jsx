@@ -92,6 +92,7 @@ const CarritoProvider = ({ children }) => {
   const [agendamiento, setAgendamiento] = useState(null);
   const [agendamientoInfo, setAgendamientoInfo] = useState(null);
   const [site, setSite] = useState(null);
+  const [mensaje, setMensaje] = useState(null);
 
   return (
     <CarritoContext.Provider
@@ -110,6 +111,8 @@ const CarritoProvider = ({ children }) => {
         setAgendamientoInfo,
         site,
         setSite,
+        mensaje,
+        setMensaje,
       }}
     >
       {children}

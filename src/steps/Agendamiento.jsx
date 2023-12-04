@@ -65,17 +65,21 @@ export const Agendamiento = () => {
           requestOptions,
         );
         const result = await response.text();
+        console.log(
+          "🚀 - file: Agendamiento.jsx:68 - agendamientoFetch - result:",
+          result,
+        );
         // ("ERROR AGENDA [5] / agendamiento existente / ERROR AGENDA [E] / ERROR AGENDA [34]");
         if (result == "OK") {
           setExpireCookie("carritoMensaje", "OK", 24 * 60 * 60000);
           setMensaje(readCookie("carritoMensaje"));
           setExpireCookie("carritoCookieStep", 5, 24 * 60 * 60000);
-          setStep(readCookie("carritoCookieStep"));
+          setStep(5);
         } else {
           setExpireCookie("carritoMensaje", "error", 24 * 60 * 60000);
           setMensaje(readCookie("carritoMensaje"));
           setExpireCookie("carritoCookieStep", 5, 24 * 60 * 60000);
-          setStep(readCookie("carritoCookieStep"));
+          setStep(5);
         }
       } catch (error) {
         console.log("error", error);

@@ -60,6 +60,9 @@
   .buttonCerrarSesion {
     @apply absolute left-4 top-0 mt-2 flex h-[36px] w-auto max-w-[90] items-center gap-[8px] rounded-[25px] bg-iplanGrey2 px-2 py-2 font-lato text-[12px] font-bold leading-normal !text-iplanWhite outline-none focus:outline-none;
   }
+  .buttonCerrarSesionPROD {
+    @apply mt-2 flex h-[36px] w-auto max-w-[150px] items-center gap-[8px] rounded-[25px] bg-iplanPink px-4 py-2 font-lato text-[20px] font-bold leading-normal !text-iplanWhite outline-none focus:outline-none;
+  }
 }
 
 html {
