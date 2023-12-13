@@ -3,8 +3,8 @@ import { createContext, useState } from "react";
 
 const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
+  const [cargando, setCargando] = useState(false);
   const [auth, setAuth] = useState("CLIENTE");
-  const [cargando, setCargando] = useState(null);
   const [cgp, setCgp] = useState(null);
   const [num, setNum] = useState(null);
 

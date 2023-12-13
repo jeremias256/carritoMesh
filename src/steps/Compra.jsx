@@ -1,10 +1,6 @@
 /* ------------------------ LIBS ------------------------ */
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCartShopping,
-  faHouse,
-  faXmark,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCartShopping, faHouse } from "@fortawesome/free-solid-svg-icons";
 /* ------------------------ REACT ----------------------- */
 import { useState, useEffect } from "react";
 import useCarrito from "../hooks/useCarritoProvider";
@@ -20,17 +16,19 @@ import { MESH } from "../Env";
 import imgStep from "../assets/imgs/step1.png";
 import imgMesh from "../assets/imgs/imgMesh.png";
 import { updateLog } from "../services/logeo";
+import { GIVESUBSCRIPTIONAPI } from "../constants";
 
 export const Compra = () => {
   const {
+    setStep,
     direcciones,
     setDirecciones,
-    setStep,
     torres,
     setTorres,
     mostrarForm,
     site,
     setSite,
+    precioMesh,
   } = useCarrito();
   const { num } = useAuth();
   /* ------------------- ESTADOS LOCALES ------------------ */
@@ -58,10 +56,7 @@ export const Compra = () => {
           body: raw,
           redirect: "follow",
         };
-        const response = await fetch(
-          "https://portal2-des.iplan.com.ar/login_unificado/main/Calls/Tenfold/giveSubscription.php",
-          requestOptions,
-        );
+        const response = await fetch(GIVESUBSCRIPTIONAPI, requestOptions);
         const result = await response.text();
 
         let internetLivs = JSON.parse(result).filter((servicio) => {
@@ -77,32 +72,35 @@ export const Compra = () => {
         );
         setDirecciones(internetLivs);
       } catch (error) {
-        console.log("Error:", error);
+        console.log("🚀 - file: Compra.jsx:76 - fetchData - error:", error);
       }
     };
 
     if (num) fetchData();
   }, [num]);
 
-  if (direcciones.length == 0) return <Spinner />;
+  if (direcciones == 0) return <Spinner />;
 
   return (
     <>
       {/* STEPS */}
       <div className="relative mb-8 mt-16 flex items-center lg:mt-0">
         <div className="absolute right-[200px] top-0 border-r-[1px] border-[#b8b8b8] pr-6">
-          <FontAwesomeIcon
-            icon={faHouse}
-            size="2xl"
-            style={{ color: "#7C7B85" }}
-            className="cursor-pointer"
-          />
+          <a href="https://www.iplan.com.ar/power-mesh">
+            <FontAwesomeIcon
+              icon={faHouse}
+              size="2xl"
+              style={{ color: "#7C7B85" }}
+              className="cursor-pointer"
+            />
+          </a>
         </div>
 
         <div className="ml-[20px] flex items-center gap-2 pl-[20px]">
           <div className="grid grid-cols-[1fr,1fr,1fr] items-center justify-items-center gap-0">
             <button
               className="pointer h-[32px] w-[32px] rounded-full bg-iplanPink font-lato text-2xl font-bold not-italic text-iplanWhite outline-none focus:outline-none"
+              disabled
               type="button"
               value="1"
             >
@@ -168,7 +166,7 @@ export const Compra = () => {
                         onClick={(e) => {
                           setTorres(1);
                           updateLog(
-                            "Componente de compra",
+                            "componente carrito",
                             "Click en boton 1 torre",
                           );
                         }}
@@ -182,7 +180,7 @@ export const Compra = () => {
                         onClick={(e) => {
                           setTorres(2);
                           updateLog(
-                            "Componente de compra",
+                            "componente carrito",
                             "Click en boton 2 torres",
                           );
                         }}
@@ -196,7 +194,7 @@ export const Compra = () => {
                         onClick={(e) => {
                           setTorres(3);
                           updateLog(
-                            "Componente de compra",
+                            "componente carrito",
                             "Click en boton 3 torres",
                           );
                         }}
@@ -210,7 +208,7 @@ export const Compra = () => {
                         onClick={(e) => {
                           setTorres(4);
                           updateLog(
-                            "Componente de compra",
+                            "componente carrito",
                             "Click en boton 4 torres",
                           );
                         }}
@@ -262,7 +260,7 @@ export const Compra = () => {
                     </span>
                   </p>
                   <p className="font-figtree text-[18px] font-[900] not-italic leading-normal text-iplanPink">
-                    <span> {formatearNum(parseInt(torres) * MESH)} </span>
+                    <span> {formatearNum(parseInt(torres) * precioMesh)} </span>
                   </p>
                 </div>
               </div>
@@ -327,7 +325,7 @@ export const Compra = () => {
                 Estás agregando a tu factura:
               </p>
               <p className="text-center font-lato text-[18px] font-[900] not-italic leading-normal text-iplanWhite">
-                {formatearNum(parseInt(torres) * MESH)}
+                {formatearNum(parseInt(torres) * precioMesh)}
               </p>
             </div>
             {(direcciones.length == 1 || mostrarButtonComprar != 0) && (
@@ -338,14 +336,17 @@ export const Compra = () => {
                   setExpireCookie("carritoCookieSite", site, 24 * 60 * 6000);
                   setExpireCookie("carritoCookieTorre", torres, 24 * 60 * 6000);
                   setStep(4);
-                  updateLog("Formulario MESH", "Click en boton contratar");
+                  updateLog(
+                    "componente carrito",
+                    "Click en boton continuar, va a agendamiento",
+                  );
                 }}
                 type="button"
               >
                 <p>
                   <FontAwesomeIcon icon={faCartShopping} />
                 </p>
-                <p>CONTRATAR</p>
+                <p>CONTINUAR</p>
               </button>
             )}
           </div>

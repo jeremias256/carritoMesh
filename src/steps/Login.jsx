@@ -13,12 +13,15 @@ import { readCookie, setExpireCookie } from "../helpers/cookies";
 /* ----------------------- ASSETS ----------------------- */
 import { MESH } from "../Env";
 import imgMesh from "../assets/imgs/imgMesh.png";
+import { updateLog } from "../services/logeo";
+import { GIVEAGENDAMIENTOAPI, GIVESUBSCRIPTIONAPI } from "../constants";
+import axios from "axios";
 
 export const Login = () => {
   const { setCargando, setAuth, cargando, setCgp, setNum } = useAuth();
-  const { setStep, setAgendamientoInfo } = useCarrito();
+  const { setStep, setAgendamientoInfo, precioMesh, setPrecioMesh } =
+    useCarrito();
 
-  //TODOX SE PUEDE EVITAR LA PRIMERA VISTA DEL LOGIN ANTES DE CAMBIAR DE STEP ?
   useEffect(() => {
     const fetchMesh = async () => {
       try {
@@ -37,10 +40,7 @@ export const Login = () => {
           body: raw,
           redirect: "follow",
         };
-        const response = await fetch(
-          "https://portal2-des.iplan.com.ar/login_unificado/main/Calls/Tenfold/giveSubscription.php",
-          requestOptions,
-        );
+        const response = await fetch(GIVESUBSCRIPTIONAPI, requestOptions);
         console.log(
           "🚀 - file: Login.jsx:45 - fetchMesh - response:",
           response,
@@ -51,15 +51,12 @@ export const Login = () => {
           return servicio.Servicio.Servicio == "Wi-Fi Power Mesh";
         });
         return clienteConMesh;
-      } catch (error) {
-        console.log("Error:", error);
-      }
+      } catch (error) {}
     };
     const fetchAgendamientoPendiente = async () => {
       try {
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("Cookie", "PHPSESSID=976786n46u8pk6q3pcn6vhm9uh");
         const raw = JSON.stringify({
           service: "obtener_estado_cliente",
           data: {},
@@ -70,10 +67,7 @@ export const Login = () => {
           body: raw,
           redirect: "follow",
         };
-        const response = await fetch(
-          "https://portal2-des.iplan.com.ar/login_unificado/main/Calls/Tenfold/giveAgendamiento.php",
-          requestOptions,
-        );
+        const response = await fetch(GIVEAGENDAMIENTOAPI, requestOptions);
         console.log(
           "🚀 - file: Login.jsx:74 - fetchAgendamientoPendiente - response:",
           response,
@@ -82,16 +76,54 @@ export const Login = () => {
 
         return result;
       } catch (error) {
-        console.error("Error al obtener datos:", error);
+        console.log(
+          "🚀 - file: Login.jsx:84 - fetchAgendamientoPendiente - error:",
+          error,
+        );
+      }
+    };
+    const fetchPrecios = async () => {
+      const url = "/cobertura/give_precios.php";
+      let fData = new FormData();
+      fData.append("Producto", "Mesh");
+
+      try {
+        const response = await axios.post(url, fData);
+        console.log(
+          "🚀 - file: FormularioLogin.jsx:45 - handleSubmit - response:",
+          response,
+        );
+        setPrecioMesh(response.data);
+      } catch (error) {
+        console.log(
+          "🚀 - file: FormularioLogin.jsx:54 - handleSubmit - error:",
+          error,
+        );
+      } finally {
+        setCargando(false);
       }
     };
 
+    fetchPrecios();
+
     let interv = setInterval(async () => {
-      if (
+      if (readCookie("userLogged") && !readCookie("carritoCGP")) {
+        //LOGIN POR ZDC
+        clearInterval(interv);
+        updateLog("Componente login", "ingreso por ZDC va a componente home");
+        let cookieName = readCookie("userLogged");
+        let cookieCgp = readCookie("iplanUser2020");
+        setAuth(cookieName);
+        setCgp(cookieCgp);
+        setNum(String(cookieCgp).slice(0, -1));
+        setStep(2);
+        setCargando(false);
+      } else if (
         //ESTA LOGEADO VA AL STEP CORRESPONDIENTE (3 o 4)
         (readCookie("carritoCookieStep") == 3 ||
           readCookie("carritoCookieStep") == 4) &&
-        readCookie("userLogged")
+        readCookie("userLogged") &&
+        readCookie("carritoCGP")
       ) {
         //ENTRARA EN ESTA PARTE SI AUN ESTA EN EL STEP 3 O 4
         clearInterval(interv);
@@ -106,9 +138,11 @@ export const Login = () => {
         setCargando(false);
       } else if (
         //LOGEO PRIMERA VEZ
-        readCookie("userLogged")
+        readCookie("userLogged") &&
+        readCookie("carritoCGP")
       ) {
         clearInterval(interv);
+        updateLog("Componente login", "click button login");
         let cookieName = readCookie("userLogged");
         let cookieCgp = readCookie("carritoCGP");
         setAuth(cookieName);
@@ -120,16 +154,28 @@ export const Login = () => {
         let tieneAgendamiento = await fetchAgendamientoPendiente();
         tieneAgendamiento = JSON.parse(tieneAgendamiento);
         if (tieneAgendamiento.Codigo == 0) {
+          updateLog(
+            "Componente login",
+            "cliente con agendamiento pendiente va a componente agendamiento pendiente",
+          );
           setAgendamientoInfo(tieneAgendamiento);
           setStep(7);
         } else if (tieneMesh.length > 0) {
+          updateLog(
+            "Componente login",
+            "cliente con mesh va a componente tienemesh",
+          );
           setStep(6);
         } else {
-          console.log("NO TIENE MESH NI AGENDMAIENTO VA A COMPRA STEP 3");
+          updateLog(
+            "Componente login",
+            "cliente sin mesh va a componente carrito",
+          );
+          setExpireCookie("carritoCookieStep", 3, 24 * 60 * 6000);
           setStep(3);
         }
       } else {
-        console.log("sin logeo");
+        console.log("🚀 - file: Login.jsx:152 - interv - sin logeo:");
       }
     }, 1000);
   }, []);
@@ -141,7 +187,7 @@ export const Login = () => {
       </h2>
 
       <div className="grid h-full grid-cols-1 gap-3 lg:grid-cols-2 xl:gap-6">
-        <div className="card">
+        <div className="cardLogin bg-iplanWhite">
           {cargando ? (
             <Spinner />
           ) : (
@@ -196,7 +242,7 @@ export const Login = () => {
               </p>
             </div>
             <p className="mt-3 text-[48px] font-bold not-italic leading-[50px] tracking-[-0.48px] text-iplanGrey2">
-              {formatearNum(parseInt(MESH))}
+              {precioMesh != 0 ? formatearNum(parseInt(precioMesh)) : ""}
             </p>
             <p className="mt-2 flex gap-[8px] text-center font-lato text-[15px] font-bold not-italic text-iplanGrey2">
               En tu factura - Imp incluidos

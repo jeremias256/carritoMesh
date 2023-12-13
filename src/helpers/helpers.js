@@ -111,5 +111,61 @@ function resolverCalcu(m2, m3, m4, m5) {
 function formatearNum(numero) {
     return '$' + numero.toLocaleString('es-US', { maximumFractionDigits: 0 }).replace(/,/g, '.');
 }
+function objToArray(objeto) {
+    if (typeof objeto === 'object' && objeto !== null) {
+        return [objeto];
+    } else {
+        return objeto;
+    }
+}
+function validarInputContrasena(thePass) {
+    let re1 = /[A-Z]/;
+    let re2 = /[0-9]/;
+    let re3 = /[#?!@$%^&*-.=:;,]/;
+    let myMsgret = '';
+    let qpasverb = [];
 
-export { resolverCalcu, formatearNum };
+    if (thePass.search(re1) == -1) {
+        qpasverb.push("1 mayúscula");
+    }
+
+    if (thePass.length < 8) {
+        qpasverb.push("8 caracteres");
+    }
+
+    if (thePass.search(re2) == -1) {
+        qpasverb.push("1 número");
+    }
+
+    if (thePass.search(re3) == -1) {
+        qpasverb.push("1 símbolo (#?!@$%^&*-.=:;,)");
+    }
+
+    let qpaschek = qpasverb.length;
+
+    if (qpaschek == 0) {
+        return ("¡Cumple los requisitos!");
+    } else {
+        myMsgret = "Debe contener al menos ";
+
+        if (qpaschek == 1) {
+            myMsgret += qpasverb[0] + ".";
+        }
+        else {
+            for (let i = 0; i < qpaschek; i++) {
+                if (i < (qpaschek - 2)) {
+                    myMsgret += qpasverb[i] + ", ";
+                }
+                else if (i < (qpaschek - 1)) {
+                    myMsgret += qpasverb[i];
+                }
+                else {
+                    myMsgret += " y " + qpasverb[i] + ".";
+                }
+            }
+        }
+    }
+
+    return myMsgret;
+}
+export { resolverCalcu, formatearNum, objToArray, validarInputContrasena };

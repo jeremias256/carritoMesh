@@ -18,7 +18,7 @@ export const AgendamientoPendiente = () => {
       {!agendamientoInfo ? (
         <Spinner />
       ) : (
-        <div className="mt-16 flex w-full max-w-[900px] flex-col items-center lg:mt-0">
+        <div className="mt-16 flex w-full max-w-[1200px] flex-col items-center lg:mt-0">
           <div className="shadow-[1px_1px_2px_0px_rgba(0,0,0,0.15) flex min-h-[140px] w-full flex-col items-center justify-center overflow-hidden rounded-[24px] bg-iplanPink px-6 py-8 text-center text-iplanWhite">
             <h2 className="flex items-center font-lato text-[32px] font-bold not-italic leading-normal">
               Ya contas con un agendamiento pendiente
@@ -33,20 +33,42 @@ export const AgendamientoPendiente = () => {
               TURNO PARA ENTREGA DE EQUIPAMIENTO:
             </p>
 
-            <div className="flex justify-center gap-3 self-stretch overflow-hidden rounded-[12px] bg-iplanGrey py-3">
-              <p className="font-lato text-[16px] font-[900] not-italic leading-normal text-[#5B5151]">
-                <span>Turno asignado: </span>
-                <span className="ml-[8px] font-lato text-[16px] font-[900] leading-normal text-iplanPink">
+            <div className="flex flex-col items-center justify-center gap-3 self-stretch overflow-hidden rounded-[12px] bg-iplanGrey py-3">
+              <p className="font-lato text-[24px] font-bold not-italic leading-normal text-[#5B5151]">
+                Turno confirmado para el día:{" "}
+                <span className="ml-[8px] font-lato text-[24px] font-bold leading-normal text-iplanPink">
                   {agendamientoInfo.Fecha}
                   {"  "}
-                  <span className="text-[#5B5151]">Turno: </span>
+                </span>{" "}
+                En el rango horario{" "}
+                <span className="ml-[8px] font-lato text-[24px] font-bold leading-normal text-iplanPink">
                   {agendamientoInfo.Horario}
-                  {"  "}
-                  <span className="text-[#5B5151]">Orden: </span>
+                </span>
+                {"  "}
+              </p>
+              <div className="w-[90%] border-b-2 border-iplanWhite"></div>
+              <p className="font-lato text-[24px] font-bold not-italic leading-normal text-[#5B5151]">
+                Órden de venta #:{" "}
+                <span className="ml-[8px] font-lato text-[24px] font-bold leading-normal text-iplanPink">
                   {agendamientoInfo.Orden}
                 </span>
               </p>
             </div>
+
+            {/* <div className="flex justify-center gap-3 self-stretch overflow-hidden rounded-[12px] bg-iplanGrey py-3">
+              <p className="font-lato text-[24px] font-medium not-italic leading-normal text-[#5B5151]">
+                <span className="text-[24px] font-bold">Turno asignado: </span>
+                <span className="ml-[8px] font-lato text-[24px] font-bold leading-normal text-iplanPink">
+                  {agendamientoInfo.Fecha}
+                  {"  "}
+                  <span className="text-[24px] text-[#5B5151]">Turno: </span>
+                  {agendamientoInfo.Horario}
+                  {"  "}
+                  <span className="text-[24px] text-[#5B5151]">Orden: </span>
+                  {agendamientoInfo.Orden}
+                </span>
+              </p>
+            </div> */}
           </div>
 
           <a
@@ -58,6 +80,12 @@ export const AgendamientoPendiente = () => {
               delete_cookie("carritoCookieStep");
               delete_cookie("carritoCookieTorre");
               delete_cookie("carritoCookieDirs");
+              delete_cookie("iplanUser2020");
+              delete_cookie("iplanUser");
+              delete_cookie("PHPSESSID");
+              delete_cookie("carritoErrorLogin");
+              delete_cookie("carritoCambioPassword");
+              delete_cookie("carritoCambioPasswordPorMail");
             }}
             href="https://portal2-des.iplan.com.ar/node/1875"
           >

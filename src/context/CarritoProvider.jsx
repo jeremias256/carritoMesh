@@ -1,9 +1,19 @@
 /* ------------------------ REACT ----------------------- */
 import { createContext, useState } from "react";
+import {
+  STEP_COMPRA,
+  STEP_LOGIN,
+  STEP_HOME,
+  VITE_STEP_AGENDAMIENTOOK,
+  VITE_STEP_AGENDAMIENTOPENDIENTE,
+  VITE_STEP_AGENDAMIENTO,
+  VITE_STEP_TIENEMESH,
+  MESH,
+} from "../Env";
 
 const CarritoContext = createContext();
 const CarritoProvider = ({ children }) => {
-  const [step, setStep] = useState(1); //INFX 3 PARA USO LOCAL
+  const [step, setStep] = useState(STEP_LOGIN); //INFX STEP_COMPRA PARA USO LOCAL
   /* ----------------------- COMPRA ----------------------- */
   // let SUB = [
   //   {
@@ -86,9 +96,10 @@ const CarritoProvider = ({ children }) => {
   //     },
   //   },
   // ];
+  const [precioMesh, setPrecioMesh] = useState(0);
   const [direcciones, setDirecciones] = useState(0);
   const [mostrarForm, setMostrarForm] = useState(null);
-  const [torres, setTorres] = useState(2);
+  const [torres, setTorres] = useState(1);
   const [agendamiento, setAgendamiento] = useState(null);
   const [agendamientoInfo, setAgendamientoInfo] = useState(null);
   const [site, setSite] = useState(null);
@@ -97,6 +108,8 @@ const CarritoProvider = ({ children }) => {
   return (
     <CarritoContext.Provider
       value={{
+        precioMesh,
+        setPrecioMesh,
         step,
         setStep,
         direcciones,

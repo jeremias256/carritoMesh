@@ -1,5 +1,16 @@
 /* ------------------------ LIBS ------------------------ */
 /* ------------------------ REACT ----------------------- */
+import {
+  STEP_COMPRA,
+  STEP_HOME,
+  STEP_LOGIN,
+  VITE_STEP_AGENDAMIENTO,
+  VITE_STEP_AGENDAMIENTOOK,
+  VITE_STEP_AGENDAMIENTOPENDIENTE,
+  VITE_STEP_TIENEMESH,
+} from "../Env";
+import { Error } from "../components/Error";
+import { ErrorConAgenda } from "../components/ErrorConAgenda";
 import useCarrito from "../hooks/useCarritoProvider";
 /* --------------------- COMPONENTS --------------------- */
 import {
@@ -19,13 +30,13 @@ export const AppCarrito = () => {
 
   return (
     <>
-      {step == 1 && <Login />}
-      {step == 2 && <Home />}
-      {step == 3 && <Compra />}
-      {step == 4 && <Agendamiento />}
-      {step == 5 && <AgendamientoOK />}
-      {step == 6 && <TieneMesh />}
-      {step == 7 && <AgendamientoPendiente />}
+      {step == STEP_LOGIN && <Login />}
+      {step == STEP_HOME && <Home />}
+      {step == STEP_COMPRA && <Compra />}
+      {step == VITE_STEP_AGENDAMIENTO && <Agendamiento />}
+      {step == VITE_STEP_AGENDAMIENTOOK && <AgendamientoOK />}
+      {step == VITE_STEP_TIENEMESH && <TieneMesh />}
+      {step == VITE_STEP_AGENDAMIENTOPENDIENTE && <AgendamientoPendiente />}
     </>
   );
 };

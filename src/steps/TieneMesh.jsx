@@ -1,11 +1,9 @@
-/* ------------------------ LIBS ------------------------ */
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 /* ------------------------ REACT ----------------------- */
 import { useEffect } from "react";
 import useAuth from "../hooks/useAuthProvider";
 /* ----------------------- HELPERS ---------------------- */
 import { delete_cookie } from "../helpers/cookies";
+import imgWhatsapp from "../assets/imgs/whatsapp.png";
 
 export const TieneMesh = () => {
   const { auth } = useAuth();
@@ -15,34 +13,30 @@ export const TieneMesh = () => {
 
   return (
     <>
-      <div className="shadow-[1px_1px_2px_0px_rgba(0,0,0,0.15) flex w-full max-w-[832px] flex-col gap-[12px] overflow-hidden rounded-[24px] bg-iplanPink py-[24px] text-iplanWhite">
+      <div className="shadow-[1px_1px_2px_0px_rgba(0,0,0,0.15) flex w-full max-w-[1200px] flex-col gap-[12px] overflow-hidden rounded-[24px] bg-iplanPink px-4 py-[24px] text-iplanWhite">
         <p className="text-center font-lato text-[32px] font-bold not-italic leading-normal">
           Hola, {auth}
         </p>
-        <p className="px-4 text-center font-lato text-[28px] font-bold leading-normal lg:px-16">
+        <p className="text-center font-lato text-[28px] font-bold leading-normal lg:px-16">
           Ya contás con Wi Fi Power Mesh en tu IPLANliv
         </p>
 
-        <div className="flex flex-col items-center justify-center">
-          <p className="px-4 text-center font-lato text-[20px] font-bold leading-normal">
-            Para sumar conectividad o aumentar la velocidad de tu plan
-          </p>
-          <span className="mt-2 flex items-center gap-4 px-4 text-center font-lato text-[20px] font-bold leading-normal">
-            contactate por Whatsapp con el área comercial de IPLAN:{" "}
-            <div className="hover:text-iplanGreen">
-              <a
-                className="hover:text-iplanGreen"
-                href="https://wa.me/541150320000"
-                target="_blank"
-              >
-                <FontAwesomeIcon
-                  icon={faWhatsapp}
-                  size="2xl"
-                  style={{ color: "#f2f2f2" }}
-                />
-              </a>
-            </div>
-          </span>
+        <div className="flex flex-col items-center justify-center gap-4 px-4 lg:flex-row">
+          <div className="flex flex-col items-center justify-center">
+            <p className="text-center font-lato text-[20px] font-bold leading-normal">
+              Para sumar conectividad o aumentar la velocidad de tu plan,
+            </p>
+            <p className="text-center font-lato text-[20px] font-bold leading-normal">
+              contactáte por Whatsapp con el área comercial de IPLAN:{" "}
+            </p>
+          </div>
+          <a
+            className="max-w-[200px]"
+            href="https://wa.me/541150320000"
+            target="_blank"
+          >
+            <img className="w-full" src={imgWhatsapp} alt="whatsapp" />
+          </a>
         </div>
       </div>
       <a
@@ -54,6 +48,12 @@ export const TieneMesh = () => {
           delete_cookie("carritoCookieStep");
           delete_cookie("carritoCookieTorre");
           delete_cookie("carritoCookieDirs");
+          delete_cookie("iplanUser2020");
+          delete_cookie("iplanUser");
+          delete_cookie("PHPSESSID");
+          delete_cookie("carritoErrorLogin");
+          delete_cookie("carritoCambioPassword");
+          delete_cookie("carritoCambioPasswordPorMail");
         }}
         href="https://portal2-des.iplan.com.ar/node/1875"
       >

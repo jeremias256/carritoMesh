@@ -20,6 +20,12 @@ const App = () => {
               delete_cookie("carritoCookieStep");
               delete_cookie("carritoCookieTorre");
               delete_cookie("carritoCookieDirs");
+              delete_cookie("iplanUser2020");
+              delete_cookie("iplanUser");
+              delete_cookie("PHPSESSID");
+              delete_cookie("carritoErrorLogin");
+              delete_cookie("carritoCambioPassword");
+              delete_cookie("carritoCambioPasswordPorMail");
             }}
             href="https://portal2-des.iplan.com.ar/node/1875"
           >

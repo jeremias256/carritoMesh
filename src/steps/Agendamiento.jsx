@@ -11,6 +11,9 @@ import { Spinner } from "../components";
 import { delete_cookie, readCookie, setExpireCookie } from "../helpers/cookies";
 /* ----------------------- ASSETS ----------------------- */
 import imgStep from "../assets/imgs/step2.png";
+import { updateLog } from "../services/logeo";
+import { SERVICECARRITOMESHAPI } from "../constants";
+import { STEP_COMPRA } from "../Env";
 
 export const Agendamiento = () => {
   const { num } = useAuth();
@@ -23,12 +26,12 @@ export const Agendamiento = () => {
     site,
     setSite,
     setMensaje,
+    setAgendamientoInfo,
   } = useCarrito();
   /* ------------------- ESTADOS LOCALES ------------------ */
   const [spinner, setSpinner] = useState(false);
 
   useEffect(() => {
-    console.log("RENDERIZO USEEFFECT AGENDAMIENTO");
     delete_cookie("carritoAgendamientoFecha");
     delete_cookie("carritoAgendamientoHorario");
     delete_cookie("carritoAgendamientoCupo");
@@ -40,8 +43,9 @@ export const Agendamiento = () => {
       setSite(readCookie("carritoCookieSite"));
 
     const agendamientoFetch = async (fechaEntrega) => {
-      console.log("ENCONTRO COOKIE DE AGENDA, SIGUE FETCH DE AGENDAMIENTO");
-
+      console.log(
+        "🚀 - file: Agendamiento.jsx:45 - agendamientoFetch - ENCONTRO COOKIE DE AGENDA, SIGUE FETCH DE AGENDAMIENTO:",
+      );
       try {
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -60,34 +64,53 @@ export const Agendamiento = () => {
           body: raw,
           redirect: "follow",
         };
-        const response = await fetch(
-          "https://portal2-des.iplan.com.ar/login_unificado/main/Calls/ServiceCarritoMesh.php",
-          requestOptions,
-        );
+        const response = await fetch(SERVICECARRITOMESHAPI, requestOptions);
         const result = await response.text();
+        let resulstJSON = JSON.parse(result);
         console.log(
-          "🚀 - file: Agendamiento.jsx:68 - agendamientoFetch - result:",
-          result,
+          "🚀 - file: Agendamiento.jsx:69 - agendamientoFetch - resulstJSON:",
+          resulstJSON,
         );
         // ("ERROR AGENDA [5] / agendamiento existente / ERROR AGENDA [E] / ERROR AGENDA [34]");
-        if (result.codigo == 0) {
+        if (resulstJSON.Codigo == 0) {
+          updateLog("componente agendamiento", "agendamiento ok");
+          let infoInstalacion = {
+            horario: readCookie("carritoAgendamientoHorario"),
+            fecha: readCookie("carritoAgendamientoFecha"),
+            orden: resulstJSON.Orden,
+          };
+          setAgendamientoInfo(infoInstalacion);
           setExpireCookie("carritoMensaje", "OK", 24 * 60 * 6000);
           setMensaje(readCookie("carritoMensaje"));
           setExpireCookie("carritoCookieStep", 5, 24 * 60 * 6000);
           setStep(5);
-        } else if (result.codigo == 1) {
+        } else if (resulstJSON.Codigo == 1) {
+          updateLog(
+            "componente agendamiento",
+            "agendamiento con error en orden",
+          );
+          let infoInstalacion = {
+            horario: readCookie("carritoAgendamientoHorario"),
+            fecha: readCookie("carritoAgendamientoFecha"),
+            orden: resulstJSON.Orden,
+          };
+          setAgendamientoInfo(infoInstalacion);
           setExpireCookie("carritoMensaje", "sinAgenda", 24 * 60 * 6000);
           setMensaje(readCookie("carritoMensaje"));
           setExpireCookie("carritoCookieStep", 5, 24 * 60 * 6000);
           setStep(5);
         } else {
+          updateLog("componenteagendamiento", "agendamiento error");
           setExpireCookie("carritoMensaje", "error", 24 * 60 * 6000);
           setMensaje(readCookie("carritoMensaje"));
           setExpireCookie("carritoCookieStep", 5, 24 * 60 * 6000);
           setStep(5);
         }
       } catch (error) {
-        console.log("error", error);
+        console.log(
+          "🚀 - file: Agendamiento.jsx:101 - agendamientoFetch - error:",
+          error,
+        );
       } finally {
         setSpinner(false);
       }
@@ -102,11 +125,19 @@ export const Agendamiento = () => {
         fechaEntrega.id = readCookie("carritoAgendamientoCupo");
 
         clearInterval(interv);
-        if (site != 0) agendamientoFetch(fechaEntrega);
+        if (site != 0) {
+          agendamientoFetch(fechaEntrega);
+        }
       } else {
-        console.log("no hay fecha agendada");
+        console.log(
+          "🚀 - file: Agendamiento.jsx:122 - interv - no hay fecha agendad:",
+        );
       }
     }, 1000);
+
+    return () => {
+      clearInterval(interv);
+    };
   }, [site]);
 
   if (!site) return <Spinner />;
@@ -133,7 +164,9 @@ export const Agendamiento = () => {
                 <div className="grid grid-cols-[1fr,1fr,1fr] items-center justify-items-center gap-0">
                   <button
                     className="pointer h-[32px] w-[32px] rounded-full bg-iplanPink font-lato text-2xl font-bold not-italic text-iplanWhite outline-none focus:outline-none"
-                    disabled
+                    onClick={() => {
+                      setStep(STEP_COMPRA);
+                    }}
                     type="button"
                     value="1"
                   >

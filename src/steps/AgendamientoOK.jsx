@@ -7,24 +7,12 @@ import { Spinner } from "../components";
 import { delete_cookie, readCookie } from "../helpers/cookies";
 import { ErrorConAgenda } from "../components/ErrorConAgenda";
 import { Error } from "../components/Error";
+import { updateLog } from "../services/logeo";
 
 export const AgendamientoOK = () => {
-  const { mensaje, setMensaje } = useCarrito();
-  const [agendamiento, setAgendamiento] = useState({});
+  const { mensaje, setMensaje, agendamientoInfo } = useCarrito();
 
   useEffect(() => {
-    console.log("RENDERIZO USEEEFFECT DE FINAL");
-    if (
-      readCookie("carritoAgendamientoHorario") &&
-      readCookie("carritoAgendamientoFecha")
-    ) {
-      let infoInstalacion = {
-        horario: readCookie("carritoAgendamientoHorario"),
-        fecha: readCookie("carritoAgendamientoFecha"),
-        cupo: readCookie("carritoAgendamientoCupo"),
-      };
-      setAgendamiento(infoInstalacion);
-    }
     if (readCookie("carritoMensaje")) {
       setMensaje(readCookie("carritoMensaje"));
     }
@@ -33,14 +21,14 @@ export const AgendamientoOK = () => {
     delete_cookie("carritoCookieDirs");
     delete_cookie("carritoCookieSite");
     delete_cookie("carritoCookieTorre");
-  }, [mensaje]);
+  }, [agendamientoInfo]);
 
-  if (!agendamiento) return <Spinner />;
+  if (!agendamientoInfo) return <Spinner />;
   if (mensaje == "error") return <Error />;
   if (mensaje == "sinAgenda") return <ErrorConAgenda />;
 
   return (
-    <div className="mt-16 flex w-full max-w-[900px] flex-col items-center lg:mt-0">
+    <div className="mt-16 flex w-full max-w-[1200px] flex-col items-center lg:mt-0">
       <div className="shadow-[1px_1px_2px_0px_rgba(0,0,0,0.15) flex min-h-[140px] w-full flex-col items-center justify-center overflow-hidden rounded-[24px] bg-iplanPink px-6 py-8 text-center text-iplanWhite">
         <h2 className="flex items-center font-lato text-[32px] font-bold not-italic leading-normal">
           ¡Felicitaciones ya contás con WiFi Power Mesh
@@ -51,21 +39,29 @@ export const AgendamientoOK = () => {
       </div>
 
       <div className="shadow-[1px_1px_2px_0px_rgba(0,0,0,0.15) mt-4 flex w-full flex-col items-center justify-items-center gap-4 rounded-[24px] bg-iplanWhite p-6">
-        <p className="textBrown20Lato">
-          Primer turno para entrega de equipamiento:
-        </p>
+        <p className="textBrown20Lato">TURNO PARA ENTREGA DE EQUIPAMIENTO:</p>
 
-        <div className="flex justify-center gap-3 self-stretch overflow-hidden rounded-[12px] bg-iplanGrey py-3">
-          <p className="font-lato text-[16px] font-[900] not-italic leading-normal text-[#5B5151]">
-            <span>Turno asignado: </span>
-            <span className="ml-[8px] font-lato text-[16px] font-[900] leading-normal text-iplanPink">
-              {agendamiento.Fecha}
+        <div className="flex flex-col items-center justify-center gap-3 self-stretch overflow-hidden rounded-[12px] bg-iplanGrey py-3">
+          <p className="font-lato text-[24px] font-bold not-italic leading-normal text-[#5B5151]">
+            Turno confirmado para el día:{" "}
+            <span className="ml-[8px] font-lato text-[24px] font-bold leading-normal text-iplanPink">
+              {agendamientoInfo.fecha}
               {"  "}
-              <span className="text-[#5B5151]">Turno: </span>
-              {agendamiento.Horario}
-              {"  "}
-              <span className="text-[#5B5151]">Orden: </span>
-              {agendamiento.Orden}
+            </span>{" "}
+            En el rango horario{" "}
+            <span className="ml-[8px] font-lato text-[24px] font-bold leading-normal text-iplanPink">
+              {agendamientoInfo.horario == "MA" ? "Mañana de 8 a 13 HS" : ""}
+              {agendamientoInfo.horario == "TA" ? "Tarde de 13 a 17 HS" : ""}
+              {agendamientoInfo.horario == "M1" ? "Tarde de 8 a 10 HS" : ""}
+              {agendamientoInfo.horario == "M2" ? "Tarde de 10 a 13 HS" : ""}
+            </span>
+            {"  "}
+          </p>
+          <div className="w-[90%] border-b-2 border-iplanWhite"></div>
+          <p className="font-lato text-[24px] font-bold not-italic leading-normal text-[#5B5151]">
+            Órden de venta #:{" "}
+            <span className="ml-[8px] font-lato text-[24px] font-bold leading-normal text-iplanPink">
+              {agendamientoInfo.orden}
             </span>
           </p>
         </div>
@@ -79,6 +75,12 @@ export const AgendamientoOK = () => {
             delete_cookie("carritoCookieStep");
             delete_cookie("carritoCookieTorre");
             delete_cookie("carritoCookieDirs");
+            delete_cookie("iplanUser2020");
+            delete_cookie("iplanUser");
+            delete_cookie("PHPSESSID");
+            delete_cookie("carritoErrorLogin");
+            delete_cookie("carritoCambioPassword");
+            delete_cookie("carritoCambioPasswordPorMail");
           }}
           href="https://portal2-des.iplan.com.ar/node/1875"
         >

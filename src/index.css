@@ -7,7 +7,10 @@
     @apply font-roboto text-[42px] font-normal leading-[52px] text-iplanPink;
   }
   .card {
-    @apply flex h-auto max-h-[530px] max-w-[404px] flex-col self-stretch overflow-hidden rounded-[32px] text-center shadow-md;
+    @apply flex h-auto max-h-[554px] max-w-[404px] flex-col self-stretch overflow-hidden rounded-[32px] text-center shadow-md;
+  }
+  .cardLogin {
+    @apply flex h-auto max-h-[900px] max-w-[404px] flex-col self-stretch overflow-hidden rounded-[32px] text-center shadow-md;
   }
   .card__redHeader {
     @apply flex flex-col items-center justify-center gap-3 self-stretch bg-iplanPink px-6 py-[25px] text-center;
