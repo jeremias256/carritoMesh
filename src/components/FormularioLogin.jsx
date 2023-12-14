@@ -49,17 +49,9 @@ export const FormularioLogin = () => {
 
     try {
       const response = await axios.post(url, fData);
-      console.log(
-        "🚀 - file: FormularioLogin.jsx:45 - handleSubmit - response:",
-        response,
-      );
       setStatusCambiarContrasena(true);
       setExpireCookie("carritoCambioPassword", "ok");
     } catch (error) {
-      console.log(
-        "🚀 - file: FormularioLogin.jsx:54 - handleSubmit - error:",
-        error,
-      );
     } finally {
       setCargando(false);
     }
@@ -123,14 +115,7 @@ export const FormularioLogin = () => {
 
     try {
       const response = await axios.post(url, fData);
-      console.log(
-        "🚀 - file: FormularioLogin.jsx:45 - handleSubmit - response:",
-        response,
-      );
-      console.log(
-        "🚀 - file: FormularioLogin.jsx:51 - handleSubmit - response.request.responseURL:",
-        response.request.responseURL,
-      );
+
       if (response.request.responseURL.includes("?error_validation")) {
         setExpireCookie("carritoErrorLogin", "error");
       } else {

@@ -17,9 +17,9 @@ export const USUARIOS = [
 ]
 
 export const REDIRECTCARRITO = "/login_carrito/redirectcarrito.php";
-export const GIVEAGENDAMIENTOAPI = "https://portal2-des.iplan.com.ar/login_unificado/main/Calls/Tenfold/giveAgendamiento.php";
-export const GIVESUBSCRIPTIONAPI = "https://portal2-des.iplan.com.ar/login_unificado/main/Calls/Tenfold/giveSubscription.php";
-export const SERVICECARRITOMESHAPI = "https://portal2-des.iplan.com.ar/login_unificado/main/Calls/ServiceCarritoMesh.php";
+export const GIVEAGENDAMIENTOAPI = "/login_unificado/main/Calls/Tenfold/giveAgendamiento.php";
+export const GIVESUBSCRIPTIONAPI = "/login_unificado/main/Calls/Tenfold/giveSubscription.php";
+export const SERVICECARRITOMESHAPI = "/login_unificado/main/Calls/ServiceCarritoMesh.php";
 /* ------------------------ LIBS ------------------------ */
 /* ------------------------ REACT ----------------------- */
 /* --------------------- COMPONENTS --------------------- */

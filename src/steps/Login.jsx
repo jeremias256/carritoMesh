@@ -107,6 +107,7 @@ export const Login = () => {
     fetchPrecios();
 
     let interv = setInterval(async () => {
+      //LOGEO POR ZDC
       if (readCookie("userLogged") && !readCookie("carritoCGP")) {
         //LOGIN POR ZDC
         clearInterval(interv);

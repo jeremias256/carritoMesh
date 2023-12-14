@@ -243,7 +243,7 @@ export const Compra = () => {
 
           <div className="shadow-[1px_1px_2px_0px_rgba(0,0,0,0.15) flex w-full flex-col items-end gap-[12px] overflow-hidden rounded-[24px] bg-iplanWhite p-[18px]">
             <div className="w-full rounded-[16px] bg-iplanPink p-[12px]">
-              <div className="overflow-hidden rounded-[12px] bg-iplanWhite">
+              <div className="overflow-hidden rounded-[12px] bg-iplanWhite px-2 pt-2">
                 <p className="px-2 py-2 text-left font-figtree text-[20px] font-[900] not-italic leading-[25px] text-iplanPink">
                   WiFi Power Mesh
                 </p>

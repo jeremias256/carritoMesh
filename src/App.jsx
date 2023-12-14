@@ -11,26 +11,6 @@ const App = () => {
     <AuthProvider>
       <CarritoProvider>
         <div className="relative m-auto flex h-full w-full max-w-[1440px] flex-col items-center justify-center bg-iplanGrey px-[10px] py-[10px] sm:px-[15px] sm:py-[15px] xl:px-[90px] xl:py-[30px]">
-          <a
-            className="buttonCerrarSesion opacity-[0.4]"
-            onClick={() => {
-              delete_cookie("userLogged");
-              delete_cookie("carritoCGP");
-              delete_cookie("carritoLogin");
-              delete_cookie("carritoCookieStep");
-              delete_cookie("carritoCookieTorre");
-              delete_cookie("carritoCookieDirs");
-              delete_cookie("iplanUser2020");
-              delete_cookie("iplanUser");
-              delete_cookie("PHPSESSID");
-              delete_cookie("carritoErrorLogin");
-              delete_cookie("carritoCambioPassword");
-              delete_cookie("carritoCambioPasswordPorMail");
-            }}
-            href="https://portal2-des.iplan.com.ar/node/1875"
-          >
-            CERRAR SESION TEST
-          </a>
           <AppCarrito />
         </div>
       </CarritoProvider>
