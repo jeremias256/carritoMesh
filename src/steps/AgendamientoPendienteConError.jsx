@@ -1,33 +1,19 @@
+/* ------------------------ LIBS ------------------------ */
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 /* ------------------------ REACT ----------------------- */
-import { useEffect } from "react";
-import useAuth from "../hooks/useAuthProvider";
-/* ----------------------- HELPERS ---------------------- */
+import React from "react";
 import { delete_cookie } from "../helpers/cookies";
 import imgWhatsapp from "../assets/imgs/whatsapp.png";
 
-export const TieneMesh = () => {
-  const { auth } = useAuth();
-  useEffect(() => {
-    delete_cookie("carritoCookieStep");
-  }, []);
-
+export const AgendamientoPendienteConError = () => {
   return (
     <>
-      <div className="shadow-[1px_1px_2px_0px_rgba(0,0,0,0.15) flex w-full max-w-[1200px] flex-col gap-[12px] overflow-hidden rounded-[24px] bg-iplanPink px-4 py-[24px] text-iplanWhite">
-        <p className="text-center font-lato text-[32px] font-bold not-italic leading-normal">
-          Hola, {auth}
-        </p>
-        <p className="text-center font-lato text-[28px] font-bold leading-normal lg:px-16">
-          Ya contás con Wi Fi Power Mesh en tu IPLANliv
-        </p>
-
+      <div className="shadow-[1px_1px_2px_0px_rgba(0,0,0,0.15) flex w-full max-w-[900px] flex-col gap-[12px] overflow-hidden rounded-[24px] bg-iplanWhite px-4 py-[24px] text-iplanWhite">
         <div className="flex flex-col items-center justify-center gap-4 px-4 lg:flex-row">
           <div className="flex flex-col items-center justify-center">
-            <p className="text-center font-lato text-[20px] font-bold leading-normal">
-              Para sumar conectividad o aumentar la velocidad de tu plan,
-            </p>
-            <p className="text-center font-lato text-[20px] font-bold leading-normal">
-              contactáte por Whatsapp con el área comercial de IPLAN:{" "}
+            <p className="text-center font-lato text-[20px] font-bold leading-normal text-iplanGrey2">
+              Tu orden esta pendiente pero tenemos un error en nuestra agenda.
             </p>
           </div>
           <a
@@ -51,9 +37,6 @@ export const TieneMesh = () => {
           delete_cookie("iplanUser2020");
           delete_cookie("iplanUser");
           delete_cookie("PHPSESSID");
-          delete_cookie("carritoErrorLogin");
-          delete_cookie("carritoCambioPassword");
-          delete_cookie("carritoCambioPasswordPorMail");
         }}
         href="https://www.iplan.com.ar/power-mesh"
       >

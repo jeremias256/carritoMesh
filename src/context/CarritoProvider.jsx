@@ -1,15 +1,6 @@
 /* ------------------------ REACT ----------------------- */
 import { createContext, useState } from "react";
-import {
-  STEP_COMPRA,
-  STEP_LOGIN,
-  STEP_HOME,
-  VITE_STEP_AGENDAMIENTOOK,
-  VITE_STEP_AGENDAMIENTOPENDIENTE,
-  VITE_STEP_AGENDAMIENTO,
-  VITE_STEP_TIENEMESH,
-  MESH,
-} from "../Env";
+import { STEP_COMPRA, STEP_LOGIN, STEP_HOME, MESH } from "../Env";
 
 const CarritoContext = createContext();
 const CarritoProvider = ({ children }) => {

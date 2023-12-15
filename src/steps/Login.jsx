@@ -120,24 +120,6 @@ export const Login = () => {
         setStep(2);
         setCargando(false);
       } else if (
-        //ESTA LOGEADO VA AL STEP CORRESPONDIENTE (3 o 4)
-        (readCookie("carritoCookieStep") == 3 ||
-          readCookie("carritoCookieStep") == 4) &&
-        readCookie("userLogged") &&
-        readCookie("carritoCGP")
-      ) {
-        //ENTRARA EN ESTA PARTE SI AUN ESTA EN EL STEP 3 O 4
-        clearInterval(interv);
-        let cookieName = readCookie("userLogged");
-        let cookieCgp = readCookie("carritoCGP");
-        let stepNum = readCookie("carritoCookieStep");
-
-        setAuth(cookieName);
-        setCgp(cookieCgp);
-        setNum(String(cookieCgp).slice(0, -1));
-        setStep(stepNum);
-        setCargando(false);
-      } else if (
         //LOGEO PRIMERA VEZ
         readCookie("userLogged") &&
         readCookie("carritoCGP")
@@ -154,19 +136,25 @@ export const Login = () => {
         let tieneMesh = await fetchMesh();
         let tieneAgendamiento = await fetchAgendamientoPendiente();
         tieneAgendamiento = JSON.parse(tieneAgendamiento);
-        if (tieneAgendamiento.Codigo == 0) {
+        if (tieneMesh.length > 0) {
+          updateLog(
+            "Componente login",
+            "cliente con mesh va a componente tienemesh",
+          );
+          setStep(6);
+        } else if (tieneAgendamiento.Codigo == 0) {
           updateLog(
             "Componente login",
             "cliente con agendamiento pendiente va a componente agendamiento pendiente",
           );
           setAgendamientoInfo(tieneAgendamiento);
           setStep(7);
-        } else if (tieneMesh.length > 0) {
+        } else if (tieneAgendamiento.Codigo == 2) {
           updateLog(
             "Componente login",
-            "cliente con mesh va a componente tienemesh",
+            "cliente con agendamiento pendiente antiguo va a componente agendamiento pendiente con error",
           );
-          setStep(6);
+          setStep(8);
         } else {
           updateLog(
             "Componente login",

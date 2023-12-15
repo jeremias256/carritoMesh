@@ -5,3 +5,4 @@ export * from './Agendamiento.jsx';
 export * from './AgendamientoOK.jsx';
 export * from './TieneMesh.jsx';
 export * from './AgendamientoPendiente.jsx';
+export * from './AgendamientoPendienteConError.jsx';

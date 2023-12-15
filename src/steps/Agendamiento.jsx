@@ -210,7 +210,7 @@ export const Agendamiento = () => {
                     className="w-full shadow-none hover:shadow-none"
                     height="500"
                     //INFX AGREGAR EN DESA Y LOCAL &tipo=EE&developer=1
-                    src={`https://portal2-des.iplan.com.ar/agendamientoCarrito/calendar/?site=${site}&tur=2&tipo=EE`}
+                    src={`/agendamientoCarrito/calendar/?site=${site}&tur=2&tipo=EE`}
                     title="Agendamiento"
                   ></iframe>
                 </div>

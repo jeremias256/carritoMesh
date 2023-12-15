@@ -1,13 +1,13 @@
 /* ------------------------ LIBS ------------------------ */
 /* ------------------------ REACT ----------------------- */
 import {
+  STEP_AGENDAMIENTO,
+  STEP_AGENDAMIENTOOK,
+  STEP_AGENDAMIENTOPENDIENTE,
   STEP_COMPRA,
   STEP_HOME,
   STEP_LOGIN,
-  VITE_STEP_AGENDAMIENTO,
-  VITE_STEP_AGENDAMIENTOOK,
-  VITE_STEP_AGENDAMIENTOPENDIENTE,
-  VITE_STEP_TIENEMESH,
+  STEP_TIENEMESH,
 } from "../Env";
 import { Error } from "../components/Error";
 import { ErrorConAgenda } from "../components/ErrorConAgenda";
@@ -21,6 +21,7 @@ import {
   AgendamientoOK,
   TieneMesh,
   AgendamientoPendiente,
+  AgendamientoPendienteConError,
 } from "./";
 /* ----------------------- HELPERS ---------------------- */
 /* ----------------------- ASSETS ----------------------- */
@@ -33,10 +34,11 @@ export const AppCarrito = () => {
       {step == STEP_LOGIN && <Login />}
       {step == STEP_HOME && <Home />}
       {step == STEP_COMPRA && <Compra />}
-      {step == VITE_STEP_AGENDAMIENTO && <Agendamiento />}
-      {step == VITE_STEP_AGENDAMIENTOOK && <AgendamientoOK />}
-      {step == VITE_STEP_TIENEMESH && <TieneMesh />}
-      {step == VITE_STEP_AGENDAMIENTOPENDIENTE && <AgendamientoPendiente />}
+      {step == STEP_AGENDAMIENTO && <Agendamiento />}
+      {step == STEP_AGENDAMIENTOOK && <AgendamientoOK />}
+      {step == STEP_TIENEMESH && <TieneMesh />}
+      {step == STEP_AGENDAMIENTOPENDIENTE && <AgendamientoPendiente />}
+      {step == 8 && <AgendamientoPendienteConError />}
     </>
   );
 };

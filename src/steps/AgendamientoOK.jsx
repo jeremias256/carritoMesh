@@ -82,7 +82,7 @@ export const AgendamientoOK = () => {
             delete_cookie("carritoCambioPassword");
             delete_cookie("carritoCambioPasswordPorMail");
           }}
-          href="https://portal2-des.iplan.com.ar/node/1875"
+          href="https://www.iplan.com.ar/power-mesh"
         >
           TERMINAR
         </a>
