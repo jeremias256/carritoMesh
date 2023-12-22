@@ -41,7 +41,7 @@ export const Error = () => {
           delete_cookie("iplanUser");
           delete_cookie("PHPSESSID");
         }}
-        href="https://portal2-des.iplan.com.ar/node/1875"
+        href="https://www.iplan.com.ar/power-mesh"
       >
         TERMINAR
       </a>

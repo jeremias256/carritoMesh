@@ -43,9 +43,6 @@ export const Agendamiento = () => {
       setSite(readCookie("carritoCookieSite"));
 
     const agendamientoFetch = async (fechaEntrega) => {
-      console.log(
-        "🚀 - file: Agendamiento.jsx:45 - agendamientoFetch - ENCONTRO COOKIE DE AGENDA, SIGUE FETCH DE AGENDAMIENTO:",
-      );
       try {
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -67,10 +64,6 @@ export const Agendamiento = () => {
         const response = await fetch(SERVICECARRITOMESHAPI, requestOptions);
         const result = await response.text();
         let resulstJSON = JSON.parse(result);
-        console.log(
-          "🚀 - file: Agendamiento.jsx:69 - agendamientoFetch - resulstJSON:",
-          resulstJSON,
-        );
         // ("ERROR AGENDA [5] / agendamiento existente / ERROR AGENDA [E] / ERROR AGENDA [34]");
         if (resulstJSON.Codigo == 0) {
           updateLog("componente agendamiento", "agendamiento ok");
@@ -107,10 +100,6 @@ export const Agendamiento = () => {
           setStep(5);
         }
       } catch (error) {
-        console.log(
-          "🚀 - file: Agendamiento.jsx:101 - agendamientoFetch - error:",
-          error,
-        );
       } finally {
         setSpinner(false);
       }
@@ -129,9 +118,6 @@ export const Agendamiento = () => {
           agendamientoFetch(fechaEntrega);
         }
       } else {
-        console.log(
-          "🚀 - file: Agendamiento.jsx:122 - interv - no hay fecha agendad:",
-        );
       }
     }, 1000);
 

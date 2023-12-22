@@ -41,19 +41,13 @@ export const Home = () => {
           redirect: "follow",
         };
         const response = await fetch(GIVESUBSCRIPTIONAPI, requestOptions);
-        console.log(
-          "🚀 - file: Login.jsx:45 - fetchMesh - response:",
-          response,
-        );
         const result = await response.text();
 
         let clienteConMesh = JSON.parse(result).filter((servicio) => {
           return servicio.Servicio.Servicio == "Wi-Fi Power Mesh";
         });
         return clienteConMesh;
-      } catch (error) {
-        console.log("🚀 - file: Home.jsx:57 - fetchMesh - error:", error);
-      }
+      } catch (error) {}
     };
     const fetchAgendamientoPendiente = async () => {
       try {
@@ -71,36 +65,17 @@ export const Home = () => {
           redirect: "follow",
         };
         const response = await fetch(GIVEAGENDAMIENTOAPI, requestOptions);
-        console.log(
-          "🚀 - file: Login.jsx:74 - fetchAgendamientoPendiente - response:",
-          response,
-        );
         const result = await response.text();
 
         return result;
-      } catch (error) {
-        console.log(
-          "🚀 - file: Home.jsx:85 - fetchAgendamientoPendiente - error:",
-          error,
-        );
-      }
+      } catch (error) {}
     };
     setCargandoLocal(true);
     let tieneMesh = await fetchMesh();
-    console.log(
-      "🚀 - file: Home.jsx:92 - verificarCliente - tieneMesh:",
-      tieneMesh,
-    );
     let tieneAgendamiento = await fetchAgendamientoPendiente();
     tieneAgendamiento = JSON.parse(tieneAgendamiento);
-    console.log(
-      "🚀 - file: Home.jsx:92 - useEffect - tieneAgendamiento:",
-      tieneAgendamiento,
-    );
+
     if (tieneAgendamiento.Codigo == 0) {
-      console.log(
-        "🚀 - file: Home.jsx:101 - verificarCliente - TIENE AGENDAMIENTO:",
-      );
       setCargandoLocal(false);
       setAgendamientoInfo(tieneAgendamiento);
       updateLog(
@@ -110,7 +85,6 @@ export const Home = () => {
       setStep(7);
     } else if (tieneMesh.length > 0) {
       setCargandoLocal(false);
-      console.log("🚀 - file: Home.jsx:107 - verificarCliente - TIENE MESH:");
       updateLog(
         "componente home",
         "cliente con mesh va a componente tieneMesh",
@@ -118,9 +92,7 @@ export const Home = () => {
       setStep(6);
     } else {
       setCargandoLocal(false);
-      console.log(
-        "🚀 - file: Home.jsx:111 - verificarCliente - NO TIENE MESH NI AGENDMAIENTO VA A COMPRA STEP 3",
-      );
+
       setExpireCookie("carritoCookieStep", 3, 24 * 60 * 6000);
       updateLog("componente home", "cliente sin mesh va a componente carrito");
       setStep(3);
@@ -132,7 +104,7 @@ export const Home = () => {
       <h2 className="pinkTitle mb-8">Comprá tus torres de WiFi Power Mesh</h2>
 
       <div className="grid grid-cols-1 gap-3 lg:grid-cols-2 xl:gap-8">
-        <div className="shadow-[1px_1px_2px_0px_rgba(0,0,0,0.15) flex min-h-[499px] max-w-[404px] flex-col items-center justify-center overflow-hidden rounded-[24px] bg-iplanPink px-6 py-8 text-center text-iplanWhite">
+        <div className="shadow-[1px_1px_2px_0px_rgba(0,0,0,0.15) flex min-h-[500px] max-w-[404px] flex-col items-center justify-center overflow-hidden rounded-[24px] bg-iplanPink px-6 py-8 text-center text-iplanWhite">
           <p className="my-[16px] font-roboto text-[21px] font-semibold not-italic leading-[130%]">
             Bienvenido
           </p>
@@ -149,7 +121,7 @@ export const Home = () => {
           </p>
         </div>
 
-        <div className="card">
+        <div className="cardCarritoMesh">
           {cargandoLocal ? (
             <Spinner />
           ) : (
@@ -167,7 +139,7 @@ export const Home = () => {
               <div className="flex h-full flex-col items-center rounded-b-[24px] bg-iplanWhite px-[24px] pb-[24px] pt-[5px]">
                 <div className="flex max-h-[167px] items-center">
                   <div className="w-1/2">
-                    <img src={imgMesh}></img>
+                    <img className="max-w-[100%]" src={imgMesh} />
                   </div>
                   <div className="w-1/2">
                     <h3 className="font-figtree text-[32px] font-bold not-italic leading-[35px] tracking-[-0.32px] text-iplanPink">

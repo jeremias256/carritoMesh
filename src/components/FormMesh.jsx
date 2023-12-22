@@ -193,9 +193,10 @@ export const FormMesh = () => {
                       {pregunta1.map((radio, index) => (
                         <label
                           key={index}
-                          className="text-[15px] font-bold not-italic leading-normal text-iplanGrey2"
+                          className="carritoMesh text-[15px] font-bold not-italic leading-normal text-iplanGrey2"
                         >
                           <input
+                            className="outline-none focus:outline-none"
                             checked={selectedOption1 === radio.id}
                             onChange={handleCheckboxChange1}
                             type="radio"
@@ -250,9 +251,10 @@ export const FormMesh = () => {
                       {pregunta2.map((radio, index) => (
                         <label
                           key={index}
-                          className="text-[15px] font-bold not-italic leading-normal text-iplanGrey2"
+                          className="carritoMesh text-[15px] font-bold not-italic leading-normal text-iplanGrey2"
                         >
                           <input
+                            className="outline-none focus:outline-none"
                             checked={selectedOption2 === radio.id}
                             onChange={handleCheckboxChange2}
                             type="radio"
@@ -314,9 +316,10 @@ export const FormMesh = () => {
                       {pregunta3.map((radio, index) => (
                         <label
                           key={index}
-                          className="text-[15px] font-bold not-italic leading-normal text-iplanGrey2"
+                          className="carritoMesh text-[15px] font-bold not-italic leading-normal text-iplanGrey2"
                         >
                           <input
+                            className="outline-none focus:outline-none"
                             checked={selectedOption3 === radio.id}
                             onChange={handleCheckboxChange3}
                             type="radio"
@@ -378,9 +381,10 @@ export const FormMesh = () => {
                       {pregunta4.map((radio, index) => (
                         <label
                           key={index}
-                          className="text-[15px] font-bold not-italic leading-normal text-iplanGrey2"
+                          className="carritoMesh text-[15px] font-bold not-italic leading-normal text-iplanGrey2"
                         >
                           <input
+                            className="outline-none focus:outline-none"
                             type="radio"
                             value={radio.id}
                             checked={selectedOption4 === radio.id}

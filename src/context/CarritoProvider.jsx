@@ -1,6 +1,12 @@
 /* ------------------------ REACT ----------------------- */
 import { createContext, useState } from "react";
-import { STEP_COMPRA, STEP_LOGIN, STEP_HOME, MESH } from "../Env";
+import {
+  STEP_COMPRA,
+  STEP_LOGIN,
+  STEP_HOME,
+  MESH,
+  STEP_AGENDAMIENTOPENDIENTE,
+} from "../Env";
 
 const CarritoContext = createContext();
 const CarritoProvider = ({ children }) => {

@@ -41,10 +41,6 @@ export const Login = () => {
           redirect: "follow",
         };
         const response = await fetch(GIVESUBSCRIPTIONAPI, requestOptions);
-        console.log(
-          "🚀 - file: Login.jsx:45 - fetchMesh - response:",
-          response,
-        );
         const result = await response.text();
 
         let clienteConMesh = JSON.parse(result).filter((servicio) => {
@@ -68,19 +64,10 @@ export const Login = () => {
           redirect: "follow",
         };
         const response = await fetch(GIVEAGENDAMIENTOAPI, requestOptions);
-        console.log(
-          "🚀 - file: Login.jsx:74 - fetchAgendamientoPendiente - response:",
-          response,
-        );
         const result = await response.text();
 
         return result;
-      } catch (error) {
-        console.log(
-          "🚀 - file: Login.jsx:84 - fetchAgendamientoPendiente - error:",
-          error,
-        );
-      }
+      } catch (error) {}
     };
     const fetchPrecios = async () => {
       const url = "/cobertura/give_precios.php";
@@ -89,16 +76,8 @@ export const Login = () => {
 
       try {
         const response = await axios.post(url, fData);
-        console.log(
-          "🚀 - file: FormularioLogin.jsx:45 - handleSubmit - response:",
-          response,
-        );
         setPrecioMesh(response.data);
       } catch (error) {
-        console.log(
-          "🚀 - file: FormularioLogin.jsx:54 - handleSubmit - error:",
-          error,
-        );
       } finally {
         setCargando(false);
       }
@@ -164,7 +143,6 @@ export const Login = () => {
           setStep(3);
         }
       } else {
-        console.log("🚀 - file: Login.jsx:152 - interv - sin logeo:");
       }
     }, 1000);
   }, []);
@@ -175,7 +153,7 @@ export const Login = () => {
         Comprá tus torres de WiFi Power Mesh
       </h2>
 
-      <div className="grid h-full grid-cols-1 gap-3 lg:grid-cols-2 xl:gap-6">
+      <div className="grid grid-cols-1 gap-3 lg:grid-cols-2 xl:gap-6">
         <div className="cardLogin bg-iplanWhite">
           {cargando ? (
             <Spinner />
@@ -197,10 +175,10 @@ export const Login = () => {
           )}
         </div>
 
-        <div className="card">
+        <div className="cardCarritoMesh">
           <div className="relative flex flex-col gap-3 self-stretch bg-iplanPurple px-6 py-[25px] text-end">
             <div className="absolute left-0 top-0 min-h-[150px] w-[200px] max-w-[75px] rounded-r-[200px] bg-iplanPink"></div>
-            <h2 className="font-figtree text-[72px] font-bold not-italic leading-[50px] text-iplanWhite">
+            <h2 className="font-figtree text-[68px] font-bold not-italic leading-[50px] text-iplanWhite lg:text-[72px]">
               WiFi
             </h2>
             <p className="text-[26px] font-semibold not-italic text-iplanWhite">
@@ -211,13 +189,13 @@ export const Login = () => {
           <div className="flex h-full flex-col items-center rounded-b-[24px] bg-iplanWhite px-[24px] pb-[24px] pt-[5px]">
             <div className="flex max-h-[167px] items-center">
               <div className="w-1/2">
-                <img src={imgMesh}></img>
+                <img className="max-w-[100%]" src={imgMesh} />
               </div>
-              <div className="w-1/2">
-                <h3 className="font-figtree text-[32px] font-bold not-italic leading-[35px] tracking-[-0.32px] text-iplanPink">
+              <div className="mt-4 w-1/2">
+                <h3 className="font-figtree text-[28px] font-bold not-italic leading-[35px] tracking-[-0.32px] text-iplanPink lg:text-[32px]">
                   Power Mesh
                 </h3>
-                <p className="text-center font-roboto text-[23px] font-semibold not-italic leading-[130%] tracking-tight text-iplanGrey2">
+                <p className="text-center font-roboto text-[19px] font-semibold not-italic leading-[130%] tracking-tight text-iplanGrey2 lg:text-[23px]">
                   máxima potencia en cada rincón de tu hogar
                 </p>
               </div>

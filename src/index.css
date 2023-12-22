@@ -6,11 +6,11 @@
   .pinkTitle {
     @apply font-roboto text-[42px] font-normal leading-[52px] text-iplanPink;
   }
-  .card {
-    @apply flex h-auto max-h-[554px] max-w-[404px] flex-col self-stretch overflow-hidden rounded-[32px] text-center shadow-md;
+  .cardCarritoMesh {
+    @apply flex max-h-[554px] min-h-[500px] max-w-[404px] flex-col overflow-hidden rounded-[32px] text-center shadow-md;
   }
   .cardLogin {
-    @apply flex h-auto max-h-[900px] max-w-[404px] flex-col self-stretch overflow-hidden rounded-[32px] text-center shadow-md;
+    @apply flex min-h-[500px] max-w-[404px] flex-col overflow-hidden rounded-[32px] text-center shadow-md;
   }
   .card__redHeader {
     @apply flex flex-col items-center justify-center gap-3 self-stretch bg-iplanPink px-6 py-[25px] text-center;
@@ -19,7 +19,7 @@
     @apply flex min-h-[150px] items-center justify-center gap-[20px] self-stretch bg-iplanBlue py-[25px] pl-6 pr-0 text-center;
   }
   .card__readHeader__title {
-    @apply font-figtree text-[48px] font-light not-italic leading-[50px] tracking-[-0.48px] text-iplanWhite;
+    @apply font-figtree text-[42px] font-light not-italic leading-[50px] tracking-[-0.48px] text-iplanWhite lg:text-[48px];
   }
   .card__body {
     @apply flex h-full flex-col items-center gap-4 self-stretch bg-white px-[24px] py-[32px];
@@ -68,21 +68,6 @@
   }
 }
 
-html {
-  box-sizing: border-box;
-}
-*,
-*:before,
-*:after {
-  box-sizing: inherit;
-}
-body {
-  width: 100%;
-  margin: 0 auto;
-}
-input:focus {
-  outline: none;
-}
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
@@ -103,7 +88,7 @@ input:-webkit-autofill {
   -webkit-text-fill-color: #ed1f70 !important;
 }
 /* -------------------------------- FORM MESH ------------------------------- */
-input[type="radio"] {
+.carritoMesh input[type="radio"] {
   position: absolute;
   opacity: 0;
   pointer-events: none;
@@ -117,10 +102,10 @@ input[type="radio"] {
   border-radius: 50%;
   margin-right: 8px;
 }
-input[type="radio"]:checked + .radio-btn {
+.carritoMesh input[type="radio"]:checked + .radio-btn {
   background-color: #ed1f70;
 }
-label {
+.carritoMesh label {
   display: inline-flex;
   align-items: center;
 }
@@ -288,4 +273,20 @@ tr th {
   40% {
     opacity: 1;
   }
+}
+
+img,
+svg,
+video,
+canvas,
+audio,
+iframe,
+embed,
+object {
+  display: inline;
+}
+img,
+video {
+  max-width: 1440px;
+  height: auto;
 }

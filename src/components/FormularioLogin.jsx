@@ -66,17 +66,9 @@ export const FormularioLogin = () => {
 
     try {
       const response = await axios.post(url, fData);
-      console.log(
-        "🚀 - file: FormularioLogin.jsx:45 - handleSubmit - response:",
-        response,
-      );
       setStatusMailEnviado(true);
       setExpireCookie("carritoCambioPasswordPorMail", "ok");
     } catch (error) {
-      console.log(
-        "🚀 - file: FormularioLogin.jsx:54 - handleSubmit - error:",
-        error,
-      );
     } finally {
       setCargando(false);
     }
@@ -84,6 +76,7 @@ export const FormularioLogin = () => {
   /* ----------------- cambiar contrasena ----------------- */
   const validateUsername = (e) => {
     setStatusMailEnviado(false);
+    setStatusCambiarContrasena(false);
     setErrorLogin(false);
     if (readCookie("carritoErrorLogin")) {
       delete_cookie("carritoErrorLogin");
@@ -122,10 +115,6 @@ export const FormularioLogin = () => {
         delete_cookie("carritoErrorLogin");
       }
     } catch (error) {
-      console.log(
-        "🚀 - file: FormularioLogin.jsx:54 - handleSubmit - error:",
-        error,
-      );
     } finally {
       setCargando(false);
     }
@@ -152,11 +141,11 @@ export const FormularioLogin = () => {
   return (
     <div className="flex w-full flex-col items-center">
       <div className="relative flex w-full flex-col items-start">
-        <label className="absolute left-4 top-[-10px] bg-iplanWhite px-2 font-lato text-[14px] font-bold not-italic leading-normal text-iplanGrey2">
+        <label className="carritoMesh absolute left-4 top-[-10px] bg-iplanWhite px-2 font-lato text-[14px] font-bold not-italic leading-normal text-iplanGrey2">
           Documento / CGP
         </label>
         <input
-          className="h-[48px] w-full rounded-[30px] border-2 pl-4 pr-[10px] text-[16px] font-bold not-italic leading-normal text-iplanPink"
+          className="h-[48px] w-full rounded-[30px] border-2 pl-4 pr-[10px] text-[16px] font-bold not-italic leading-normal text-iplanPink outline-none focus:outline-none"
           maxLength={8}
           name="username"
           value={username}
@@ -203,11 +192,11 @@ export const FormularioLogin = () => {
       </div>
 
       <div className="relative mt-4 flex w-full flex-col">
-        <label className="absolute left-4 top-[-10px] bg-iplanWhite px-2 font-lato text-[14px] font-bold not-italic leading-normal text-iplanGrey2">
+        <label className="carritoMesh absolute left-4 top-[-10px] bg-iplanWhite px-2 font-lato text-[14px] font-bold not-italic leading-normal text-iplanGrey2">
           Clave
         </label>
         <input
-          className="h-[48px] w-full rounded-[30px] border-2 pl-4 pr-[10px] text-[16px] font-bold not-italic leading-normal text-iplanPink"
+          className="h-[48px] w-full rounded-[30px] border-2 pl-4 pr-[10px] text-[16px] font-bold not-italic leading-normal text-iplanPink outline-none focus:outline-none"
           onInput={validatePassword}
           value={password}
           name="password"
@@ -272,11 +261,11 @@ export const FormularioLogin = () => {
       {mostrarCambiarContrasenaForm && (
         <div className="mt-2 flex w-full flex-col">
           <div className="relative mt-4 w-full">
-            <label className="absolute left-4 top-[-10px] bg-iplanWhite px-2 font-lato text-[14px] font-bold not-italic leading-normal text-iplanGrey2">
+            <label className="carritoMesh absolute left-4 top-[-10px] bg-iplanWhite px-2 font-lato text-[14px] font-bold not-italic leading-normal text-iplanGrey2">
               Contraseña actual
             </label>
             <input
-              className="h-[48px] w-full rounded-[30px] border-2 pl-4 pr-[10px] text-[16px] font-bold not-italic leading-normal text-iplanPink"
+              className="h-[48px] w-full rounded-[30px] border-2 pl-4 pr-[10px] text-[16px] font-bold not-italic leading-normal text-iplanPink outline-none focus:outline-none"
               name="contrasenaActual"
               onInput={validarContrasenaActual}
               value={contrasenaActual}
@@ -284,7 +273,7 @@ export const FormularioLogin = () => {
             />
           </div>
           <div className="relative mt-4 w-full">
-            <label className="absolute left-4 top-[-10px] bg-iplanWhite px-2 font-lato text-[14px] font-bold not-italic leading-normal text-iplanGrey2">
+            <label className="carritoMesh absolute left-4 top-[-10px] bg-iplanWhite px-2 font-lato text-[14px] font-bold not-italic leading-normal text-iplanGrey2">
               Contraseña nueva
             </label>
             <input
@@ -301,11 +290,11 @@ export const FormularioLogin = () => {
                   {statusContrasena}
                 </p>
                 <div className="relative mt-4 w-full">
-                  <label className="absolute left-4 top-[-10px] bg-iplanWhite px-2 font-lato text-[14px] font-bold not-italic leading-normal text-iplanGrey2">
+                  <label className="carritoMesh absolute left-4 top-[-10px] bg-iplanWhite px-2 font-lato text-[14px] font-bold not-italic leading-normal text-iplanGrey2">
                     Repetir contraseña
                   </label>
                   <input
-                    className="h-[48px] w-full rounded-[30px] border-2 pl-4 pr-[10px] text-[16px] font-bold not-italic leading-normal text-iplanPink"
+                    className="h-[48px] w-full rounded-[30px] border-2 pl-4 pr-[10px] text-[16px] font-bold not-italic leading-normal text-iplanPink outline-none focus:outline-none"
                     name="repetirNuevaContrasena"
                     onInput={validarRepetirNuevaContrasena}
                     value={repetirNuevaContrasena}

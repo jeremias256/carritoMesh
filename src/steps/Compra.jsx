@@ -71,15 +71,13 @@ export const Compra = () => {
           24 * 60 * 6000,
         );
         setDirecciones(internetLivs);
-      } catch (error) {
-        console.log("🚀 - file: Compra.jsx:76 - fetchData - error:", error);
-      }
+      } catch (error) {}
     };
 
     if (num) fetchData();
   }, [num]);
 
-  if (direcciones == 0) return <Spinner />;
+  // if (direcciones == 0) return <Spinner />;
 
   return (
     <>
@@ -223,7 +221,7 @@ export const Compra = () => {
 
                 {mostrarForm && (
                   <div className="m-auto hidden max-h-[390px] w-full max-w-[390px] lg:block">
-                    <img src={imgMesh}></img>
+                    <img className="max-w-[390px]" src={imgMesh}></img>
                   </div>
                 )}
               </div>
@@ -273,7 +271,7 @@ export const Compra = () => {
               <div className="relative w-full">
                 {direcciones ? (
                   <>
-                    <label className="absolute left-4 top-[-10px] z-20 bg-iplanWhite px-2 text-[14px] font-bold italic text-iplanGrey2">
+                    <label className="carritoMesh absolute left-4 top-[-10px] z-20 bg-iplanWhite px-2 text-[14px] font-bold italic text-iplanGrey2">
                       Enviar a:
                     </label>
                     <select
