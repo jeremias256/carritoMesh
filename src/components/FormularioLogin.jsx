@@ -84,6 +84,9 @@ export const FormularioLogin = () => {
     if (readCookie("carritoCambioPasswordPorMail")) {
       delete_cookie("carritoCambioPasswordPorMail");
     }
+    if (readCookie("carritoCambioPassword")) {
+      delete_cookie("carritoCambioPassword");
+    }
 
     const value = e.target.value.replace(/\D/g, "").slice(0, 8);
     setUsername(value);

@@ -128,8 +128,9 @@ export const Compra = () => {
       <div className="flex w-full flex-col items-center gap-6 lg:flex-row lg:items-start">
         {/* SELECTOR/MENU */}
         <div className="w-full lg:w-[65%]">
-          <h3 className="mb-[16px] text-center font-lato text-[28px] font-medium not-italic leading-normal text-iplanBrown">
-            ¿Cuántas torres Power Mesh querés para tu hogar?
+          <h3 className="mb-[16px] text-center font-lato text-[26px] font-medium not-italic leading-normal text-iplanBrown">
+            Selecciona la cantidad de torres power mesh que necesitas para tu
+            hogar.
           </h3>
 
           <div
@@ -235,7 +236,7 @@ export const Compra = () => {
 
         {/* TICKET */}
         <div className="flex w-full max-w-[390px] flex-col lg:w-[35%]">
-          <h3 className="mb-[16px] text-center font-lato text-[28px] font-medium not-italic leading-normal text-iplanBrown">
+          <h3 className="mb-[16px] text-center font-lato text-[26px] font-medium not-italic leading-normal text-iplanBrown">
             Vas a agregar a tu plan :
           </h3>
 

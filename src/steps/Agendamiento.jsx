@@ -66,12 +66,16 @@ export const Agendamiento = () => {
         let resulstJSON = JSON.parse(result);
         // ("ERROR AGENDA [5] / agendamiento existente / ERROR AGENDA [E] / ERROR AGENDA [34]");
         if (resulstJSON.Codigo == 0) {
-          updateLog("componente agendamiento", "agendamiento ok");
+          updateLog(
+            "componente agendamiento",
+            `venta completada número de orden ${resulstJSON.Orden}`,
+          );
           let infoInstalacion = {
             horario: readCookie("carritoAgendamientoHorario"),
             fecha: readCookie("carritoAgendamientoFecha"),
             orden: resulstJSON.Orden,
           };
+
           setAgendamientoInfo(infoInstalacion);
           setExpireCookie("carritoMensaje", "OK", 24 * 60 * 6000);
           setMensaje(readCookie("carritoMensaje"));
@@ -136,15 +140,15 @@ export const Agendamiento = () => {
         <>
           <div className="mt-16 flex w-full max-w-[900px] flex-col items-center lg:mt-0">
             {/* STEP */}
-            <div className="relative mb-8 flex items-center">
-              <div className="absolute right-[200px] top-0 border-r-[1px] border-[#b8b8b8] pr-6">
+            <div className="relative mb-8 flex">
+              <a href="https://www.iplan.com.ar/power-mesh">
                 <FontAwesomeIcon
                   icon={faHouse}
                   size="2xl"
                   style={{ color: "#7C7B85" }}
                   className="cursor-pointer"
                 />
-              </div>
+              </a>
 
               <div className="ml-[20px] flex items-center gap-2 pl-[20px]">
                 <div className="grid grid-cols-[1fr,1fr,1fr] items-center justify-items-center gap-0">
@@ -181,10 +185,10 @@ export const Agendamiento = () => {
             {/* MENSAJE */}
             <div className="shadow-[1px_1px_2px_0px_rgba(0,0,0,0.15) flex min-h-[140px] w-full flex-col items-center justify-center overflow-hidden rounded-[24px] bg-iplanPink px-6 py-8 text-center text-iplanWhite">
               <h2 className="flex items-center font-lato text-[32px] font-bold not-italic leading-normal">
-                ¡Felicitaciones ya contás con WiFi Power Mesh
+                Agenda para recibir el equipamiento y
               </h2>
               <h2 className="flex items-center font-lato text-[32px] font-bold not-italic leading-normal">
-                para tu hogar!
+                completar tu compra
               </h2>
             </div>
 
