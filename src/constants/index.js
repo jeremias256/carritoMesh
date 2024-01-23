@@ -20,8 +20,3 @@ export const REDIRECTCARRITO = "/login_carrito/redirectcarrito.php";
 export const GIVEAGENDAMIENTOAPI = "/login_unificado/main/Calls/Tenfold/giveAgendamiento.php";
 export const GIVESUBSCRIPTIONAPI = "/login_unificado/main/Calls/Tenfold/giveSubscription.php";
 export const SERVICECARRITOMESHAPI = "/login_unificado/main/Calls/ServiceCarritoMesh.php";
-/* ------------------------ LIBS ------------------------ */
-/* ------------------------ REACT ----------------------- */
-/* --------------------- COMPONENTS --------------------- */
-/* ----------------------- HELPERS ---------------------- */
-/* ----------------------- ASSETS ----------------------- */

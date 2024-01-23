@@ -13,7 +13,7 @@ import { delete_cookie, readCookie, setExpireCookie } from "../helpers/cookies";
 import imgStep from "../assets/imgs/step2.png";
 import { updateLog } from "../services/logeo";
 import { SERVICECARRITOMESHAPI } from "../constants";
-import { STEP_COMPRA } from "../Env";
+import { STEP_COMPRA, STEP_HOME } from "../Env";
 
 export const Agendamiento = () => {
   const { num } = useAuth();
@@ -141,14 +141,21 @@ export const Agendamiento = () => {
           <div className="mt-16 flex w-full max-w-[900px] flex-col items-center lg:mt-0">
             {/* STEP */}
             <div className="relative mb-8 flex">
-              <a href="https://www.iplan.com.ar/power-mesh">
-                <FontAwesomeIcon
-                  icon={faHouse}
-                  size="2xl"
-                  style={{ color: "#7C7B85" }}
-                  className="cursor-pointer"
-                />
-              </a>
+              <div className="absolute right-[200px] top-0 border-r-[1px] border-[#b8b8b8] pr-6">
+                <button
+                  class="outline-none focus:outline-none"
+                  onClick={() => {
+                    setStep(STEP_HOME);
+                  }}
+                >
+                  <FontAwesomeIcon
+                    icon={faHouse}
+                    size="2xl"
+                    style={{ color: "#7C7B85" }}
+                    className="cursor-pointer"
+                  />
+                </button>
+              </div>
 
               <div className="ml-[20px] flex items-center gap-2 pl-[20px]">
                 <div className="grid grid-cols-[1fr,1fr,1fr] items-center justify-items-center gap-0">

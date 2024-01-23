@@ -7,19 +7,19 @@
     @apply font-roboto text-[42px] font-normal leading-[52px] text-iplanPink;
   }
   .cardCarritoMesh {
-    @apply flex max-h-[554px] min-h-[500px] max-w-[404px] flex-col overflow-hidden rounded-[32px] text-center shadow-md;
+    @apply flex max-h-[554px] min-h-[560px] max-w-[404px] flex-col overflow-hidden rounded-[32px] text-center shadow-md;
   }
   .cardLogin {
-    @apply flex min-h-[500px] max-w-[404px] flex-col overflow-hidden rounded-[32px] text-center shadow-md;
+    @apply flex min-h-[560px] max-w-[404px] flex-col overflow-hidden rounded-[32px] text-center shadow-md;
   }
   .card__redHeader {
-    @apply flex flex-col items-center justify-center gap-3 self-stretch bg-iplanPink px-6 py-[25px] text-center;
+    @apply flex h-[100%] max-h-[152px] flex-col items-center justify-center gap-3 self-stretch bg-iplanPink px-6 py-[16px] text-center;
   }
   .card__blueHeader {
     @apply flex min-h-[150px] items-center justify-center gap-[20px] self-stretch bg-iplanBlue py-[25px] pl-6 pr-0 text-center;
   }
   .card__readHeader__title {
-    @apply font-figtree text-[42px] font-light not-italic leading-[50px] tracking-[-0.48px] text-iplanWhite lg:text-[48px];
+    @apply font-figtree text-[32px] font-light not-italic leading-[42px] tracking-[-0.48px] text-iplanWhite lg:text-[36px];
   }
   .card__body {
     @apply flex h-full flex-col items-center gap-4 self-stretch bg-white px-[24px] py-[32px];

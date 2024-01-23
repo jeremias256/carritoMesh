@@ -32,7 +32,7 @@ export const TieneMesh = () => {
           </div>
           <a
             className="max-w-[200px]"
-            href="https://wa.me/541150320000"
+            href="https://wa.me/541150320000?text=Estoy%20interesado%20en%20un%20upgrade%20en%20mi%20servicio%20de%20Power%20mesh"
             target="_blank"
           >
             <img className="w-full" src={imgWhatsapp} alt="whatsapp" />

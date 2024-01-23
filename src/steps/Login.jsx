@@ -90,7 +90,8 @@ export const Login = () => {
       if (readCookie("userLogged") && !readCookie("carritoCGP")) {
         //LOGIN POR ZDC
         clearInterval(interv);
-        updateLog("Componente login", "ingreso por ZDC va a componente home");
+        updateLog("URL", window.location.href);
+        updateLog("Componente login", "ingreso por ZDC va a componente home"); //ZONA
         let cookieName = readCookie("userLogged");
         let cookieCgp = readCookie("iplanUser2020");
         setAuth(cookieName);
@@ -104,6 +105,7 @@ export const Login = () => {
         readCookie("carritoCGP")
       ) {
         clearInterval(interv);
+        updateLog("URL", window.location.href);
         updateLog("Componente login", "click button login");
         let cookieName = readCookie("userLogged");
         let cookieCgp = readCookie("carritoCGP");
@@ -150,7 +152,7 @@ export const Login = () => {
   return (
     <>
       <h2 className="pinkTitle mb-8 mt-16 lg:mt-0">
-        Comprá tus torres de WiFi Power Mesh
+        Comprá tus WiFi Torres Mesh
       </h2>
 
       <div className="grid grid-cols-1 gap-3 lg:grid-cols-2 xl:gap-6">
@@ -161,7 +163,7 @@ export const Login = () => {
             <>
               <div className="card__redHeader">
                 <h2 className="card__readHeader__title">
-                  Identificate para iniciar tu compra
+                  Inicia sesión para comenzar tu compra
                 </h2>
               </div>
 
@@ -176,13 +178,13 @@ export const Login = () => {
         </div>
 
         <div className="cardCarritoMesh">
-          <div className="relative flex flex-col gap-3 self-stretch bg-iplanPurple px-6 py-[25px] text-end">
+          <div className="relative flex h-[100%] max-h-[152px] flex-col gap-3 self-stretch bg-iplanPurple px-6 py-[25px] text-end">
             <div className="absolute left-0 top-0 min-h-[150px] w-[200px] max-w-[75px] rounded-r-[200px] bg-iplanPink"></div>
-            <h2 className="font-figtree text-[68px] font-bold not-italic leading-[50px] text-iplanWhite lg:text-[72px]">
+            <h2 className="font-figtree text-[54px] font-bold not-italic leading-[50px] text-iplanWhite lg:text-[60px]">
               WiFi
             </h2>
             <p className="text-[26px] font-semibold not-italic text-iplanWhite">
-              Torres
+              Torres Mesh
             </p>
           </div>
 
@@ -200,7 +202,7 @@ export const Login = () => {
                 </p>
               </div>
             </div>
-            <div className="mt-[16px] flex gap-[8px] text-center">
+            <div className="mt-[32px] flex gap-[8px] text-center">
               <p className="font-roboto text-[20px] font-medium not-italic text-iplanPink">
                 <FontAwesomeIcon icon={faPenRuler} />
               </p>
@@ -208,7 +210,7 @@ export const Login = () => {
                 Instalación bonificada
               </p>
             </div>
-            <p className="mt-3 text-[48px] font-bold not-italic leading-[50px] tracking-[-0.48px] text-iplanGrey2">
+            <p className="mt-3 text-[54px] font-bold not-italic leading-[50px] tracking-[-0.48px] text-iplanGrey2">
               {precioMesh != 0 ? formatearNum(parseInt(precioMesh)) : ""}
             </p>
             <p className="mt-2 flex gap-[8px] text-center font-lato text-[15px] font-bold not-italic text-iplanGrey2">

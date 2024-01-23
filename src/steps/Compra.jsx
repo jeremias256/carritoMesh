@@ -12,7 +12,7 @@ import { Spinner } from "../components";
 import { formatearNum } from "../helpers/helpers";
 import { setExpireCookie, readCookie, delete_cookie } from "../helpers/cookies";
 /* ----------------------- ASSETS ----------------------- */
-import { MESH } from "../Env";
+import { MESH, STEP_HOME } from "../Env";
 import imgStep from "../assets/imgs/step1.png";
 import imgMesh from "../assets/imgs/imgMesh.png";
 import { updateLog } from "../services/logeo";
@@ -84,14 +84,19 @@ export const Compra = () => {
       {/* STEPS */}
       <div className="relative mb-8 mt-16 flex items-center lg:mt-0">
         <div className="absolute right-[200px] top-0 border-r-[1px] border-[#b8b8b8] pr-6">
-          <a href="https://www.iplan.com.ar/power-mesh">
+          <button
+            class="outline-none focus:outline-none"
+            onClick={() => {
+              setStep(STEP_HOME);
+            }}
+          >
             <FontAwesomeIcon
               icon={faHouse}
               size="2xl"
               style={{ color: "#7C7B85" }}
               className="cursor-pointer"
             />
-          </a>
+          </button>
         </div>
 
         <div className="ml-[20px] flex items-center gap-2 pl-[20px]">
